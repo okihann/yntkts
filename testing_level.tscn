@@ -1,7 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://bbuwmuu17lq50"]
+[gd_scene load_steps=10 format=3 uid="uid://bbuwmuu17lq50"]
 
 [ext_resource type="Texture2D" uid="uid://mu7hft013qr4" path="res://tileset/Tiles.png" id="1_haa73"]
 [ext_resource type="PackedScene" uid="uid://cnn0q8wrcnhd0" path="res://player/player.tscn" id="2_b55i6"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_b55i6"]
+[ext_resource type="Texture2D" uid="uid://bo3fmkgxdddc8" path="res://assets/UI/Control/Attack_Button.png" id="4_n3hra"]
+[ext_resource type="Texture2D" uid="uid://cv8kyp26dtgj3" path="res://assets/UI/Control/Jump_Button.png" id="5_th68x"]
+[ext_resource type="Texture2D" uid="uid://n2qu1472iieb" path="res://assets/UI/Control/Slide_Button.png" id="6_du6cx"]
+[ext_resource type="Texture2D" uid="uid://dgusead7hftdo" path="res://assets/UI/Control/Sprint_Button.png" id="7_50fuq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -495,6 +500,7 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_haa73")
 
 [node name="testing_level" type="Node2D"]
+metadata/_edit_horizontal_guides_ = [-203.0]
 
 [node name="Player" parent="." instance=ExtResource("2_b55i6")]
 
@@ -503,3 +509,47 @@ position = Vector2(1, 0)
 tile_set = SubResource("TileSet_b55i6")
 format = 2
 layer_0/tile_data = PackedInt32Array(65534, 0, 1, 65535, 65536, 1, 0, 65536, 1, 1, 131072, 1, 2, 196608, 1, 3, 65536, 1, 4, 131072, 1, 5, 196608, 1, 6, 65536, 1, 7, 131072, 1, 8, 196608, 1, -2, 0, 0, -1, 65536, 0, -65536, 131072, 0, -65535, 196608, 0, -65532, 65536, 0, -65531, 131072, 0, -65530, 196608, 0, 9, 262144, 1, -65534, 131072, 0, -65533, 131072, 0, -65528, 131072, 0, -65529, 196608, 0, -65527, 262144, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Virtual Joystick" parent="CanvasLayer" instance=ExtResource("3_b55i6")]
+offset_left = 108.0
+offset_top = -422.0
+offset_right = 408.0
+offset_bottom = -122.00061
+scale = Vector2(1.133, 1.133)
+pressed_color = Color(0.5416503, 0.54817206, 0.54026484, 1)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Control"]
+
+[node name="Attack" type="TouchScreenButton" parent="Control/CanvasLayer"]
+position = Vector2(1287, 425)
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("4_n3hra")
+
+[node name="Jump" type="TouchScreenButton" parent="Control/CanvasLayer"]
+position = Vector2(1464, 362)
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("5_th68x")
+
+[node name="Slide" type="TouchScreenButton" parent="Control/CanvasLayer"]
+position = Vector2(1223, 587)
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("6_du6cx")
+
+[node name="Sprint" type="TouchScreenButton" parent="Control/CanvasLayer"]
+position = Vector2(1468, 578)
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("7_50fuq")
