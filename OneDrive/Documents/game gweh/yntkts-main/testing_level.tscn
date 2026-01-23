@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bbuwmuu17lq50"]
+[gd_scene load_steps=11 format=3 uid="uid://bbuwmuu17lq50"]
 
 [ext_resource type="Texture2D" uid="uid://mu7hft013qr4" path="res://tileset/Tiles.png" id="1_haa73"]
 [ext_resource type="PackedScene" uid="uid://cnn0q8wrcnhd0" path="res://player/player.tscn" id="2_b55i6"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://bo3fmkgxdddc8" path="res://assets/UI/Control/Attack_Button.png" id="4_n3hra"]
 [ext_resource type="Texture2D" uid="uid://cv8kyp26dtgj3" path="res://assets/UI/Control/Jump_Button.png" id="5_th68x"]
 [ext_resource type="Texture2D" uid="uid://n2qu1472iieb" path="res://assets/UI/Control/Slide_Button.png" id="6_du6cx"]
-[ext_resource type="Script" uid="uid://kpsk0squm5r2" path="res://jump.gd" id="6_pdwrp"]
 [ext_resource type="Texture2D" uid="uid://dgusead7hftdo" path="res://assets/UI/Control/Sprint_Button.png" id="7_50fuq"]
 [ext_resource type="Script" uid="uid://i46rmk01eyl5" path="res://sprint.gd" id="8_nha3r"]
 
@@ -506,6 +505,10 @@ metadata/_edit_horizontal_guides_ = [-203.0]
 
 [node name="Player" parent="." instance=ExtResource("2_b55i6")]
 
+[node name="Camera2D2" type="Camera2D" parent="Player"]
+ignore_rotation = false
+zoom = Vector2(4.406, 4.406)
+
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(1, 0)
 tile_set = SubResource("TileSet_b55i6")
@@ -546,12 +549,13 @@ texture_normal = ExtResource("4_n3hra")
 position = Vector2(2167, 338)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("5_th68x")
-script = ExtResource("6_pdwrp")
+action = "ui_accept"
 
 [node name="Slide" type="TouchScreenButton" parent="Control/CanvasLayer"]
 position = Vector2(1910, 651)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("6_du6cx")
+action = "slide"
 
 [node name="Sprint" type="TouchScreenButton" parent="Control/CanvasLayer"]
 position = Vector2(2142, 649)
