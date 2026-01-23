@@ -277,7 +277,7 @@ states/sliding/position = Vector2(487, 376)
 states/walking/node = SubResource("AnimationNodeAnimation_boad6")
 states/walking/position = Vector2(719, 2)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_rgyib"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_hg6s5"), "idle", "jumping", SubResource("AnimationNodeStateMachineTransition_8t03j"), "idle", "sliding", SubResource("AnimationNodeStateMachineTransition_2ieo8"), "idle", "running", SubResource("AnimationNodeStateMachineTransition_ebec5"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_yllr7"), "running", "idle", SubResource("AnimationNodeStateMachineTransition_kb6p2"), "jumping", "idle", SubResource("AnimationNodeStateMachineTransition_wodsf"), "sliding", "idle", SubResource("AnimationNodeStateMachineTransition_32hag"), "fall", "idle", SubResource("AnimationNodeStateMachineTransition_rkbax"), "idle", "fall", SubResource("AnimationNodeStateMachineTransition_g1dw6"), "fall", "running", SubResource("AnimationNodeStateMachineTransition_yw30f"), "running", "fall", SubResource("AnimationNodeStateMachineTransition_qjkh3"), "fall", "jumping", SubResource("AnimationNodeStateMachineTransition_g6k8r"), "jumping", "fall", SubResource("AnimationNodeStateMachineTransition_boad6"), "fall", "walking", SubResource("AnimationNodeStateMachineTransition_tqiix"), "walking", "fall", SubResource("AnimationNodeStateMachineTransition_e7oew"), "fall", "sliding", SubResource("AnimationNodeStateMachineTransition_c35mf"), "sliding", "fall", SubResource("AnimationNodeStateMachineTransition_65viv")]
-graph_offset = Vector2(0, -47.804596)
+graph_offset = Vector2(154, 198.1954)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rgyib"]
 radius = 5.0
@@ -287,6 +287,7 @@ height = 44.0
 script = ExtResource("1_rkbax")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2.145, 2.145)
 
 [node name="AnimPlayerHero" type="AnimationPlayer" parent="."]
 libraries = {

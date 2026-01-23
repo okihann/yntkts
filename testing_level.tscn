@@ -505,10 +505,6 @@ metadata/_edit_horizontal_guides_ = [-203.0]
 
 [node name="Player" parent="." instance=ExtResource("2_b55i6")]
 
-[node name="Camera2D2" type="Camera2D" parent="Player"]
-ignore_rotation = false
-zoom = Vector2(4.406, 4.406)
-
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(1, 0)
 tile_set = SubResource("TileSet_b55i6")
