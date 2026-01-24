@@ -521,44 +521,52 @@ offset_bottom = -122.00061
 scale = Vector2(1.133, 1.133)
 pressed_color = Color(0.5416503, 0.54817206, 0.54026484, 1)
 
-[node name="Control" type="Control" parent="."]
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer2"]
 layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="CanvasLayer2/Control"]
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 40.0
-offset_top = -40.0
-offset_right = 80.0
+offset_left = -438.0
+offset_top = -398.0
+offset_right = -398.0
+offset_bottom = -358.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="CanvasLayer" type="CanvasLayer" parent="Control"]
-
-[node name="Attack" type="TouchScreenButton" parent="Control/CanvasLayer"]
-position = Vector2(1956, 426)
+[node name="Attack" type="TouchScreenButton" parent="CanvasLayer2/Control/Control"]
 scale = Vector2(0.25, 0.25)
 texture_normal = ExtResource("4_n3hra")
 
-[node name="Jump" type="TouchScreenButton" parent="Control/CanvasLayer"]
-position = Vector2(2167, 338)
-scale = Vector2(0.13, 0.13)
-texture_normal = ExtResource("5_th68x")
-action = "ui_accept"
-
-[node name="Slide" type="TouchScreenButton" parent="Control/CanvasLayer"]
-position = Vector2(1910, 651)
+[node name="Slide" type="TouchScreenButton" parent="CanvasLayer2/Control/Control"]
+position = Vector2(-28, 195.99998)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("6_du6cx")
 action = "slide"
 
-[node name="Sprint" type="TouchScreenButton" parent="Control/CanvasLayer"]
-position = Vector2(2142, 649)
+[node name="Jump" type="TouchScreenButton" parent="CanvasLayer2/Control/Control"]
+position = Vector2(179, -68)
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("5_th68x")
+action = "ui_accept"
+
+[node name="Sprint" type="TouchScreenButton" parent="CanvasLayer2/Control/Control"]
+position = Vector2(174, 183)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("7_50fuq")
 action = "sprint"
 script = ExtResource("8_nha3r")
 
-[connection signal="pressed" from="Control/CanvasLayer/Sprint" to="Control/CanvasLayer/Sprint" method="_on_pressed"]
-[connection signal="released" from="Control/CanvasLayer/Sprint" to="Control/CanvasLayer/Sprint" method="_on_released"]
+[connection signal="pressed" from="CanvasLayer2/Control/Control/Sprint" to="CanvasLayer2/Control/Control/Sprint" method="_on_pressed"]
+[connection signal="released" from="CanvasLayer2/Control/Control/Sprint" to="CanvasLayer2/Control/Control/Sprint" method="_on_released"]
