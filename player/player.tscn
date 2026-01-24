@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://cnn0q8wrcnhd0"]
+[gd_scene load_steps=40 format=3 uid="uid://cnn0q8wrcnhd0"]
 
 [ext_resource type="Texture2D" uid="uid://dewnynca6dknf" path="res://player/playersprite.png" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://tygypjecmxwu" path="res://player/player_controller.gd" id="1_rkbax"]
@@ -53,10 +53,46 @@ tracks/3/keys = {
 "update": 0,
 "values": [5.0]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AttackArea/CollisionShape2D:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-3.907, -11.482)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AttackArea/CollisionShape2D:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.1554079]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AttackArea/CollisionShape2D:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.828, 0.828)]
+}
 
 [sub_resource type="Animation" id="Animation_rgyib"]
 resource_name = "attack"
-length = 0.55
+length = 0.6
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -69,6 +105,54 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [Rect2(0, 896, 80, 64), Rect2(80, 896, 80, 64), Rect2(160, 896, 80, 64), Rect2(240, 896, 80, 64), Rect2(320, 896, 80, 64), Rect2(400, 896, 80, 64), Rect2(0, 896, 80, 64)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:position")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -22), Vector2(1.709, -22), Vector2(3.633, -22), Vector2(3.633, -22), Vector2(-2.133, -22), Vector2(-0.554, -22), Vector2(0.522, -22)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttackArea/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(-3.907, -11.482), Vector2(17.954, -48), Vector2(22.723, -45.948), Vector2(26.103, -45.352), Vector2(-20, -48), Vector2(-19, -16), Vector2(-4.051, -11.277)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("AttackArea/CollisionShape2D:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [1.1554079, 0.35953784, 1.1711159, 1.452114, 1.8570303, 1.7400932, 1.1484267]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AttackArea/CollisionShape2D:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(0.828, 0.828), Vector2(0.828, 0.828), Vector2(0.828, 0.828), Vector2(0.828, 0.828), Vector2(4.695, 1.07), Vector2(0.724, 1.03), Vector2(0.26, 0.99)]
 }
 
 [sub_resource type="Animation" id="Animation_boad6"]
@@ -301,6 +385,10 @@ graph_offset = Vector2(184, 16.195404)
 radius = 5.0
 height = 44.0
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rkbax"]
+radius = 6.4181814
+height = 23.921856
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_rkbax")
 
@@ -331,3 +419,11 @@ region_rect = Rect2(0, 0, 80, 64)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -22)
 shape = SubResource("CapsuleShape2D_rgyib")
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2(-3.907, -11.482)
+rotation = 1.1554079
+scale = Vector2(0.828, 0.828)
+shape = SubResource("CapsuleShape2D_rkbax")
