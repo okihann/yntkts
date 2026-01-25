@@ -6,35 +6,43 @@ const JUMP_VELOCITY = -400.0
 const SLIDE_SPEED = 400.0
 
 var is_sliding := false
+var attacking := false
 
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
 @onready var slide_timer = Timer.new()
+@onready var attack_timer = Timer.new()
 
 func _ready():
 	add_child(slide_timer)
 	slide_timer.wait_time = 0.6
 	slide_timer.one_shot = true
 	slide_timer.timeout.connect(_on_slide_finished)
+	add_child(attack_timer)
+	attack_timer.one_shot = true
+	attack_timer.timeout.connect(finish_attack)
+
+func _process(delta):
+	if Input.is_action_just_pressed("attack"):
+		attack()
 
 func _physics_process(delta: float) -> void:
-	# gravity
+
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
 	var direction := Input.get_axis("ui_left", "ui_right")
 	var is_sprinting = Input.is_action_pressed("sprint")
 
-	# slide trigger
-	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding:
+	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding and not attacking:
 		if abs(velocity.x) > 100:
 			start_slide()
 
 	if is_sliding:
 		velocity.x = move_toward(velocity.x, 0, 10.0)
 	else:
-		# jump
-		if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+
+		if Input.is_action_just_pressed("ui_accept") and is_on_floor() and not attacking:
 			velocity.y = JUMP_VELOCITY
 
 		var final_speed = SPEED
@@ -49,6 +57,19 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	update_animation(direction, is_sprinting)
 
+func attack():
+	if attacking:
+		return
+	
+	attacking = true
+	stateMachineHero.travel("attack")
+	
+	attack_timer.start(0.5)
+
+
+func finish_attack():
+	attacking = false
+
 func start_slide():
 	is_sliding = true
 	velocity.x = (1 if visualHero.flip_h else -1) * SLIDE_SPEED
@@ -58,6 +79,10 @@ func _on_slide_finished():
 	is_sliding = false
 
 func update_animation(direction: float, is_sprinting: bool):
+
+	if attacking:
+		return
+
 	if is_on_floor():
 		if is_sliding:
 			stateMachineHero.travel("sliding")
