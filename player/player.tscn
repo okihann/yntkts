@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dewnynca6dknf" path="res://player/playersprite.png" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://tygypjecmxwu" path="res://player/player_controller.gd" id="1_rkbax"]
+[ext_resource type="Script" uid="uid://b22bwrcwrpedi" path="res://scripts/hitbox.gd" id="3_g1dw6"]
 
 [sub_resource type="Animation" id="Animation_rkbax"]
 length = 0.001
@@ -56,7 +57,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("AttackArea/CollisionShape2D:position")
+tracks/4/path = NodePath("Hitbox/CollisionShape2D:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -68,7 +69,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("AttackArea/CollisionShape2D:rotation")
+tracks/5/path = NodePath("Hitbox/CollisionShape2D:rotation")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -80,7 +81,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("AttackArea/CollisionShape2D:scale")
+tracks/6/path = NodePath("Hitbox/CollisionShape2D:scale")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -92,7 +93,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("AttackArea:monitoring")
+tracks/7/path = NodePath("Hitbox:monitoring")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -131,7 +132,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AttackArea/CollisionShape2D:position")
+tracks/2/path = NodePath("Hitbox/CollisionShape2D:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -143,7 +144,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("AttackArea/CollisionShape2D:rotation")
+tracks/3/path = NodePath("Hitbox/CollisionShape2D:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -155,7 +156,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("AttackArea/CollisionShape2D:scale")
+tracks/4/path = NodePath("Hitbox/CollisionShape2D:scale")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -167,7 +168,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("AttackArea:monitoring")
+tracks/5/path = NodePath("Hitbox:monitoring")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -434,7 +435,7 @@ states/sliding/position = Vector2(487, 376)
 states/walking/node = SubResource("AnimationNodeAnimation_boad6")
 states/walking/position = Vector2(930.5551, 85.060776)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_rgyib"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_hg6s5"), "idle", "jumping", SubResource("AnimationNodeStateMachineTransition_8t03j"), "idle", "sliding", SubResource("AnimationNodeStateMachineTransition_2ieo8"), "idle", "running", SubResource("AnimationNodeStateMachineTransition_ebec5"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_yllr7"), "running", "idle", SubResource("AnimationNodeStateMachineTransition_kb6p2"), "jumping", "idle", SubResource("AnimationNodeStateMachineTransition_wodsf"), "sliding", "idle", SubResource("AnimationNodeStateMachineTransition_32hag"), "fall", "idle", SubResource("AnimationNodeStateMachineTransition_rkbax"), "idle", "fall", SubResource("AnimationNodeStateMachineTransition_g1dw6"), "fall", "running", SubResource("AnimationNodeStateMachineTransition_yw30f"), "running", "fall", SubResource("AnimationNodeStateMachineTransition_qjkh3"), "fall", "jumping", SubResource("AnimationNodeStateMachineTransition_g6k8r"), "jumping", "fall", SubResource("AnimationNodeStateMachineTransition_boad6"), "fall", "walking", SubResource("AnimationNodeStateMachineTransition_tqiix"), "walking", "fall", SubResource("AnimationNodeStateMachineTransition_e7oew"), "fall", "sliding", SubResource("AnimationNodeStateMachineTransition_c35mf"), "sliding", "fall", SubResource("AnimationNodeStateMachineTransition_65viv"), "walking", "attack", SubResource("AnimationNodeStateMachineTransition_x7c3f"), "attack", "walking", SubResource("AnimationNodeStateMachineTransition_bjvpn"), "running", "attack", SubResource("AnimationNodeStateMachineTransition_s7qer"), "attack", "running", SubResource("AnimationNodeStateMachineTransition_g4c7l"), "attack", "fall", SubResource("AnimationNodeStateMachineTransition_knn7v"), "fall", "attack", SubResource("AnimationNodeStateMachineTransition_7pqkx"), "idle", "attack", SubResource("AnimationNodeStateMachineTransition_uw77l"), "attack", "idle", SubResource("AnimationNodeStateMachineTransition_rptt4"), "jumping", "attack", SubResource("AnimationNodeStateMachineTransition_r7pn3"), "attack", "jumping", SubResource("AnimationNodeStateMachineTransition_b8hi5"), "attack", "sliding", SubResource("AnimationNodeStateMachineTransition_2uvqg"), "sliding", "attack", SubResource("AnimationNodeStateMachineTransition_1s1yo")]
-graph_offset = Vector2(437.4883, 27.548876)
+graph_offset = Vector2(151.48831, 60.548874)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rgyib"]
 radius = 5.0
@@ -473,10 +474,11 @@ region_rect = Rect2(0, 0, 80, 64)
 position = Vector2(0, -22)
 shape = SubResource("CapsuleShape2D_rgyib")
 
-[node name="AttackArea" type="Area2D" parent="." unique_id=783703417]
+[node name="Hitbox" type="Area2D" parent="." unique_id=783703417]
 monitoring = false
+script = ExtResource("3_g1dw6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=278121464]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=278121464]
 position = Vector2(-3.907, -11.482)
 rotation = 1.1554079
 scale = Vector2(0.828, 0.828)
