@@ -104,7 +104,6 @@ tracks/7/keys = {
 
 [sub_resource type="Animation" id="Animation_rgyib"]
 resource_name = "attack"
-length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -445,39 +444,39 @@ height = 44.0
 radius = 6.4181814
 height = 23.921856
 
-[node name="Player" type="CharacterBody2D" unique_id=1574539415]
+[node name="Player" type="CharacterBody2D" unique_id=765724541]
 script = ExtResource("1_rkbax")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=657085123]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1485415825]
 zoom = Vector2(2.763, 2.763)
 position_smoothing_enabled = true
 position_smoothing_speed = 4.0
 rotation_smoothing_enabled = true
 rotation_smoothing_speed = 4.0
 
-[node name="AnimPlayerHero" type="AnimationPlayer" parent="." unique_id=872463806]
+[node name="AnimPlayerHero" type="AnimationPlayer" parent="." unique_id=1717993878]
 libraries/ = SubResource("AnimationLibrary_yw30f")
 autoplay = &"idle"
 
-[node name="AnimTreeHero" type="AnimationTree" parent="." unique_id=739237461]
+[node name="AnimTreeHero" type="AnimationTree" parent="." unique_id=2001506811]
 tree_root = SubResource("AnimationNodeStateMachine_tqiix")
 anim_player = NodePath("../AnimPlayerHero")
 parameters/BlendSpace1D/blend_position = 0.0
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=367746594]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=685418947]
 position = Vector2(0, -32)
 texture = ExtResource("1_oul6g")
 region_enabled = true
 region_rect = Rect2(0, 0, 80, 64)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1126576685]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1175309948]
 position = Vector2(0, -22)
 shape = SubResource("CapsuleShape2D_rgyib")
 
-[node name="AttackArea" type="Area2D" parent="." unique_id=647160400]
+[node name="AttackArea" type="Area2D" parent="." unique_id=783703417]
 monitoring = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=440387801]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=278121464]
 position = Vector2(-3.907, -11.482)
 rotation = 1.1554079
 scale = Vector2(0.828, 0.828)

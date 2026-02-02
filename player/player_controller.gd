@@ -4,9 +4,12 @@ const SPEED = 150.0
 const SPRINT_MULTIPLIER = 1.6
 const JUMP_VELOCITY = -400.0
 const SLIDE_SPEED = 400.0
+const COYOTE_TIME = 0.1
 
 var is_sliding := false
 var attacking := false
+var coyote_timer := 0.0
+var was_on_floor := false
 
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
@@ -23,10 +26,18 @@ func _ready():
 	attack_timer.timeout.connect(finish_attack)
 
 func _process(delta):
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and not attacking:
 		attack()
 
 func _physics_process(delta: float) -> void:
+	
+	if is_on_floor():
+		coyote_timer = COYOTE_TIME
+		was_on_floor = true
+	else:
+		coyote_timer -= delta
+		if was_on_floor and coyote_timer <= 0:
+			was_on_floor = false
 
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -34,17 +45,17 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("ui_left", "ui_right")
 	var is_sprinting = Input.is_action_pressed("sprint")
 
+	if Input.is_action_pressed("ui_accept") and (is_on_floor() or coyote_timer > 0) and not is_sliding:
+		velocity.y = JUMP_VELOCITY
+		coyote_timer = 0 
+
 	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding and not attacking:
 		if abs(velocity.x) > 100:
 			start_slide()
 
 	if is_sliding:
 		velocity.x = move_toward(velocity.x, 0, 10.0)
-	else:
-
-		if Input.is_action_just_pressed("ui_accept") and is_on_floor() and not attacking:
-			velocity.y = JUMP_VELOCITY
-
+	elif not attacking:
 		var final_speed = SPEED
 		if direction != 0:
 			if is_sprinting:
@@ -53,19 +64,16 @@ func _physics_process(delta: float) -> void:
 			visualHero.flip_h = (direction > 0)
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED * 0.5)
 
 	move_and_slide()
 	update_animation(direction, is_sprinting)
 
 func attack():
-	if attacking:
-		return
-	
 	attacking = true
 	stateMachineHero.travel("attack")
-	
-	attack_timer.start(0.6)
-
+	attack_timer.start(0.5)
 
 func finish_attack():
 	attacking = false
