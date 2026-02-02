@@ -475,6 +475,8 @@ position = Vector2(0, -22)
 shape = SubResource("CapsuleShape2D_rgyib")
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=783703417]
+collision_layer = 8
+collision_mask = 4
 monitoring = false
 script = ExtResource("3_g1dw6")
 

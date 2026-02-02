@@ -55,7 +55,7 @@ func _process_patrol():
 		sprite.flip_h = not sprite.flip_h
 		floor_check.position.x = -floor_check.position.x
 		
-	var dir = 1 if sprite.flip_h else -1
+	var dir = -1 if sprite.flip_h else 1
 	velocity.x = dir * SPEED
 
 func start_combo_attack():
