@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://d4hsoemga0xye"]
+
+[ext_resource type="Script" uid="uid://c4pfgsynvjo7u" path="res://EnemyRanged/Enemy_Arrow.gd" id="1_grq10"]
+[ext_resource type="Texture2D" uid="uid://f1bvbee4rlgo" path="res://EnemyRanged/GandalfHardcore Archer/arrow.png" id="1_sqstc"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_grq10"]
+radius = 3.0
+
+[node name="EnemyArrow" type="Area2D" unique_id=965825744]
+scale = Vector2(0.87123287, 0.70950896)
+script = ExtResource("1_grq10")
+
+[node name="ArrowSprite" type="Sprite2D" parent="." unique_id=217416849]
+texture = ExtResource("1_sqstc")
+
+[node name="ArrowCollision" type="CollisionShape2D" parent="." unique_id=872178787]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_grq10")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=782650238]
+rect = Rect2(-15, -3, 30, 6)

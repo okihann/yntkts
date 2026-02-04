@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dgusead7hftdo" path="res://assets/UI/Control/Sprint_Button.png" id="7_50fuq"]
 [ext_resource type="Script" uid="uid://i46rmk01eyl5" path="res://sprint.gd" id="8_nha3r"]
 [ext_resource type="PackedScene" uid="uid://chl6o1qx0lxwb" path="res://enemy/enemy.tscn" id="9_pdwrp"]
+[ext_resource type="PackedScene" uid="uid://b035sqtwd0uw" path="res://EnemyRanged/EnemyRanged.tscn" id="10_7w4r7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -572,6 +573,9 @@ script = ExtResource("8_nha3r")
 
 [node name="Enemy" parent="." unique_id=430939283 instance=ExtResource("9_pdwrp")]
 position = Vector2(351, -96)
+
+[node name="Enemy2" parent="." unique_id=2062516097 instance=ExtResource("10_7w4r7")]
+position = Vector2(173, -38)
 
 [connection signal="pressed" from="CanvasLayer2/Control/Control/Sprint" to="CanvasLayer2/Control/Control/Sprint" method="_on_pressed"]
 [connection signal="released" from="CanvasLayer2/Control/Control/Sprint" to="CanvasLayer2/Control/Control/Sprint" method="_on_released"]
