@@ -6,14 +6,16 @@ extends CharacterBody2D
 @onready var floorDetector = $Pivot/FloorDetect
 @onready var wallDetector = $Pivot/WallDetect
 @onready var markerArrow = $Pivot/Marker
+@onready var areaDetection = $Pivot/AreaDetection
 
 var arrowScene = preload("res://EnemyRanged/EnemyArrow.tscn")
-
-enum state { Idle, Walk, Attack, GetHurt, Death }
-var current_state = state.Idle
-
 var target = null
 var attackRange = 100.0 #satuannya pixel
+var hpEnemy = 30.0
+
+var current_state = state.Idle
+enum state { Idle, Walk, Attack, GetHit, Death }
+
 const speed = 70
 const jumpVelocity = -400.0
 
@@ -25,6 +27,12 @@ func _physics_process(delta: float) -> void:
 	#logika gerak dasar
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		
+	# biar animasi gethit bisa 
+	if current_state == state.GetHit or current_state == state.Death:
+		move_and_slide()  #kalau ada efek knocbak nanti 
+		update_state()
+		return 
 	
 	if target != null:
 		#var direction = (target.position - position).normalized()
@@ -79,10 +87,10 @@ func update_state():
 		state.Idle: anim_player.play("Idle")
 		state.Walk: anim_player.play("Walk")
 		state.Attack: anim_player.play("Attack")
-		state.GetHurt: anim_player.play("Hurt")
+		state.GetHit: anim_player.play("GetHit")
 		
 	if not is_on_floor() and current_state == state.Walk:
-		print("melayang wok")
+		#print("melayang wok")
 		pass
 
 func _on_area_detection_body_entered(body: Node2D) -> void:
@@ -108,3 +116,24 @@ func fire():
 	get_tree().root.add_child(arrow)
 	pass
 	
+func take_damage(amount):
+	hpEnemy -= amount
+	print("sisa hp enemy : ", hpEnemy)
+	
+	if hpEnemy <= 0:
+		#print("mokad")
+		current_state = state.Death
+		#$EnemyCollision.set_deferred("disabled", true)
+		areaDetection.monitoring = false
+	else :
+		print("harusnya animasi gethurt")
+		current_state = state.GetHit
+		velocity = Vector2.ZERO
+	pass
+
+func _on_enemy_animation_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "GetHit":
+		current_state = state.Idle
+	if anim_name == "Death":
+		queue_free()
+	pass # Replace with function body.

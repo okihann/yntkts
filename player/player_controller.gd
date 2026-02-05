@@ -87,10 +87,9 @@ func _on_slide_finished():
 	is_sliding = false
 
 func update_animation(direction: float, is_sprinting: bool):
-
 	if attacking:
 		return
-
+	
 	if is_on_floor():
 		if is_sliding:
 			stateMachineHero.travel("sliding")
