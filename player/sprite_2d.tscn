@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bdgw3fwvf1lbj"]
+
+[ext_resource type="Texture2D" uid="uid://dewnynca6dknf" path="res://player/playersprite.png" id="1_etdmq"]
+
+[node name="Sprite2D" type="Sprite2D" unique_id=750000700]
+texture = ExtResource("1_etdmq")
+region_enabled = true
+region_rect = Rect2(0, 0, 80, 64)

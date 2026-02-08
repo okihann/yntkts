@@ -53,7 +53,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_rdorl"]
 resource_name = "GetHit"
-length = 0.8
+length = 0.45
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true

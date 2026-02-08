@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bgwtfndwg2v10"]
+
+[ext_resource type="Script" uid="uid://da14rl4xkf8a8" path="res://scripts/dead_zone.gd" id="1_8gnhh"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_7w4r7"]
+
+[node name="DeadZone" type="Area2D" unique_id=691363655]
+script = ExtResource("1_8gnhh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1153488210]
+shape = SubResource("WorldBoundaryShape2D_7w4r7")
+
+[node name="Timer" type="Timer" parent="." unique_id=34161675]
+wait_time = 0.7
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

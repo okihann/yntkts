@@ -10,7 +10,8 @@ var is_sliding := false
 var attacking := false
 var coyote_timer := 0.0
 var was_on_floor := false
-
+var max_hp = 100
+var current_hp = max_hp
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
 @onready var slide_timer = Timer.new()
@@ -99,3 +100,7 @@ func update_animation(direction: float, is_sprinting: bool):
 			stateMachineHero.travel("running" if is_sprinting else "walking")
 	else:
 		stateMachineHero.travel("jumping" if velocity.y < 0 else "fall")
+
+func take_damage(amount):
+	current_hp -= amount
+	print("Player HP:", current_hp)
