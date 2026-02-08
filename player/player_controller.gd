@@ -16,6 +16,7 @@ var current_hp = max_hp
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
 @onready var slide_timer = Timer.new()
 @onready var attack_timer = Timer.new()
+@onready var hitbox = $Hitbox
 
 func _ready():
 	add_child(slide_timer)
@@ -63,6 +64,9 @@ func _physics_process(delta: float) -> void:
 				final_speed *= SPRINT_MULTIPLIER
 			velocity.x = direction * final_speed
 			visualHero.flip_h = (direction > 0)
+			
+			if hitbox:
+				hitbox.scale.x = -1 if visualHero.flip_h else 1
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 	else:
@@ -75,6 +79,9 @@ func attack():
 	attacking = true
 	stateMachineHero.travel("attack")
 	attack_timer.start(0.5)
+	
+	if hitbox:
+		hitbox.scale.x = -1 if visualHero.flip_h else 1
 
 func finish_attack():
 	attacking = false
