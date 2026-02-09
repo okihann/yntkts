@@ -99,6 +99,7 @@ func fire():
 	var arrow = arrowScene.instantiate()
 	arrow.global_position = markerArrow.global_position
 	arrow.set_direction(Vector2.RIGHT if attack_direction > 0 else Vector2.LEFT)
+	arrow.shooter = self
 	get_tree().root.add_child(arrow)
 
 func take_damage(amount):

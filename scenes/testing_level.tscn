@@ -572,10 +572,10 @@ texture_normal = ExtResource("7_50fuq")
 action = "sprint"
 script = ExtResource("8_nha3r")
 
-[node name="Enemy" parent="." unique_id=430939283 instance=ExtResource("9_pdwrp")]
+[node name="Enemy" parent="." unique_id=430939283 groups=["enemy"] instance=ExtResource("9_pdwrp")]
 position = Vector2(400, 13)
 
-[node name="Enemy2" parent="." unique_id=2062516097 instance=ExtResource("10_7w4r7")]
+[node name="Enemy2" parent="." unique_id=2062516097 groups=["enemy"] instance=ExtResource("10_7w4r7")]
 position = Vector2(173, -38)
 
 [node name="DeadZone" parent="." unique_id=691363655 instance=ExtResource("11_oob0o")]

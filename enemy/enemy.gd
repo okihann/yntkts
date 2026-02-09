@@ -52,7 +52,7 @@ func _physics_process(delta):
 	if current_state != State.ATTACK:
 		update_animation()
 
-# --- LOGIKA STATE ---
+
 
 func _process_patrol():
 	# Kalau player kelihatan, langsung ganti mode kejar!
