@@ -552,7 +552,6 @@ grow_vertical = 0
 [node name="Attack" type="TouchScreenButton" parent="CanvasLayer2/Control/Control" unique_id=1858224635]
 scale = Vector2(0.25, 0.25)
 texture_normal = ExtResource("4_n3hra")
-action = "attack"
 
 [node name="Slide" type="TouchScreenButton" parent="CanvasLayer2/Control/Control" unique_id=1924142433]
 position = Vector2(-28, 195.99998)
