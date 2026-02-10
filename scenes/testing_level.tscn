@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbuwmuu17lq50"]
 
-[ext_resource type="Script" uid="uid://byqyeuli6dtni" path="res://scenes/testing_level.gd" id="1_bx410"]
+[ext_resource type="Script" path="res://scenes/testing_level.gd" id="1_bx410"]
 [ext_resource type="Texture2D" uid="uid://mu7hft013qr4" path="res://tileset/Tiles.png" id="1_haa73"]
 [ext_resource type="PackedScene" uid="uid://cnn0q8wrcnhd0" path="res://player/player.tscn" id="2_b55i6"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_b55i6"]
@@ -10,11 +10,12 @@
 [ext_resource type="Texture2D" uid="uid://dgusead7hftdo" path="res://assets/UI/Control/Sprint_Button.png" id="7_50fuq"]
 [ext_resource type="Script" uid="uid://i46rmk01eyl5" path="res://sprint.gd" id="8_nha3r"]
 [ext_resource type="PackedScene" uid="uid://chl6o1qx0lxwb" path="res://enemy/enemy.tscn" id="9_pdwrp"]
+[ext_resource type="PackedScene" uid="uid://b035sqtwd0uw" path="res://EnemyRanged/EnemyRanged.tscn" id="10_7w4r7"]
 [ext_resource type="PackedScene" uid="uid://bgwtfndwg2v10" path="res://scenes/dead_zone.tscn" id="11_oob0o"]
 [ext_resource type="Texture2D" uid="uid://cs2hxd38c11mo" path="res://assets/UI/HealthBar/frame.png" id="12_re7k7"]
-[ext_resource type="Script" uid="uid://clinr1ihs07ct" path="res://scripts/health_bar_root.gd" id="13_jk6dm"]
+[ext_resource type="Script" path="res://scripts/health_bar_root.gd" id="13_jk6dm"]
 [ext_resource type="Texture2D" uid="uid://b0tprnde6xi0v" path="res://assets/UI/HealthBar/fill.png" id="13_jr0o4"]
-[ext_resource type="Script" uid="uid://b72qbtm3no4vu" path="res://scripts/health_bar.gd" id="15_jk6dm"]
+[ext_resource type="Script" path="res://scripts/health_bar.gd" id="15_jk6dm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -579,6 +580,8 @@ script = ExtResource("8_nha3r")
 
 [node name="Enemy" parent="." unique_id=430939283 instance=ExtResource("9_pdwrp")]
 position = Vector2(400, 13)
+
+[node name="Enemy2" parent="." unique_id=2062516097 groups=["enemy"] instance=ExtResource("10_7w4r7")]
 
 [node name="DeadZone" parent="." unique_id=691363655 instance=ExtResource("11_oob0o")]
 position = Vector2(241, 77)

@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal hp_changed(current_hp)
+
 const SPEED = 150.0
 const SPRINT_MULTIPLIER = 1.6
 const JUMP_VELOCITY = -400.0
@@ -10,9 +12,11 @@ var is_sliding := false
 var attacking := false
 var coyote_timer := 0.0
 var was_on_floor := false
-var max_hp = 100
-var current_hp = max_hp
-var is_dead = false
+
+var max_hp := 100
+var current_hp := max_hp
+var is_dead := false
+
 @onready var fade = get_tree().current_scene.get_node("DeadCanvas/Fade")
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
@@ -22,21 +26,22 @@ var is_dead = false
 @onready var timer = $Timer
 
 func _ready():
-	add_to_group("player")
 	add_child(slide_timer)
 	slide_timer.wait_time = 0.6
 	slide_timer.one_shot = true
 	slide_timer.timeout.connect(_on_slide_finished)
+
 	add_child(attack_timer)
 	attack_timer.one_shot = true
 	attack_timer.timeout.connect(finish_attack)
 
-func _process(delta):
+	emit_signal("hp_changed", current_hp) # init UI
+
+func _process(_delta):
 	if Input.is_action_just_pressed("attack") and not attacking:
 		attack()
 
-func _physics_process(delta: float) -> void:
-	
+func _physics_process(delta):
 	if is_on_floor():
 		coyote_timer = COYOTE_TIME
 		was_on_floor = true
@@ -49,18 +54,18 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	var direction := Input.get_axis("ui_left", "ui_right")
-	var is_sprinting = Input.is_action_pressed("sprint")
+	var is_sprinting := Input.is_action_pressed("sprint")
 
 	if Input.is_action_pressed("ui_accept") and (is_on_floor() or coyote_timer > 0) and not is_sliding:
 		velocity.y = JUMP_VELOCITY
-		coyote_timer = 0 
+		coyote_timer = 0
 
 	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding and not attacking:
 		if abs(velocity.x) > 100:
 			start_slide()
 
 	if is_sliding:
-		velocity.x = move_toward(velocity.x, 0, 10.0)
+		velocity.x = move_toward(velocity.x, 0, 10)
 	elif not attacking:
 		var final_speed = SPEED
 		if direction != 0:
@@ -68,9 +73,7 @@ func _physics_process(delta: float) -> void:
 				final_speed *= SPRINT_MULTIPLIER
 			velocity.x = direction * final_speed
 			visualHero.flip_h = (direction > 0)
-			
-			if hitbox:
-				hitbox.scale.x = -1 if visualHero.flip_h else 1
+			hitbox.scale.x = -1 if visualHero.flip_h else 1
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 	else:
@@ -83,9 +86,7 @@ func attack():
 	attacking = true
 	stateMachineHero.travel("attack")
 	attack_timer.start(0.5)
-	
-	if hitbox:
-		hitbox.scale.x = -1 if visualHero.flip_h else 1
+	hitbox.scale.x = -1 if visualHero.flip_h else 1
 
 func finish_attack():
 	attacking = false
@@ -98,10 +99,10 @@ func start_slide():
 func _on_slide_finished():
 	is_sliding = false
 
-func update_animation(direction: float, is_sprinting: bool):
+func update_animation(direction, is_sprinting):
 	if attacking:
 		return
-	
+
 	if is_on_floor():
 		if is_sliding:
 			stateMachineHero.travel("sliding")
@@ -119,23 +120,21 @@ func take_damage(amount):
 	current_hp -= amount
 	current_hp = max(current_hp, 0)
 
+	emit_signal("hp_changed", current_hp)
+
 	print("Player HP:", current_hp)
 
 	if current_hp <= 0:
 		die()
-		
+
 func die():
 	is_dead = true
-	print("Player died")
-
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 
 	var tween = get_tree().create_tween()
 	tween.tween_property(fade, "modulate:a", 1.0, 0.6)
 	timer.start()
-		
 
-
-func _on_timer_timeout() -> void:
+func _on_timer_timeout():
 	get_tree().reload_current_scene()
