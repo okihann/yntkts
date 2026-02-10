@@ -7,7 +7,7 @@ var shooter: Node = null
 
 func _ready():
 	body_entered.connect(_on_body_entered)
-        var shooter: Node = null
+	var shooter: Node = null
 
 func _physics_process(delta):
 	if direction != Vector2.ZERO:
@@ -37,4 +37,3 @@ func _on_body_entered(body):
 
 	# 4. hit environment (tembok, ground, dll)
 	queue_free()
-

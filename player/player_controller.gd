@@ -22,6 +22,7 @@ var is_dead = false
 @onready var timer = $Timer
 
 func _ready():
+	add_to_group("player")
 	add_child(slide_timer)
 	slide_timer.wait_time = 0.6
 	slide_timer.one_shot = true

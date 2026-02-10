@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @onready var anim_player = $EnemyAnimation
-@onready var sprite = $EnemySprite
+@onready var sprite = $Pivot/EnemySprite
 @onready var pivot = $Pivot
 @onready var floorDetector = $Pivot/FloorDetect
 @onready var wallDetector = $Pivot/WallDetect

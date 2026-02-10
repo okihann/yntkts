@@ -471,7 +471,7 @@ height = 23.921856
 
 [node name="Player" type="CharacterBody2D" unique_id=765724541]
 collision_layer = 2
-collision_mask = 17
+collision_mask = 21
 script = ExtResource("1_rkbax")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1485415825]
@@ -513,8 +513,6 @@ position = Vector2(-3.907, -11.482)
 rotation = 1.1554079
 scale = Vector2(0.828, 0.828)
 shape = SubResource("CapsuleShape2D_rkbax")
-
-[node name="Node2D" type="Node2D" parent="." unique_id=189867190]
 
 [node name="Timer" type="Timer" parent="." unique_id=1722286817]
 wait_time = 0.5

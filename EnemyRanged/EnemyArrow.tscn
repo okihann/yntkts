@@ -8,7 +8,7 @@ radius = 3.0
 
 [node name="EnemyArrow" type="Area2D" unique_id=965825744]
 scale = Vector2(0.87123287, 0.70950896)
-collision_layer = 2
+collision_layer = 16
 collision_mask = 3
 script = ExtResource("1_grq10")
 

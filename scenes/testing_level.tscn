@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://dgusead7hftdo" path="res://assets/UI/Control/Sprint_Button.png" id="7_50fuq"]
 [ext_resource type="Script" uid="uid://i46rmk01eyl5" path="res://sprint.gd" id="8_nha3r"]
 [ext_resource type="PackedScene" uid="uid://chl6o1qx0lxwb" path="res://enemy/enemy.tscn" id="9_pdwrp"]
-[ext_resource type="PackedScene" uid="uid://b035sqtwd0uw" path="res://EnemyRanged/EnemyRanged.tscn" id="10_7w4r7"]
 [ext_resource type="PackedScene" uid="uid://bgwtfndwg2v10" path="res://scenes/dead_zone.tscn" id="11_oob0o"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
@@ -572,11 +571,8 @@ texture_normal = ExtResource("7_50fuq")
 action = "sprint"
 script = ExtResource("8_nha3r")
 
-[node name="Enemy" parent="." unique_id=430939283 groups=["enemy"] instance=ExtResource("9_pdwrp")]
+[node name="Enemy" parent="." unique_id=430939283 instance=ExtResource("9_pdwrp")]
 position = Vector2(400, 13)
-
-[node name="Enemy2" parent="." unique_id=2062516097 groups=["enemy"] instance=ExtResource("10_7w4r7")]
-position = Vector2(173, -38)
 
 [node name="DeadZone" parent="." unique_id=691363655 instance=ExtResource("11_oob0o")]
 position = Vector2(241, 77)
