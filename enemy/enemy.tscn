@@ -125,6 +125,23 @@ tracks/4/keys = {
 "method": &"_on_attack_animation_finished"
 }]
 }
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.1, 0.33333334),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"enable_hitbox"
+}, {
+"args": [],
+"method": &"disable_hitbox"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_y5vj3"]
 resource_name = "attack_2"
@@ -164,6 +181,49 @@ tracks/2/keys = {
 "update": 1,
 "values": [6]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [true, false, true]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_on_attack_animation_finished"
+}]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"enable_hitbox"
+}, {
+"args": [],
+"method": &"disable_hitbox"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_5ffra"]
 resource_name = "attack_3"
@@ -202,6 +262,55 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [10]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.9),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_on_attack_animation_finished"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Hitbox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [true, false, true, false, true]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath(".")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.1, 0.3, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"values": [{
+"args": [],
+"method": &"enable_hitbox"
+}, {
+"args": [],
+"method": &"disable_hitbox"
+}, {
+"args": [],
+"method": &"enable_hitbox"
+}, {
+"args": [],
+"method": &"disable_hitbox"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_ofsxj"]
@@ -376,7 +485,9 @@ height = 38.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5ffra"]
 
-[node name="Enemy" type="CharacterBody2D" unique_id=430939283]
+[node name="Enemy" type="CharacterBody2D" unique_id=430939283 groups=["enemy"]]
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_1wwld")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=943453444]
@@ -402,13 +513,14 @@ anim_player = NodePath("../AnimationPlayer")
 [node name="DetectionZone" type="Area2D" parent="." unique_id=1253889134]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionZone" unique_id=209818068]
+scale = Vector2(2.091, 2.091)
 shape = SubResource("CircleShape2D_5ffra")
 
 [node name="AttackTimer" type="Timer" parent="." unique_id=2142955992]
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=2145229989]
 collision_layer = 16
-collision_mask = 2
+collision_mask = 3
 script = ExtResource("7_y5vj3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=453282488]

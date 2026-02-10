@@ -27,6 +27,10 @@ project/assembly_name="yntkts"
 
 enabled=PackedStringArray("res://addons/virtual_joystick/plugin.cfg")
 
+[global_group]
+
+enemy=""
+
 [input]
 
 ui_left={
