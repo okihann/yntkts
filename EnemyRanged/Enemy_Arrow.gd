@@ -38,4 +38,5 @@ func _on_body_entered(body):
 		return
 
 	# 4. hit environment (tembok, ground, dll)
+	queue.free()
 
