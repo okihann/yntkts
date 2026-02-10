@@ -117,7 +117,7 @@ radius = 229.07858
 
 [node name="Enemy" type="CharacterBody2D" unique_id=2062516097]
 position = Vector2(0, -24)
-collision_layer = 5
+collision_mask = 3
 script = ExtResource("1_d2k2y")
 
 [node name="EnemyCollision" type="CollisionShape2D" parent="." unique_id=1673769643]
@@ -134,7 +134,7 @@ position = Vector2(8, -8)
 texture = ExtResource("2_xhc6b")
 hframes = 11
 vframes = 5
-frame = 33
+frame = 11
 
 [node name="WallDetect" type="RayCast2D" parent="Pivot" unique_id=463645207]
 position = Vector2(11, 7)
@@ -148,6 +148,8 @@ target_position = Vector2(0, 19)
 position = Vector2(21, -4)
 
 [node name="AreaDetection" type="Area2D" parent="Pivot" unique_id=1613525977]
+collision_layer = 7
+collision_mask = 3
 
 [node name="AreaCollision" type="CollisionShape2D" parent="Pivot/AreaDetection" unique_id=166311825]
 shape = SubResource("CircleShape2D_dsvx5")

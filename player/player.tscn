@@ -470,6 +470,8 @@ radius = 6.4181814
 height = 23.921856
 
 [node name="Player" type="CharacterBody2D" unique_id=765724541]
+collision_layer = 2
+collision_mask = 17
 script = ExtResource("1_rkbax")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1485415825]
@@ -514,4 +516,8 @@ shape = SubResource("CapsuleShape2D_rkbax")
 
 [node name="Node2D" type="Node2D" parent="." unique_id=189867190]
 
+[node name="Timer" type="Timer" parent="." unique_id=1722286817]
+wait_time = 0.5
+
 [connection signal="body_entered" from="Hitbox" to="Hitbox" method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

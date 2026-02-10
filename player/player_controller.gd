@@ -12,11 +12,14 @@ var coyote_timer := 0.0
 var was_on_floor := false
 var max_hp = 100
 var current_hp = max_hp
+var is_dead = false
+@onready var fade = get_tree().current_scene.get_node("DeadCanvas/Fade")
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
 @onready var slide_timer = Timer.new()
 @onready var attack_timer = Timer.new()
 @onready var hitbox = $Hitbox
+@onready var timer = $Timer
 
 func _ready():
 	add_child(slide_timer)
@@ -109,5 +112,29 @@ func update_animation(direction: float, is_sprinting: bool):
 		stateMachineHero.travel("jumping" if velocity.y < 0 else "fall")
 
 func take_damage(amount):
+	if is_dead:
+		return
+
 	current_hp -= amount
+	current_hp = max(current_hp, 0)
+
 	print("Player HP:", current_hp)
+
+	if current_hp <= 0:
+		die()
+		
+func die():
+	is_dead = true
+	print("Player died")
+
+	velocity = Vector2.ZERO
+	set_physics_process(false)
+
+	var tween = get_tree().create_tween()
+	tween.tween_property(fade, "modulate:a", 1.0, 0.6)
+	timer.start()
+		
+
+
+func _on_timer_timeout() -> void:
+	get_tree().reload_current_scene()
