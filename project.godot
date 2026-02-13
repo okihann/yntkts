@@ -22,6 +22,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameState="*uid://byoavslxhdtlr"
+PlatformManager="*uid://barvusd4tiad"
 
 [dotnet]
 

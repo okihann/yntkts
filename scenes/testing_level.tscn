@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbuwmuu17lq50"]
 
-[ext_resource type="Script" path="res://scenes/testing_level.gd" id="1_bx410"]
+[ext_resource type="Script" uid="uid://byqyeuli6dtni" path="res://scenes/testing_level.gd" id="1_bx410"]
 [ext_resource type="Texture2D" uid="uid://mu7hft013qr4" path="res://tileset/Tiles.png" id="1_haa73"]
 [ext_resource type="PackedScene" uid="uid://cnn0q8wrcnhd0" path="res://player/player.tscn" id="2_b55i6"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_b55i6"]
@@ -522,9 +522,9 @@ tile_set = SubResource("TileSet_b55i6")
 format = 2
 layer_0/tile_data = PackedInt32Array(1, 131072, 1, 2, 196608, 1, 3, 65536, 1, 4, 131072, 1, 5, 196608, 1, 6, 65536, 1, 7, 131072, 1, 8, 196608, 1, -2, 0, 0, -1, 65536, 0, -65536, 131072, 0, -65535, 196608, 0, -65532, 65536, 0, -65531, 131072, 0, -65530, 196608, 0, -65534, 131072, 0, -65533, 131072, 0, -65528, 131072, 0, -65529, 196608, 0, -65523, 65536, 0, 13, 65536, 1, -65522, 131072, 0, 14, 131072, 1, -65521, 196608, 0, 15, 196608, 1, -65520, 65536, 0, 16, 65536, 1, -65519, 131072, 0, 17, 131072, 1, -65518, 196608, 0, 18, 196608, 1, -65517, 65536, 0, 19, 65536, 1, -65516, 131072, 0, 20, 131072, 1, -65515, 196608, 0, 21, 196608, 1, -65514, 65536, 0, 22, 65536, 1, -65513, 131072, 0, 23, 131072, 1, -65512, 196608, 0, 24, 196608, 1, -65511, 65536, 0, 25, 65536, 1, -65510, 131072, 0, 26, 131072, 1, -65509, 196608, 0, 27, 196608, 1, -65527, 65536, 0, 9, 65536, 1, -65526, 131072, 0, 10, 131072, 1, -65525, 65536, 0, 11, 65536, 1, -65524, 131072, 0, 12, 131072, 1, -65508, 262144, 0, 28, 262144, 1, -196579, 0, 0, -131043, 0, 1, -196578, 65536, 0, -131042, 65536, 1, -196577, 65536, 0, -131041, 65536, 1, -196576, 131072, 0, -131040, 131072, 1, -196575, 196608, 0, -131039, 196608, 1, -196574, 65536, 0, -131038, 65536, 1, -196573, 131072, 0, -131037, 131072, 1, -196572, 196608, 0, -131036, 196608, 1, -196571, 65536, 0, -131035, 65536, 1, -196570, 131072, 0, -131034, 131072, 1, -196569, 196608, 0, -131033, 196608, 1, -196568, 131072, 0, -131032, 131072, 1, -196567, 196608, 0, -131031, 196608, 1, -196566, 262144, 0, -131030, 262144, 1, -65558, 131072, 1, -65554, 196608, 1, -22, 131072, 1610612738, -21, 131072, 1610612738, -20, 131072, 1610612738, -65556, 131072, 1, -65557, 131072, 1, -65555, 131072, 1, -19, 131072, 2, -18, 131072, 2, -65559, 0, 1, -65553, 196608, 1, -23, 0, 3, -17, 196608, 2, -131095, 0, 0, -131094, 131072, 0, -131093, 131072, 0, -131091, 131072, 0, -131090, 131072, 0, -131089, 196608, 0, -131092, 131072, 0, 0, 65536, 1, 65535, 65536, 1, 65534, 0, 1, -65552, 262144, 1, -131088, 262144, 0, -16, 262144, 2, 65513, 0, 4, 65514, 65536, 4, 65515, 131072, 4, 65516, 196608, 4, 65517, 131072, 4, 65518, 131072, 4, 65519, 131072, 4, 65520, 262144, 4, 131070, 0, 4, 131071, 65536, 4, 65536, 131072, 4, 65537, 131072, 4, 65539, 131072, 4, 65538, 131072, 4, 65541, 65536, 4, 65540, 65536, 4, 65542, 131072, 4, 65544, 196608, 4, 65545, 131072, 4, 65543, 196608, 4, 65546, 196608, 4, 65548, 196608, 4, 65547, 131072, 4, 65549, 131072, 4, 65550, 131072, 4, 65551, 196608, 4, 65552, 131072, 4, 65553, 196608, 4, 65554, 131072, 4, 65556, 131072, 4, 65555, 131072, 4, 65557, 131072, 4, 65558, 131072, 4, 65559, 131072, 4, 65561, 131072, 4, 65560, 131072, 4, 65562, 131072, 4, 65563, 131072, 4, 65564, 262144, 4, -131085, 65536, 1, 65531, 65536, 4, 65530, 65536, 4, -7, 65536, 1, -8, 0, 1, -131083, 196608, 1, -131084, 131072, 1, -131082, 262144, 1, -196620, 131072, 0, -196621, 65536, 0, -196622, 0, 0, -196619, 196608, 0, -131086, 0, 1, -65544, 0, 0, 65529, 65536, 4, -5, 196608, 1, -65542, 131072, 0, 65528, 0, 4, -65543, 65536, 0, -6, 131072, 1, -65541, 196608, 0, 65532, 262144, 4, -4, 262144, 1, -65540, 262144, 0, -196618, 262144, 0)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1100039838]
+[node name="Joystick" type="CanvasLayer" parent="." unique_id=1100039838]
 
-[node name="Virtual Joystick" parent="CanvasLayer" unique_id=1965190224 instance=ExtResource("3_b55i6")]
+[node name="Virtual Joystick" parent="Joystick" unique_id=1965190224 instance=ExtResource("3_b55i6")]
 offset_left = 108.0
 offset_top = -422.0
 offset_right = 408.0
@@ -532,9 +532,9 @@ offset_bottom = -122.00061
 scale = Vector2(1.133, 1.133)
 pressed_color = Color(0.5416503, 0.54817206, 0.54026484, 1)
 
-[node name="CanvasLayer2" type="CanvasLayer" parent="." unique_id=981308349]
+[node name="Button" type="CanvasLayer" parent="." unique_id=981308349]
 
-[node name="Control" type="Control" parent="CanvasLayer2" unique_id=1867983471]
+[node name="Control" type="Control" parent="Button" unique_id=1867983471]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -542,7 +542,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="CanvasLayer2/Control" unique_id=1226398344]
+[node name="Control" type="Control" parent="Button/Control" unique_id=1226398344]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -556,23 +556,23 @@ offset_bottom = -358.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Attack" type="TouchScreenButton" parent="CanvasLayer2/Control/Control" unique_id=1858224635]
+[node name="Attack" type="TouchScreenButton" parent="Button/Control/Control" unique_id=1858224635]
 scale = Vector2(0.25, 0.25)
 texture_normal = ExtResource("4_n3hra")
 
-[node name="Slide" type="TouchScreenButton" parent="CanvasLayer2/Control/Control" unique_id=1924142433]
+[node name="Slide" type="TouchScreenButton" parent="Button/Control/Control" unique_id=1924142433]
 position = Vector2(-28, 195.99998)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("6_du6cx")
 action = "slide"
 
-[node name="Jump" type="TouchScreenButton" parent="CanvasLayer2/Control/Control" unique_id=1903990612]
+[node name="Jump" type="TouchScreenButton" parent="Button/Control/Control" unique_id=1903990612]
 position = Vector2(179, -68)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("5_th68x")
 action = "ui_accept"
 
-[node name="Sprint" type="TouchScreenButton" parent="CanvasLayer2/Control/Control" unique_id=804235128]
+[node name="Sprint" type="TouchScreenButton" parent="Button/Control/Control" unique_id=804235128]
 position = Vector2(174, 183)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("7_50fuq")
@@ -652,5 +652,5 @@ scale = Vector2(2.7526937, 2.8792672)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "100/100"
 
-[connection signal="pressed" from="CanvasLayer2/Control/Control/Sprint" to="CanvasLayer2/Control/Control/Sprint" method="_on_pressed"]
-[connection signal="released" from="CanvasLayer2/Control/Control/Sprint" to="CanvasLayer2/Control/Control/Sprint" method="_on_released"]
+[connection signal="pressed" from="Button/Control/Control/Sprint" to="Button/Control/Control/Sprint" method="_on_pressed"]
+[connection signal="released" from="Button/Control/Control/Sprint" to="Button/Control/Control/Sprint" method="_on_released"]

@@ -661,7 +661,6 @@ collision_layer = 4
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pivot/AreaDetection" unique_id=209818068]
-visible = false
 scale = Vector2(2.091, 2.091)
 shape = SubResource("CircleShape2D_5ffra")
 
