@@ -17,13 +17,15 @@ var max_hp := 100
 var current_hp := max_hp
 var is_dead := false
 
+var spawn_position: Vector2 = Vector2.ZERO
+var respawn_timer: Timer
+
 @onready var fade = get_tree().current_scene.get_node("DeadCanvas/Fade")
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
 @onready var slide_timer = Timer.new()
 @onready var attack_timer = Timer.new()
 @onready var hitbox = $Hitbox
-@onready var timer = $Timer
 
 func _ready():
 	add_child(slide_timer)
@@ -34,14 +36,38 @@ func _ready():
 	add_child(attack_timer)
 	attack_timer.one_shot = true
 	attack_timer.timeout.connect(finish_attack)
+	
+	respawn_timer = Timer.new()
+	add_child(respawn_timer)
+	respawn_timer.one_shot = true
+	respawn_timer.timeout.connect(_on_respawn_timer_timeout)
 
-	emit_signal("hp_changed", current_hp) # init UI
+	emit_signal("hp_changed", current_hp)
+	add_to_group("player")
+	
+	spawn_position = global_position
+	
+	if has_node("/root/GameState"):
+		GameState.player_max_health = max_hp
+		GameState.player_health = current_hp
+		GameState.set_checkpoint(spawn_position, max_hp)
+		GameState.change_state(GameState.State.PLAYING)
+		GameState.state_changed.connect(_on_game_state_changed)
+		GameState.player_respawned.connect(_on_player_respawned)
 
 func _process(_delta):
-	if Input.is_action_just_pressed("attack") and not attacking:
+	if has_node("/root/GameState"):
+		if not GameState.is_playing():
+			return
+	
+	if Input.is_action_just_pressed("attack") and not attacking and not is_dead:
 		attack()
 
 func _physics_process(delta):
+	if has_node("/root/GameState"):
+		if not GameState.is_playing():
+			return
+	
 	if is_on_floor():
 		coyote_timer = COYOTE_TIME
 		was_on_floor = true
@@ -122,19 +148,60 @@ func take_damage(amount):
 
 	emit_signal("hp_changed", current_hp)
 
-	print("Player HP:", current_hp)
+	if has_node("/root/GameState"):
+		GameState.set_player_health(current_hp)
 
 	if current_hp <= 0:
 		die()
 
 func die():
+	if is_dead:
+		return
+	
 	is_dead = true
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 
 	var tween = get_tree().create_tween()
 	tween.tween_property(fade, "modulate:a", 1.0, 0.6)
-	timer.start()
+	
+	if has_node("/root/GameState"):
+		respawn_timer.wait_time = GameState.respawn_delay
+		respawn_timer.start()
+	else:
+		respawn_timer.wait_time = 1.5
+		respawn_timer.start()
 
-func _on_timer_timeout():
-	get_tree().reload_current_scene()
+func _on_respawn_timer_timeout():
+	if has_node("/root/GameState"):
+		GameState.respawn_player()
+	else:
+		get_tree().reload_current_scene()
+
+func _on_player_respawned():
+	is_dead = false
+	set_physics_process(true)
+	
+	if has_node("/root/GameState"):
+		global_position = GameState.checkpoint_position
+		current_hp = GameState.checkpoint_health
+	else:
+		global_position = spawn_position
+		current_hp = max_hp
+	
+	velocity = Vector2.ZERO
+	
+	emit_signal("hp_changed", current_hp)
+	
+	var tween = get_tree().create_tween()
+	tween.tween_property(fade, "modulate:a", 0.0, 0.3)
+
+func _on_game_state_changed(new_state, old_state):
+	match new_state:
+		GameState.State.PLAYING:
+			if not is_dead:
+				set_physics_process(true)
+
+func save_checkpoint():
+	if has_node("/root/GameState"):
+		GameState.set_checkpoint(global_position, current_hp)
