@@ -13,6 +13,8 @@ func setup(player_max_hp: int):
 
 func update_hp(current_hp: int):
 	bar.value = current_hp
+	print("UI update:", current_hp, "/", max_hp)
+	print("BAR:", current_hp, "/", bar.max_value)
 	_update_text(current_hp)
 
 func _update_text(current_hp: int):

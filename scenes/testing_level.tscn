@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bbuwmuu17lq50"]
 
-[ext_resource type="Script" path="res://scenes/testing_level.gd" id="1_bx410"]
+[ext_resource type="Script" uid="uid://byqyeuli6dtni" path="res://scenes/testing_level.gd" id="1_bx410"]
 [ext_resource type="Texture2D" uid="uid://mu7hft013qr4" path="res://tileset/Tiles.png" id="1_haa73"]
 [ext_resource type="PackedScene" uid="uid://cnn0q8wrcnhd0" path="res://player/player.tscn" id="2_b55i6"]
 [ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="3_b55i6"]
@@ -12,10 +12,11 @@
 [ext_resource type="PackedScene" uid="uid://chl6o1qx0lxwb" path="res://enemy/enemy.tscn" id="9_pdwrp"]
 [ext_resource type="PackedScene" uid="uid://b035sqtwd0uw" path="res://EnemyRanged/EnemyRanged.tscn" id="10_7w4r7"]
 [ext_resource type="PackedScene" uid="uid://bgwtfndwg2v10" path="res://scenes/dead_zone.tscn" id="11_oob0o"]
-[ext_resource type="Texture2D" uid="uid://cs2hxd38c11mo" path="res://assets/UI/HealthBar/frame.png" id="12_re7k7"]
-[ext_resource type="Script" path="res://scripts/health_bar_root.gd" id="13_jk6dm"]
-[ext_resource type="Texture2D" uid="uid://b0tprnde6xi0v" path="res://assets/UI/HealthBar/fill.png" id="13_jr0o4"]
-[ext_resource type="Script" path="res://scripts/health_bar.gd" id="15_jk6dm"]
+[ext_resource type="Script" uid="uid://clinr1ihs07ct" path="res://scripts/health_bar_root.gd" id="13_jk6dm"]
+[ext_resource type="Texture2D" uid="uid://dy37xr3pr352g" path="res://assets/UI/HealthBar/under.png" id="14_n3ckw"]
+[ext_resource type="Script" uid="uid://b72qbtm3no4vu" path="res://scripts/health_bar.gd" id="15_jk6dm"]
+[ext_resource type="Texture2D" uid="uid://dhfq1w5nsau3c" path="res://assets/UI/HealthBar/progress_fix.png" id="15_n3ckw"]
+[ext_resource type="Texture2D" uid="uid://cdeavcghvsqk2" path="res://assets/UI/HealthBar/frame_final.png" id="15_si45p"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -592,6 +593,7 @@ transform = Transform2D(10000000, 0, 0, 10000000, 0, 0)
 
 [node name="Fade" type="ColorRect" parent="DeadCanvas" unique_id=1446837516]
 modulate = Color(1, 1, 1, 0)
+z_index = 68
 offset_left = -30.430483
 offset_top = -22.967878
 offset_right = 9.569517
@@ -608,13 +610,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -40.0
-offset_right = -20.0
-offset_bottom = -40.0
+offset_left = -28.0
+offset_top = -81.0
+offset_right = -28.0
+offset_bottom = -81.0
 grow_horizontal = 2
 grow_vertical = 0
-scale = Vector2(0.8, 0.8)
+scale = Vector2(0.68914694, 0.62634045)
 script = ExtResource("13_jk6dm")
 
 [node name="HealthBar" type="TextureProgressBar" parent="UI/HealthBarRoot" unique_id=506621433]
@@ -629,8 +631,9 @@ offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
 value = 100.0
-texture_under = ExtResource("12_re7k7")
-texture_progress = ExtResource("13_jr0o4")
+texture_under = ExtResource("14_n3ckw")
+texture_over = ExtResource("15_si45p")
+texture_progress = ExtResource("15_n3ckw")
 script = ExtResource("15_jk6dm")
 
 [node name="HpText" type="Label" parent="UI/HealthBarRoot" unique_id=738226047]
@@ -639,8 +642,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -69.65132
+offset_top = -33.52805
+offset_right = -7.6513214
+offset_bottom = -10.528049
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(2.7526937, 2.8792672)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "100/100"
 
