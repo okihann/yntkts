@@ -41,8 +41,6 @@ var head_detection_area: Area2D
 @onready var hitbox = $Hitbox
 
 func _ready():
-	print("[Player] _ready() starting...")
-	
 	add_child(slide_timer)
 	slide_timer.wait_time = 0.6
 	slide_timer.one_shot = true
@@ -77,29 +75,20 @@ func _ready():
 	
 	# Sync with GameState - read FROM GameState if it exists
 	if has_node("/root/GameState"):
-		print("[Player] GameState found, syncing stats...")
-		
 		# Load stats from GameState (in case player leveled up)
 		max_hp = GameState.player_max_health
 		current_hp = GameState.player_health
-		
-		print("[Player] Max HP: ", max_hp, " | Current HP: ", current_hp)
 		
 		# Only set checkpoint if this is a fresh start
 		if GameState.checkpoint_position == Vector2.ZERO:
 			GameState.set_checkpoint(spawn_position, max_hp)
 		
 		GameState.change_state(GameState.State.PLAYING)
-		print("[Player] GameState set to PLAYING: ", GameState.is_playing())
-		
 		GameState.state_changed.connect(_on_game_state_changed)
 		GameState.player_respawned.connect(_on_player_respawned)
 		GameState.level_up.connect(_on_level_up)
-	else:
-		print("[Player] WARNING: GameState not found!")
 	
 	emit_signal("hp_changed", current_hp)
-	print("[Player] _ready() complete! attacking=", attacking, " is_dead=", is_dead)
 
 func setup_head_detection():
 	head_detection_area = Area2D.new()
@@ -119,27 +108,22 @@ func setup_head_detection():
 	add_child(head_detection_area)
 
 func _unhandled_input(event):
-	if event.is_action_pressed("attack"):
-		print("[Player] Attack button pressed! is_dead=", is_dead, " attacking=", attacking, " is_knocked_back=", is_knocked_back)
-	
 	if is_dead:
-		print("[Player] Can't attack - player is dead")
+		return
+	if has_node("/root/GameState") and not GameState.is_playing():
 		return
 	
-	if has_node("/root/GameState"):
-		if not GameState.is_playing():
-			print("[Player] Can't attack - GameState not in PLAYING state. Current: ", GameState.current_state)
-			return
-	
 	if event.is_action_pressed("attack") and not attacking and not is_knocked_back:
-		print("[Player] ATTACKING NOW!")
 		attack()
-	elif event.is_action_pressed("attack"):
-		print("[Player] Attack blocked - attacking=", attacking, " is_knocked_back=", is_knocked_back)
 
 func _process(_delta):
 	if has_node("/root/GameState") and not GameState.is_playing():
 		return
+	
+	# Fallback input polling (works around UI blocking)
+	if Input.is_action_just_pressed("attack"):
+		if not attacking and not is_knocked_back and not is_dead:
+			attack()
 
 func _physics_process(delta):
 	if has_node("/root/GameState") and not GameState.is_playing():
@@ -181,8 +165,10 @@ func _physics_process(delta):
 			if is_sprinting:
 				final_speed *= SPRINT_MULTIPLIER
 			velocity.x = direction * final_speed
+			# Keep original sprite flip (this was correct)
 			visualHero.flip_h = (direction > 0)
-			hitbox.scale.x = 1 if direction > 0 else -1
+			# Only reverse the hitbox
+			hitbox.scale.x = -1 if direction > 0 else 1
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 	else:
@@ -253,13 +239,11 @@ func _on_knockback_finished():
 	is_knocked_back = false
 
 func attack():
-	print("[Player] attack() function called!")
 	attacking = true
 	stateMachineHero.travel("attack")
 	attack_timer.start(0.5)
 
 func finish_attack():
-	print("[Player] Attack finished!")
 	attacking = false
 
 func start_slide():
@@ -347,7 +331,6 @@ func _on_player_respawned():
 	tween.tween_property(fade, "modulate:a", 0.0, 0.3)
 
 func _on_game_state_changed(new_state, _old_state):
-	print("[Player] Game state changed to: ", new_state)
 	match new_state:
 		GameState.State.PLAYING:
 			if not is_dead:
@@ -364,4 +347,3 @@ func _on_level_up(new_level):
 	max_hp = GameState.player_max_health
 	current_hp = GameState.player_health
 	emit_signal("hp_changed", current_hp)
-	print("[Player] Leveled up to ", new_level, "! Max HP: ", max_hp)
