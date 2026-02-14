@@ -17,5 +17,3 @@ position = Vector2(-3.907, -11.482)
 rotation = 1.1554079
 scale = Vector2(0.828, 0.828)
 shape = SubResource("CapsuleShape2D_rkbax")
-
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]

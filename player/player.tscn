@@ -473,6 +473,10 @@ height = 23.921856
 collision_layer = 2
 collision_mask = 21
 script = ExtResource("1_rkbax")
+slide_damage = 3
+touch_damage_to_player = 3
+head_detection_offset = Vector2(0, -43)
+head_detection_size = Vector2(10, 5)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1485415825]
 zoom = Vector2(2.763, 2.763)
@@ -513,9 +517,6 @@ position = Vector2(-3.907, -11.482)
 rotation = 1.1554079
 scale = Vector2(0.828, 0.828)
 shape = SubResource("CapsuleShape2D_rkbax")
-
-[node name="Timer" type="Timer" parent="." unique_id=1722286817]
-wait_time = 0.5
 
 [node name="Timer" type="Timer" parent="." unique_id=1722286817]
 wait_time = 0.5

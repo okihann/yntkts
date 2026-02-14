@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://bymdaglm8rnt4"]
+
+[ext_resource type="Script" uid="uid://clinr1ihs07ct" path="res://scripts/health_bar_root.gd" id="1_wm3ai"]
+[ext_resource type="Texture2D" uid="uid://dy37xr3pr352g" path="res://assets/UI/HealthBar/under.png" id="2_8dubc"]
+[ext_resource type="Texture2D" uid="uid://cdeavcghvsqk2" path="res://assets/UI/HealthBar/frame_final.png" id="3_p7vwb"]
+[ext_resource type="Texture2D" uid="uid://dhfq1w5nsau3c" path="res://assets/UI/HealthBar/progress_fix.png" id="4_ktti3"]
+[ext_resource type="Script" path="res://scripts/health_bar.gd" id="5_cgfq5"]
+
+[node name="UI" type="CanvasLayer" unique_id=556892818]
+
+[node name="HealthBarRoot" type="Control" parent="." unique_id=1154135076]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_top = -81.0
+offset_right = -28.0
+offset_bottom = -81.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.68914694, 0.62634045)
+script = ExtResource("1_wm3ai")
+
+[node name="HealthBar" type="TextureProgressBar" parent="HealthBarRoot" unique_id=1664185231]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1200.0
+offset_top = -80.0
+offset_right = 1200.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+texture_under = ExtResource("2_8dubc")
+texture_over = ExtResource("3_p7vwb")
+texture_progress = ExtResource("4_ktti3")
+script = ExtResource("5_cgfq5")
+
+[node name="HpText" type="Label" parent="HealthBarRoot" unique_id=369478965]
+z_index = 7
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -69.65132
+offset_top = -33.52805
+offset_right = -7.6513214
+offset_bottom = -10.528049
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.7526937, 2.8792672)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100/100"

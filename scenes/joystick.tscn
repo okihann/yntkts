@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://c7q2ambqrwy1w"]
+
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="1_g36iv"]
+
+[node name="Joystick" type="CanvasLayer" unique_id=1136162541]
+
+[node name="Virtual Joystick" parent="." unique_id=1791363994 instance=ExtResource("1_g36iv")]
+offset_left = 108.0
+offset_top = -422.0
+offset_right = 408.0
+offset_bottom = -122.00061
+scale = Vector2(1.133, 1.133)
+pressed_color = Color(0.5416503, 0.54817206, 0.54026484, 1)

@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://yvrqpre8n5s6"]
+
+[ext_resource type="Texture2D" uid="uid://bo3fmkgxdddc8" path="res://assets/UI/Control/Attack_Button.png" id="1_1bdt2"]
+[ext_resource type="Texture2D" uid="uid://n2qu1472iieb" path="res://assets/UI/Control/Slide_Button.png" id="2_8m7bo"]
+[ext_resource type="Texture2D" uid="uid://cv8kyp26dtgj3" path="res://assets/UI/Control/Jump_Button.png" id="3_t81cg"]
+[ext_resource type="Texture2D" uid="uid://dgusead7hftdo" path="res://assets/UI/Control/Sprint_Button.png" id="4_is61r"]
+[ext_resource type="Script" uid="uid://i46rmk01eyl5" path="res://sprint.gd" id="5_iw4ej"]
+
+[node name="Button" type="CanvasLayer" unique_id=567065856]
+
+[node name="Control" type="Control" parent="." unique_id=1673038871]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="Control" unique_id=1299244564]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -438.0
+offset_top = -398.0
+offset_right = -398.0
+offset_bottom = -358.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Attack" type="TouchScreenButton" parent="Control/Control" unique_id=72425292]
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("1_1bdt2")
+
+[node name="Slide" type="TouchScreenButton" parent="Control/Control" unique_id=1563635191]
+position = Vector2(-28, 195.99998)
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("2_8m7bo")
+action = "slide"
+
+[node name="Jump" type="TouchScreenButton" parent="Control/Control" unique_id=1592762295]
+position = Vector2(179, -68)
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("3_t81cg")
+action = "ui_accept"
+
+[node name="Sprint" type="TouchScreenButton" parent="Control/Control" unique_id=1373293170]
+position = Vector2(174, 183)
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("4_is61r")
+action = "sprint"
+script = ExtResource("5_iw4ej")
+
+[connection signal="pressed" from="Control/Control/Sprint" to="Control/Control/Sprint" method="_on_pressed"]
+[connection signal="released" from="Control/Control/Sprint" to="Control/Control/Sprint" method="_on_released"]

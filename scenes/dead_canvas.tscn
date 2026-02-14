@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bu1rvaai72unl"]
+
+[node name="DeadCanvas" type="CanvasLayer" unique_id=461576852]
+scale = Vector2(10000000, 10000000)
+transform = Transform2D(10000000, 0, 0, 10000000, 0, 0)
+
+[node name="Fade" type="ColorRect" parent="." unique_id=298956756]
+modulate = Color(1, 1, 1, 0)
+z_index = 68
+offset_left = -30.430483
+offset_top = -22.967878
+offset_right = 9.569517
+offset_bottom = 17.032122
+scale = Vector2(2.3793488, 1.0429045)
+color = Color(0, 0, 0, 1)

@@ -3,7 +3,8 @@ extends Area2D
 @export var damage = 10
 
 func _ready():
-	body_entered.connect(_on_body_entered)
+	if not body_entered.is_connected(_on_body_entered):
+		body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body):
 	print("pedang nabrak : ", body.name)

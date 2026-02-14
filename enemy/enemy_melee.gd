@@ -13,8 +13,9 @@ extends CharacterBody2D
 var target: Node2D = null
 
 var detectRange = 350.0
-var attackRange = 50.0
+var attackRange = 70.0
 var hpEnemy = 100.0
+var max_hp = 100.0
 var damage = 10
 
 const speed = 100
@@ -27,9 +28,16 @@ var current_state = state.Idle
 var attack_direction := 0
 var combo_step := 0
 var can_attack := true
+var is_knocked_back := false
+var knockback_timer := 0.0
 
 func _ready():
+	if has_node("/root/EnemyManager"):
+		EnemyManager.register_enemy(self)
+	
+	add_to_group("enemies")
 	add_to_group("enemy")
+	max_hp = hpEnemy
 	
 	hitbox.monitoring = false
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
@@ -47,6 +55,17 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 
 	if current_state == state.Death:
+		move_and_slide()
+		return
+
+	if is_knocked_back:
+		knockback_timer -= delta
+		velocity.x = move_toward(velocity.x, 0, 10)
+		
+		if knockback_timer <= 0 and is_on_floor():
+			is_knocked_back = false
+			velocity.x = 0
+		
 		move_and_slide()
 		return
 
@@ -75,12 +94,11 @@ func _physics_process(delta: float) -> void:
 			if dir != 0:
 				pivot.scale.x = dir
 
-			if horizontal_distance <= attackRange and vertical_distance < 30:
+			if horizontal_distance <= attackRange and vertical_distance < 50:
+				velocity.x = 0
 				if can_attack:
-					velocity.x = 0
 					change_state(state.Attack)
 				else:
-					velocity.x = 0
 					change_state(state.Idle)
 			else:
 				velocity.x = dir * chaseSpeed
@@ -123,7 +141,6 @@ func change_state(new_state):
 func _on_area_detection_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		target = body
-		add_collision_exception_with(body)
 
 func _on_area_detection_body_exited(body: Node2D) -> void:
 	if body == target:
@@ -140,9 +157,7 @@ func perform_attack():
 
 func enable_hitbox():
 	hitboxShape.disabled = false
-	
-	for body in hitbox.get_overlapping_bodies():
-		_on_hitbox_body_entered(body)
+	hitbox.monitoring = true
 
 func disable_hitbox():
 	hitboxShape.disabled = true
@@ -172,12 +187,32 @@ func take_damage(amount):
 	if hpEnemy <= 0:
 		change_state(state.Death)
 	else:
+		combo_step = 0
+		attackTimer.stop()
 		change_state(state.GetHit)
 		velocity = Vector2.ZERO
+
+func take_knockback_damage(amount, knockback_dir: Vector2, knockback_force: float):
+	hpEnemy -= amount
+	
+	if hpEnemy <= 0:
+		change_state(state.Death)
+		is_knocked_back = true
+		velocity = knockback_dir * knockback_force * 0.3
+		velocity.y = -100
+	else:
+		combo_step = 0
+		attackTimer.stop()
+		change_state(state.GetHit)
+		is_knocked_back = true
+		knockback_timer = 0.4
+		velocity = knockback_dir * knockback_force
+		velocity.y = -150
 
 func _on_animation_finished(anim_name: StringName) -> void:
 	match anim_name:
 		"hurt":
+			can_attack = true
 			change_state(state.Idle)
 		"death":
 			if has_node("/root/GameState"):

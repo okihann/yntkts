@@ -14,6 +14,7 @@ var target: Node2D = null
 var detectRange = 350.0
 var attackRange = 100.0
 var hpEnemy = 100.0
+var max_hp = 100.0
 
 const speed = 70
 const jumpVelocity = -400.0
@@ -22,6 +23,15 @@ enum state { Idle, Walk, Attack, GetHit, Death }
 var current_state = state.Idle
 
 var attack_direction := 0
+var is_knocked_back := false
+var knockback_timer := 0.0
+
+func _ready():
+	if has_node("/root/EnemyManager"):
+		EnemyManager.register_enemy(self)
+	
+	add_to_group("enemies")
+	max_hp = hpEnemy
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -31,12 +41,22 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	if is_knocked_back:
+		knockback_timer -= delta
+		velocity.x = move_toward(velocity.x, 0, 10)
+		
+		if knockback_timer <= 0 and is_on_floor():
+			is_knocked_back = false
+			velocity.x = 0
+		
+		move_and_slide()
+		return
+
 	if target and is_instance_valid(target):
 		var distance = global_position.distance_to(target.global_position)
 		if distance > detectRange:
 			target = null
 
-	# cancel attack kalo player nyebrang
 	if current_state == state.Attack and target:
 		var new_dir = sign(target.global_position.x - global_position.x)
 		if new_dir != 0 and new_dir != attack_direction:
@@ -109,6 +129,21 @@ func take_damage(amount):
 	else:
 		change_state(state.GetHit)
 		velocity = Vector2.ZERO
+
+func take_knockback_damage(amount, knockback_dir: Vector2, knockback_force: float):
+	hpEnemy -= amount
+	
+	if hpEnemy <= 0:
+		change_state(state.Death)
+		is_knocked_back = true
+		velocity = knockback_dir * knockback_force * 0.3
+		velocity.y = -100
+	else:
+		change_state(state.GetHit)
+		is_knocked_back = true
+		knockback_timer = 0.4
+		velocity = knockback_dir * knockback_force
+		velocity.y = -150
 
 func _on_enemy_animation_animation_finished(anim_name: StringName) -> void:
 	match anim_name:
