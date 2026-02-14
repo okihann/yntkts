@@ -180,4 +180,6 @@ func _on_animation_finished(anim_name: StringName) -> void:
 		"hurt":
 			change_state(state.Idle)
 		"death":
+			if has_node("/root/GameState"):
+				GameState.gain_exp(60)
 			queue_free()

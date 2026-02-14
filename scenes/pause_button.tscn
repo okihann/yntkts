@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://difemr0kl3vma"]
+
+[ext_resource type="Texture2D" uid="uid://fng52q4fr533" path="res://assets/UI/PauseMenu/Untitled61_20260214151229.png" id="1_5rmv1"]
+
+[node name="PauseButton" type="CanvasLayer" unique_id=892316168]
+
+[node name="Control" type="Control" parent="." unique_id=1366529670]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.094, 0.094)
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control" unique_id=1961183353]
+texture_normal = ExtResource("1_5rmv1")
+action = "ui_cancel"

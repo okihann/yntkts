@@ -47,26 +47,36 @@ func _ready():
 	
 	spawn_position = global_position
 	
+	# Integrasi GameState
 	if has_node("/root/GameState"):
 		GameState.player_max_health = max_hp
 		GameState.player_health = current_hp
 		GameState.set_checkpoint(spawn_position, max_hp)
 		GameState.change_state(GameState.State.PLAYING)
+		# Gunakan callable.connect untuk Godot 4
 		GameState.state_changed.connect(_on_game_state_changed)
 		GameState.player_respawned.connect(_on_player_respawned)
 
-func _process(_delta):
-	if has_node("/root/GameState"):
-		if not GameState.is_playing():
-			return
-	
-	if Input.is_action_just_pressed("attack") and not attacking and not is_dead:
+# Pake _unhandled_input buat Attack agar tidak bentrok dengan UI/Joystick
+func _unhandled_input(event):
+	if is_dead: return
+	if has_node("/root/GameState") and not GameState.is_playing(): return
+
+	# Attack dipicu di sini (Bisa Klik Kiri di PC atau tombol khusus di Mobile)
+	if event.is_action_pressed("attack") and not attacking:
 		attack()
 
+func _process(_delta):
+	# Pengecekan State agar player diam saat Paused
+	if has_node("/root/GameState") and not GameState.is_playing():
+		return
+	
+	# (Logic process lainnya bisa di sini jika diperlukan)
+
 func _physics_process(delta):
-	if has_node("/root/GameState"):
-		if not GameState.is_playing():
-			return
+	if has_node("/root/GameState") and not GameState.is_playing():
+		velocity = Vector2.ZERO # Stop movement saat pause
+		return
 	
 	if is_on_floor():
 		coyote_timer = COYOTE_TIME
@@ -82,10 +92,12 @@ func _physics_process(delta):
 	var direction := Input.get_axis("ui_left", "ui_right")
 	var is_sprinting := Input.is_action_pressed("sprint")
 
+	# Jump logic
 	if Input.is_action_pressed("ui_accept") and (is_on_floor() or coyote_timer > 0) and not is_sliding:
 		velocity.y = JUMP_VELOCITY
 		coyote_timer = 0
 
+	# Slide logic
 	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding and not attacking:
 		if abs(velocity.x) > 100:
 			start_slide()
@@ -99,10 +111,12 @@ func _physics_process(delta):
 				final_speed *= SPRINT_MULTIPLIER
 			velocity.x = direction * final_speed
 			visualHero.flip_h = (direction > 0)
-			hitbox.scale.x = -1 if visualHero.flip_h else 1
+			# Mengatur arah hitbox berdasarkan hadap karakter
+			hitbox.scale.x = 1 if direction > 0 else -1
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 	else:
+		# Saat attack, movement melambat
 		velocity.x = move_toward(velocity.x, 0, SPEED * 0.5)
 
 	move_and_slide()
@@ -112,13 +126,13 @@ func attack():
 	attacking = true
 	stateMachineHero.travel("attack")
 	attack_timer.start(0.5)
-	hitbox.scale.x = -1 if visualHero.flip_h else 1
 
 func finish_attack():
 	attacking = false
 
 func start_slide():
 	is_sliding = true
+	# Slide mengikuti arah hadap karakter
 	velocity.x = (1 if visualHero.flip_h else -1) * SLIDE_SPEED
 	slide_timer.start()
 
@@ -140,37 +154,32 @@ func update_animation(direction, is_sprinting):
 		stateMachineHero.travel("jumping" if velocity.y < 0 else "fall")
 
 func take_damage(amount):
-	if is_dead:
-		return
-
+	if is_dead: return
 	current_hp -= amount
-	current_hp = max(current_hp, 0)
-
-	emit_signal("hp_changed", current_hp)
-
+	current_hp = clampi(current_hp, 0, max_hp)
+	
 	if has_node("/root/GameState"):
-		GameState.set_player_health(current_hp)
-
+		GameState.player_health = current_hp
+	
+	emit_signal("hp_changed", current_hp)
+	
 	if current_hp <= 0:
 		die()
 
+
 func die():
-	if is_dead:
-		return
-	
+	if is_dead: return
 	is_dead = true
+	
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 
+	# Efek Fade Out saat mati
 	var tween = get_tree().create_tween()
 	tween.tween_property(fade, "modulate:a", 1.0, 0.6)
 	
-	if has_node("/root/GameState"):
-		respawn_timer.wait_time = GameState.respawn_delay
-		respawn_timer.start()
-	else:
-		respawn_timer.wait_time = 1.5
-		respawn_timer.start()
+	var delay = GameState.respawn_delay if has_node("/root/GameState") else 1.5
+	respawn_timer.start(delay)
 
 func _on_respawn_timer_timeout():
 	if has_node("/root/GameState"):
@@ -186,22 +195,27 @@ func _on_player_respawned():
 		global_position = GameState.checkpoint_position
 		current_hp = GameState.checkpoint_health
 	else:
-		global_position = spawn_position
 		current_hp = max_hp
 	
 	velocity = Vector2.ZERO
-	
 	emit_signal("hp_changed", current_hp)
 	
+	# Efek Fade In saat hidup kembali
 	var tween = get_tree().create_tween()
 	tween.tween_property(fade, "modulate:a", 0.0, 0.3)
 
-func _on_game_state_changed(new_state, old_state):
+func _on_game_state_changed(new_state, _old_state):
 	match new_state:
 		GameState.State.PLAYING:
 			if not is_dead:
 				set_physics_process(true)
-
+		GameState.State.PAUSED:
+			pass
 func save_checkpoint():
 	if has_node("/root/GameState"):
 		GameState.set_checkpoint(global_position, current_hp)
+
+func _on_level_up(new_level):
+	max_hp = GameState.player_max_health
+	current_hp = GameState.player_health
+	emit_signal("hp_changed", current_hp)

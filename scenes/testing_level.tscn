@@ -14,9 +14,11 @@
 [ext_resource type="PackedScene" uid="uid://bgwtfndwg2v10" path="res://scenes/dead_zone.tscn" id="11_oob0o"]
 [ext_resource type="Script" uid="uid://clinr1ihs07ct" path="res://scripts/health_bar_root.gd" id="13_jk6dm"]
 [ext_resource type="Texture2D" uid="uid://dy37xr3pr352g" path="res://assets/UI/HealthBar/under.png" id="14_n3ckw"]
-[ext_resource type="Script" path="res://scripts/health_bar.gd" id="15_jk6dm"]
+[ext_resource type="Script" uid="uid://b72qbtm3no4vu" path="res://scripts/health_bar.gd" id="15_jk6dm"]
 [ext_resource type="Texture2D" uid="uid://dhfq1w5nsau3c" path="res://assets/UI/HealthBar/progress_fix.png" id="15_n3ckw"]
 [ext_resource type="Texture2D" uid="uid://cdeavcghvsqk2" path="res://assets/UI/HealthBar/frame_final.png" id="15_si45p"]
+[ext_resource type="PackedScene" uid="uid://cxg47quittcgm" path="res://scenes/pause_menu.tscn" id="18_si45p"]
+[ext_resource type="PackedScene" uid="uid://difemr0kl3vma" path="res://scenes/pause_button.tscn" id="19_vxu0i"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -511,7 +513,7 @@ sources/0 = SubResource("TileSetAtlasSource_haa73")
 
 [node name="testing_level" type="Node2D" unique_id=1656190499]
 script = ExtResource("1_bx410")
-metadata/_edit_horizontal_guides_ = [-203.0]
+metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
 
 [node name="Player" parent="." unique_id=940436730 groups=["player"] instance=ExtResource("2_b55i6")]
 position = Vector2(-333, -37)
@@ -525,11 +527,11 @@ layer_0/tile_data = PackedInt32Array(1, 131072, 1, 2, 196608, 1, 3, 65536, 1, 4,
 [node name="Joystick" type="CanvasLayer" parent="." unique_id=1100039838]
 
 [node name="Virtual Joystick" parent="Joystick" unique_id=1965190224 instance=ExtResource("3_b55i6")]
-offset_left = 108.0
-offset_top = -422.0
-offset_right = 408.0
-offset_bottom = -122.00061
-scale = Vector2(1.133, 1.133)
+offset_left = 2.0000057
+offset_top = -509.0
+offset_right = 302.0
+offset_bottom = -209.00061
+scale = Vector2(1.619, 1.619)
 pressed_color = Color(0.5416503, 0.54817206, 0.54026484, 1)
 
 [node name="Button" type="CanvasLayer" parent="." unique_id=981308349]
@@ -559,6 +561,7 @@ grow_vertical = 0
 [node name="Attack" type="TouchScreenButton" parent="Button/Control/Control" unique_id=1858224635]
 scale = Vector2(0.25, 0.25)
 texture_normal = ExtResource("4_n3hra")
+action = "attack"
 
 [node name="Slide" type="TouchScreenButton" parent="Button/Control/Control" unique_id=1924142433]
 position = Vector2(-28, 195.99998)
@@ -594,10 +597,10 @@ transform = Transform2D(10000000, 0, 0, 10000000, 0, 0)
 [node name="Fade" type="ColorRect" parent="DeadCanvas" unique_id=1446837516]
 modulate = Color(1, 1, 1, 0)
 z_index = 68
-offset_left = -30.430483
-offset_top = -22.967878
-offset_right = 9.569517
-offset_bottom = 17.032122
+offset_left = -30.430548
+offset_top = -22.96786
+offset_right = 9.569452
+offset_bottom = 17.03214
 scale = Vector2(2.3793488, 1.0429045)
 color = Color(0, 0, 0, 1)
 
@@ -651,6 +654,10 @@ grow_vertical = 2
 scale = Vector2(2.7526937, 2.8792672)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "100/100"
+
+[node name="PauseMenu2" parent="." unique_id=503667391 instance=ExtResource("18_si45p")]
+
+[node name="PauseButton" parent="." unique_id=892316168 instance=ExtResource("19_vxu0i")]
 
 [connection signal="pressed" from="Button/Control/Control/Sprint" to="Button/Control/Control/Sprint" method="_on_pressed"]
 [connection signal="released" from="Button/Control/Control/Sprint" to="Button/Control/Control/Sprint" method="_on_released"]

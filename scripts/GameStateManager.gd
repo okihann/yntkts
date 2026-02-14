@@ -1,131 +1,33 @@
 extends Node
 
-# Game States
-enum State {
-	MENU,
-	PLAYING,
-	PAUSED,
-	RESPAWNING,  # Changed from GAME_OVER to RESPAWNING
-	LOADING
-}
+enum State { MENU, PLAYING, PAUSED, RESPAWNING, LOADING }
 
 var current_state = State.MENU
 var previous_state = State.MENU
-
-# Game data
 var player_health: int = 100
 var player_max_health: int = 100
-var current_level: String = ""
+var player_level: int = 1
+var current_exp: int = 0
+var exp_required: int = 100 
 
+# checkpoint
 var respawn_delay: float = 1.5 
 var checkpoint_position: Vector2 = Vector2.ZERO
 var checkpoint_health: int = 100
+var current_level: String = ""
 
 signal state_changed(new_state, old_state)
-signal player_died
-signal player_respawned
-signal level_completed
 signal game_paused
 signal game_resumed
+signal player_died
+signal player_respawned
+signal level_up(new_level)
+signal exp_gained(amount)
+signal level_completed
+signal stats_changed
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
-
-func change_state(new_state: State):
-	if current_state == new_state:
-		return
-	
-	previous_state = current_state
-
-	_exit_state(current_state)
-
-	current_state = new_state
-	_enter_state(new_state)
-
-	emit_signal("state_changed", new_state, previous_state)
-
-func _enter_state(state: State):
-	match state:
-		State.MENU:
-			get_tree().paused = false
-			print("[GameState] Entering MENU")
-		
-		State.PLAYING:
-			get_tree().paused = false
-			print("[GameState] Entering PLAYING")
-		
-		State.PAUSED:
-			get_tree().paused = true
-			emit_signal("game_paused")
-			print("[GameState] Game PAUSED")
-		
-		State.RESPAWNING:
-			get_tree().paused = false
-			emit_signal("player_died")
-			print("[GameState] Player RESPAWNING")
-		
-		State.LOADING:
-			print("[GameState] LOADING")
-
-func _exit_state(state: State):
-	match state:
-		State.PAUSED:
-			emit_signal("game_resumed")
-
-func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		if current_state == State.PLAYING:
-			change_state(State.PAUSED)
-		elif current_state == State.PAUSED:
-			change_state(State.PLAYING)
-
-func set_player_health(health: int):
-	player_health = clamp(health, 0, player_max_health)
-	
-	if player_health <= 0:
-		player_death()
-
-func player_death():
-	if current_state != State.RESPAWNING:
-		change_state(State.RESPAWNING)
-
-func respawn_player():
-	player_health = checkpoint_health
-	print("[GameState] Player respawned with ", player_health, " HP")
-	emit_signal("player_respawned")
-	change_state(State.PLAYING)
-
-func set_checkpoint(position: Vector2, health: int = -1):
-	checkpoint_position = position
-	if health > 0:
-		checkpoint_health = health
-	else:
-		checkpoint_health = player_health
-	
-	print("[GameState] Checkpoint saved at ", position, " with ", checkpoint_health, " HP")
-
-func reset_player_stats():
-	player_health = player_max_health
-	checkpoint_health = player_max_health
-
-func load_level(level_path: String):
-	current_level = level_path
-	change_state(State.LOADING)
-	reset_player_stats()
-	get_tree().change_scene_to_file(level_path)
-	change_state(State.PLAYING)
-
-func reload_current_level():
-	reset_player_stats()
-	if current_level != "":
-		load_level(current_level)
-	else:
-		get_tree().reload_current_scene()
-		change_state(State.PLAYING)
-
-func complete_level():
-	emit_signal("level_completed")
-	# blm ada wok malas
 
 func is_playing() -> bool:
 	return current_state == State.PLAYING
@@ -133,5 +35,72 @@ func is_playing() -> bool:
 func is_paused() -> bool:
 	return current_state == State.PAUSED
 
-func is_respawning() -> bool:
-	return current_state == State.RESPAWNING
+func change_state(new_state: State):
+	if current_state == new_state: return
+	
+	previous_state = current_state
+	current_state = new_state
+	
+	match new_state:
+		State.MENU, State.LOADING:
+			get_tree().paused = false
+		State.PLAYING:
+			get_tree().paused = false
+			emit_signal("game_resumed")
+		State.PAUSED:
+			get_tree().paused = true
+			emit_signal("game_paused")
+		State.RESPAWNING:
+			get_tree().paused = false
+			emit_signal("player_died")
+
+	emit_signal("state_changed", new_state, previous_state)
+
+# leveling
+
+func gain_exp(amount: int):
+	current_exp += amount
+	emit_signal("exp_gained", amount)
+	while current_exp >= exp_required:
+		_perform_level_up()
+
+func _perform_level_up():
+	emit_signal("level_up", player_level)
+	print("Level Up! Level: ", player_level)
+	current_exp -= exp_required
+	player_level += 1
+	exp_required = int(exp_required * 1.2)
+	# reward kalo naik level
+	player_max_health += 10
+	player_health = player_max_health
+	emit_signal("level_up", player_level)
+	emit_signal("stats_changed")
+	print("Level up ke: ", player_level)
+
+func set_player_health(health: int):
+	player_health = clamp(health, 0, player_max_health)
+	if player_health <= 0:
+		if current_state != State.RESPAWNING:
+			change_state(State.RESPAWNING)
+
+func set_checkpoint(pos: Vector2, health: int = -1):
+	checkpoint_position = pos
+	checkpoint_health = health if health > 0 else player_health
+	print("[GameState] Checkpoint updated: ", pos)
+
+func respawn_player():
+	player_health = checkpoint_health
+	emit_signal("player_respawned")
+	change_state(State.PLAYING)
+
+func load_level(level_path: String):
+	current_level = level_path
+	change_state(State.LOADING)
+	get_tree().change_scene_to_file(level_path)
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		if current_state == State.PLAYING:
+			change_state(State.PAUSED)
+		elif current_state == State.PAUSED:
+			change_state(State.PLAYING)

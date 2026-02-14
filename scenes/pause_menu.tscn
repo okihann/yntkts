@@ -1,0 +1,173 @@
+[gd_scene format=3 uid="uid://cxg47quittcgm"]
+
+[ext_resource type="Script" uid="uid://ctorjqv2nv8nb" path="res://scripts/control_root.gd" id="1_cmnsq"]
+[ext_resource type="Texture2D" uid="uid://h3dhowpm6jgr" path="res://assets/UI/PauseMenu/1001265454-removebg-preview.png" id="1_n87rw"]
+[ext_resource type="Texture2D" uid="uid://dqw0wti7t4koy" path="res://assets/UI/PauseMenu/Title.png" id="2_myx47"]
+[ext_resource type="Texture2D" uid="uid://lqwmr6uhh2rj" path="res://assets/UI/PauseMenu/Exp.png" id="4_5d2l8"]
+[ext_resource type="Texture2D" uid="uid://dvdkv6oayrvai" path="res://assets/UI/PauseMenu/Resume.png" id="6_v4r4p"]
+[ext_resource type="Texture2D" uid="uid://dsh5rrp7330o5" path="res://assets/UI/PauseMenu/Options.png" id="7_1s2dm"]
+[ext_resource type="Texture2D" uid="uid://b4p60khaaf3ur" path="res://assets/UI/PauseMenu/Exit.png" id="8_88e76"]
+[ext_resource type="Texture2D" uid="uid://tfnut4lhyakf" path="res://assets/UI/PauseMenu/Char.png" id="9_71k7c"]
+[ext_resource type="Texture2D" uid="uid://c2x5roo7g2ybl" path="res://assets/UI/PauseMenu/Untitled59_20260214131354.png" id="9_knqa7"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=2019243940]
+process_mode = 3
+layer = 100
+metadata/_edit_vertical_guides_ = [-95.0]
+
+[node name="ControlRoot" type="Control" parent="." unique_id=557245174]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_cmnsq")
+
+[node name="ColorRect" type="ColorRect" parent="ControlRoot" unique_id=1227234831]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[node name="TextureRect" type="TextureRect" parent="ControlRoot" unique_id=1807834150]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 25.0
+offset_top = -74.0
+offset_right = 395.0
+offset_bottom = 600.0
+grow_vertical = 2
+scale = Vector2(1.101, 1.145)
+texture = ExtResource("1_n87rw")
+
+[node name="Title" type="TextureRect" parent="ControlRoot" unique_id=147298568]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -277.0
+offset_top = -5.9999995
+offset_right = 2183.0
+offset_bottom = 1074.0
+grow_horizontal = 2
+scale = Vector2(0.226, 0.226)
+texture = ExtResource("2_myx47")
+
+[node name="ButtonsGroup" type="Control" parent="ControlRoot" unique_id=1189237177]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -689.99994
+offset_top = -262.0
+offset_right = 1770.0
+offset_bottom = 4106.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.133, 0.133)
+
+[node name="BtnResume" type="TextureButton" parent="ControlRoot/ButtonsGroup" unique_id=526574722]
+layout_mode = 0
+offset_right = 2460.0
+offset_bottom = 1080.0
+texture_normal = ExtResource("6_v4r4p")
+
+[node name="BtnOptions" type="TextureButton" parent="ControlRoot/ButtonsGroup" unique_id=1011789658]
+layout_mode = 0
+offset_top = 1096.0
+offset_right = 2460.0
+offset_bottom = 2176.0
+texture_normal = ExtResource("7_1s2dm")
+
+[node name="BtnCharacter" type="TextureButton" parent="ControlRoot/ButtonsGroup" unique_id=796934032]
+layout_mode = 0
+offset_top = 2192.0
+offset_right = 2460.0
+offset_bottom = 3272.0
+texture_normal = ExtResource("9_71k7c")
+
+[node name="BtnExit" type="TextureButton" parent="ControlRoot/ButtonsGroup" unique_id=351425944]
+layout_mode = 0
+offset_top = 3288.0
+offset_right = 2460.0
+offset_bottom = 4368.0
+texture_normal = ExtResource("8_88e76")
+
+[node name="TextureRect2" type="TextureRect" parent="ControlRoot" unique_id=950599254]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 5.0
+offset_top = -257.00003
+offset_right = 121.0
+offset_bottom = 622.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.082, 0.754)
+texture = ExtResource("9_knqa7")
+
+[node name="StatsGroup" type="Control" parent="ControlRoot" unique_id=557152394]
+anchors_preset = 0
+offset_left = 102.0
+offset_top = 205.0
+offset_right = 142.0
+offset_bottom = 245.0
+
+[node name="Exp" type="TextureRect" parent="ControlRoot/StatsGroup" unique_id=1645274885]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 422.0
+offset_top = 191.00002
+offset_right = 2882.0
+offset_bottom = 1271.0
+grow_vertical = 2
+scale = Vector2(0.081, 0.081)
+texture = ExtResource("4_5d2l8")
+
+[node name="LevelLabel" type="Label" parent="ControlRoot/StatsGroup" unique_id=1337051305]
+layout_mode = 0
+offset_left = 438.0
+offset_top = 143.0
+offset_right = 478.0
+offset_bottom = 210.0
+theme_override_font_sizes/font_size = 48
+text = "1"
+
+[node name="ExpLabel" type="Label" parent="ControlRoot/StatsGroup" unique_id=1408134746]
+layout_mode = 0
+offset_left = 538.0
+offset_top = 225.0
+offset_right = 578.0
+offset_bottom = 248.0
+theme_override_font_sizes/font_size = 48
+text = "1000"
+
+[node name="HpLabel" type="Label" parent="ControlRoot/StatsGroup" unique_id=90102340]
+layout_mode = 0
+offset_left = 439.0
+offset_top = 302.0
+offset_right = 647.0
+offset_bottom = 369.0
+theme_override_font_sizes/font_size = 48
+text = "100 / 100"
+
+[connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnOptions" to="ControlRoot" method="_on_btn_options_pressed"]
+[connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnCharacter" to="ControlRoot" method="_on_btn_character_pressed"]
+[connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnExit" to="ControlRoot" method="_on_btn_exit_pressed"]

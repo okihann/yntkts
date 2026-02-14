@@ -1,21 +1,28 @@
 extends Control
 
-@onready var bar: TextureProgressBar = $HealthBar
-@onready var hp_text: Label = $HpText
+@onready var health_bar = $TextureProgressBar
+@onready var hp_label = $HPLabel
 
-var max_hp := 100
+func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	_update_tampilan()
+	
+	if not GameState.level_up.is_connected(_on_player_level_up):
+		GameState.level_up.connect(_on_player_level_up)
 
-func setup(player_max_hp: int):
-	max_hp = player_max_hp
-	bar.max_value = max_hp
-	bar.value = max_hp
-	_update_text(max_hp)
+func setup(_data = null):
+	_update_tampilan()
 
-func update_hp(current_hp: int):
-	bar.value = current_hp
-	print("UI update:", current_hp, "/", max_hp)
-	print("BAR:", current_hp, "/", bar.max_value)
-	_update_text(current_hp)
+func update_hp(_amount = null):
+	_update_tampilan()
 
-func _update_text(current_hp: int):
-	hp_text.text = str(current_hp) + " / " + str(max_hp)
+func _on_player_level_up(_new_level):
+	_update_tampilan()
+
+func _update_tampilan():
+	if health_bar:
+		health_bar.max_value = GameState.player_max_health
+		health_bar.value = GameState.player_health
+	
+	if hp_label:
+		hp_label.text = str(GameState.player_health) + " / " + str(GameState.player_max_health)

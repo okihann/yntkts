@@ -115,4 +115,6 @@ func _on_enemy_animation_animation_finished(anim_name: StringName) -> void:
 		"GetHit", "Attack":
 			change_state(state.Idle)
 		"Death":
+			if has_node("/root/GameState"):
+				GameState.gain_exp(60)
 			queue_free()
