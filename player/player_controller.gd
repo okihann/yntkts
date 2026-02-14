@@ -41,6 +41,8 @@ var head_detection_area: Area2D
 @onready var hitbox = $Hitbox
 
 func _ready():
+	print("[Player] _ready() starting...")
+	
 	add_child(slide_timer)
 	slide_timer.wait_time = 0.6
 	slide_timer.one_shot = true
@@ -69,36 +71,36 @@ func _ready():
 	
 	setup_head_detection()
 
-	emit_signal("hp_changed", current_hp)
 	add_to_group("player")
 	
 	spawn_position = global_position
 	
-	# Integrasi GameState
+	# Sync with GameState - read FROM GameState if it exists
 	if has_node("/root/GameState"):
-		GameState.player_max_health = max_hp
-		GameState.player_health = current_hp
-		GameState.set_checkpoint(spawn_position, max_hp)
+		print("[Player] GameState found, syncing stats...")
+		
+		# Load stats from GameState (in case player leveled up)
+		max_hp = GameState.player_max_health
+		current_hp = GameState.player_health
+		
+		print("[Player] Max HP: ", max_hp, " | Current HP: ", current_hp)
+		
+		# Only set checkpoint if this is a fresh start
+		if GameState.checkpoint_position == Vector2.ZERO:
+			GameState.set_checkpoint(spawn_position, max_hp)
+		
 		GameState.change_state(GameState.State.PLAYING)
-		# Gunakan callable.connect untuk Godot 4
+		print("[Player] GameState set to PLAYING: ", GameState.is_playing())
+		
 		GameState.state_changed.connect(_on_game_state_changed)
 		GameState.player_respawned.connect(_on_player_respawned)
+		GameState.level_up.connect(_on_level_up)
+	else:
+		print("[Player] WARNING: GameState not found!")
+	
+	emit_signal("hp_changed", current_hp)
+	print("[Player] _ready() complete! attacking=", attacking, " is_dead=", is_dead)
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-# Pake _unhandled_input buat Attack agar tidak bentrok dengan UI/Joystick
-func _unhandled_input(event):
-	if is_dead: return
-	if has_node("/root/GameState") and not GameState.is_playing(): return
-
-	# Attack dipicu di sini (Bisa Klik Kiri di PC atau tombol khusus di Mobile)
-	if event.is_action_pressed("attack") and not attacking:
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 func setup_head_detection():
 	head_detection_area = Area2D.new()
 	head_detection_area.name = "HeadDetection"
@@ -116,47 +118,32 @@ func setup_head_detection():
 	
 	add_child(head_detection_area)
 
-func _process(_delta):
-	if has_node("/root/GameState"):
-		if not GameState.is_playing():
-			return
+func _unhandled_input(event):
+	if event.is_action_pressed("attack"):
+		print("[Player] Attack button pressed! is_dead=", is_dead, " attacking=", attacking, " is_knocked_back=", is_knocked_back)
 	
-	if Input.is_action_just_pressed("attack") and not attacking and not is_dead and not is_knocked_back:
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-		attack()
-
-func _process(_delta):
-	# Pengecekan State agar player diam saat Paused
-	if has_node("/root/GameState") and not GameState.is_playing():
+	if is_dead:
+		print("[Player] Can't attack - player is dead")
 		return
 	
-	# (Logic process lainnya bisa di sini jika diperlukan)
+	if has_node("/root/GameState"):
+		if not GameState.is_playing():
+			print("[Player] Can't attack - GameState not in PLAYING state. Current: ", GameState.current_state)
+			return
+	
+	if event.is_action_pressed("attack") and not attacking and not is_knocked_back:
+		print("[Player] ATTACKING NOW!")
+		attack()
+	elif event.is_action_pressed("attack"):
+		print("[Player] Attack blocked - attacking=", attacking, " is_knocked_back=", is_knocked_back)
+
+func _process(_delta):
+	if has_node("/root/GameState") and not GameState.is_playing():
+		return
 
 func _physics_process(delta):
 	if has_node("/root/GameState") and not GameState.is_playing():
-		velocity = Vector2.ZERO # Stop movement saat pause
-		return
-	
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-	
-	if is_knocked_back:
-		velocity.x = move_toward(velocity.x, 0, 8)
-		move_and_slide()
-		return
-	
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-	
-	if is_knocked_back:
-		velocity.x = move_toward(velocity.x, 0, 8)
-		move_and_slide()
+		velocity = Vector2.ZERO
 		return
 	
 	if not is_on_floor():
@@ -178,12 +165,10 @@ func _physics_process(delta):
 	var direction := Input.get_axis("ui_left", "ui_right")
 	var is_sprinting := Input.is_action_pressed("sprint")
 
-	# Jump logic
 	if Input.is_action_pressed("ui_accept") and (is_on_floor() or coyote_timer > 0) and not is_sliding:
 		velocity.y = JUMP_VELOCITY
 		coyote_timer = 0
 
-	# Slide logic
 	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding and not attacking:
 		if abs(velocity.x) > 100:
 			start_slide()
@@ -197,17 +182,18 @@ func _physics_process(delta):
 				final_speed *= SPRINT_MULTIPLIER
 			velocity.x = direction * final_speed
 			visualHero.flip_h = (direction > 0)
-			# Mengatur arah hitbox berdasarkan hadap karakter
 			hitbox.scale.x = 1 if direction > 0 else -1
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 	else:
-		# Saat attack, movement melambat
 		velocity.x = move_toward(velocity.x, 0, SPEED * 0.5)
 
 	move_and_slide()
 	check_enemy_collision()
-	check_enemies_on_head()
+	
+	if not is_sliding:
+		check_enemies_on_head()
+	
 	update_animation(direction, is_sprinting)
 
 func check_enemies_on_head():
@@ -235,16 +221,16 @@ func check_enemy_collision():
 		
 		if collider and collider.is_in_group("enemies"):
 			if is_sliding:
-				handle_slide_collision(collider, collision)
+				handle_slide_collision(collider)
 			else:
-				handle_normal_collision(collider, collision)
+				handle_normal_collision(collider)
 
-func handle_slide_collision(enemy, _collision):
+func handle_slide_collision(enemy):
 	if enemy.has_method("take_knockback_damage"):
 		var knockback_dir = (enemy.global_position - global_position).normalized()
 		enemy.take_knockback_damage(slide_damage, knockback_dir, enemy_knockback_force)
 
-func handle_normal_collision(enemy, _collision):
+func handle_normal_collision(enemy):
 	if attacking:
 		return
 	
@@ -267,16 +253,17 @@ func _on_knockback_finished():
 	is_knocked_back = false
 
 func attack():
+	print("[Player] attack() function called!")
 	attacking = true
 	stateMachineHero.travel("attack")
 	attack_timer.start(0.5)
 
 func finish_attack():
+	print("[Player] Attack finished!")
 	attacking = false
 
 func start_slide():
 	is_sliding = true
-	# Slide mengikuti arah hadap karakter
 	velocity.x = (1 if visualHero.flip_h else -1) * SLIDE_SPEED
 	slide_timer.start()
 	
@@ -304,7 +291,9 @@ func update_animation(direction, is_sprinting):
 		stateMachineHero.travel("jumping" if velocity.y < 0 else "fall")
 
 func take_damage(amount):
-	if is_dead: return
+	if is_dead:
+		return
+	
 	current_hp -= amount
 	current_hp = clampi(current_hp, 0, max_hp)
 	
@@ -316,15 +305,14 @@ func take_damage(amount):
 	if current_hp <= 0:
 		die()
 
-
 func die():
-	if is_dead: return
-	is_dead = true
+	if is_dead:
+		return
 	
+	is_dead = true
 	velocity = Vector2.ZERO
 	set_physics_process(false)
 
-	# Efek Fade Out saat mati
 	var tween = get_tree().create_tween()
 	tween.tween_property(fade, "modulate:a", 1.0, 0.6)
 	
@@ -345,39 +333,35 @@ func _on_player_respawned():
 	if has_node("/root/GameState"):
 		global_position = GameState.checkpoint_position
 		current_hp = GameState.checkpoint_health
+		max_hp = GameState.player_max_health
 	else:
+		global_position = spawn_position
 		current_hp = max_hp
 	
 	velocity = Vector2.ZERO
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 	can_take_touch_damage = true
 	
->>>>>>> Stashed changes
 	emit_signal("hp_changed", current_hp)
 	
-	# Efek Fade In saat hidup kembali
 	var tween = get_tree().create_tween()
 	tween.tween_property(fade, "modulate:a", 0.0, 0.3)
 
 func _on_game_state_changed(new_state, _old_state):
+	print("[Player] Game state changed to: ", new_state)
 	match new_state:
 		GameState.State.PLAYING:
 			if not is_dead:
 				set_physics_process(true)
 		GameState.State.PAUSED:
 			pass
+
 func save_checkpoint():
 	if has_node("/root/GameState"):
 		GameState.set_checkpoint(global_position, current_hp)
 
 func _on_level_up(new_level):
+	# Update player stats from GameState after leveling up
 	max_hp = GameState.player_max_health
 	current_hp = GameState.player_health
 	emit_signal("hp_changed", current_hp)
+	print("[Player] Leveled up to ", new_level, "! Max HP: ", max_hp)

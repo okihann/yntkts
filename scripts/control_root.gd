@@ -22,11 +22,13 @@ func _ready():
 	
 	for btn in buttons:
 		original_xs.append(btn.position.x)
-		
-	if not GameState.game_paused.is_connected(_on_game_paused):
-		GameState.game_paused.connect(_on_game_paused)
-	if not GameState.game_resumed.is_connected(_on_game_resumed):
-		GameState.game_resumed.connect(_on_game_resumed)
+	
+	# Check if GameState exists before connecting
+	if has_node("/root/GameState"):
+		if not GameState.game_paused.is_connected(_on_game_paused):
+			GameState.game_paused.connect(_on_game_paused)
+		if not GameState.game_resumed.is_connected(_on_game_resumed):
+			GameState.game_resumed.connect(_on_game_resumed)
 
 	for i in range(buttons.size()):
 		buttons[i].pressed.connect(_on_button_pressed.bind(i))
@@ -38,7 +40,7 @@ func _ready():
 		$ArrowDown.pressed.connect(func(): move_selection(1))
 
 func _on_game_paused():
-	_update_stats_tampilan()
+	_update_stats_display()
 	show()
 	for i in range(buttons.size()):
 		buttons[i].position.x = original_xs[i] - slide_offset
@@ -49,7 +51,10 @@ func _on_game_paused():
 func _on_game_resumed():
 	hide()
 
-func _update_stats_tampilan():
+func _update_stats_display():
+	if not has_node("/root/GameState"):
+		return
+	
 	hp_label.text = "HP: " + str(GameState.player_health) + "/" + str(GameState.player_max_health)
 	level_label.text = "LEVEL: " + str(GameState.player_level)
 	exp_label.text = "EXP: " + str(GameState.current_exp) + "/" + str(GameState.exp_required)
@@ -98,10 +103,13 @@ func _slide_left(btn, target_x):
 
 
 func _on_button_pressed(index: int):
+	if not has_node("/root/GameState"):
+		return
+		
 	match index:
 		0: GameState.change_state(GameState.State.PLAYING)
-		1: print("Buka Menu Stats Karakter")
-		2: print("Menu Opsi")
+		1: print("Open Character Stats Menu")
+		2: print("Options Menu")
 		3: 
 			GameState.change_state(GameState.State.MENU)
 			get_tree().paused = false

@@ -39,20 +39,20 @@ func _on_body_entered(body: Node2D):
 func activate(player: Node2D):
 	var player_hp = player.current_hp if "current_hp" in player else 100
 	
+	# Handle healing
 	if heal_player and "current_hp" in player and "max_hp" in player:
 		player.current_hp = player.max_hp
 		player.emit_signal("hp_changed", player.current_hp)
-		if has_node("/root/GameState"):
-			GameState.set_player_health(player.max_hp)
+		player_hp = player.max_hp
 	elif heal_amount > 0 and "current_hp" in player and "max_hp" in player:
 		player.current_hp = min(player.current_hp + heal_amount, player.max_hp)
 		player.emit_signal("hp_changed", player.current_hp)
-		if has_node("/root/GameState"):
-			GameState.set_player_health(player.current_hp)
+		player_hp = player.current_hp
 	
+	# Update GameState checkpoint and sync player health
 	if has_node("/root/GameState"):
-		GameState.set_checkpoint(global_position, player.current_hp)
-		#GameState.last_checkpoint_id = checkpoint_id
+		GameState.player_health = player_hp
+		GameState.set_checkpoint(global_position, player_hp)
 	
 	if not is_activated:
 		is_activated = true

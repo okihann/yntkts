@@ -65,17 +65,20 @@ func gain_exp(amount: int):
 		_perform_level_up()
 
 func _perform_level_up():
-	emit_signal("level_up", player_level)
-	print("Level Up! Level: ", player_level)
-	current_exp -= exp_required
+	# Increment level first
 	player_level += 1
+	current_exp -= exp_required
 	exp_required = int(exp_required * 1.2)
-	# reward kalo naik level
+	
+	# Reward for leveling up - update max health first, then set current health
 	player_max_health += 10
 	player_health = player_max_health
+	
+	# Emit signals only once with the correct new level
 	emit_signal("level_up", player_level)
 	emit_signal("stats_changed")
-	print("Level up ke: ", player_level)
+	
+	print("Level up to: ", player_level, " | New Max HP: ", player_max_health)
 
 func set_player_health(health: int):
 	player_health = clamp(health, 0, player_max_health)
