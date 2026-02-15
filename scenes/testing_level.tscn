@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://byqyeuli6dtni" path="res://scripts/testing_level.gd" id="1_bx410"]
 [ext_resource type="Texture2D" uid="uid://mu7hft013qr4" path="res://tileset/Tiles.png" id="1_haa73"]
 [ext_resource type="PackedScene" uid="uid://cnn0q8wrcnhd0" path="res://player/player.tscn" id="2_b55i6"]
+[ext_resource type="PackedScene" uid="uid://vbe8i7w40jto" path="res://AICompanion/AiCompanion.tscn" id="3_jr0o4"]
 [ext_resource type="PackedScene" uid="uid://c7q2ambqrwy1w" path="res://scenes/joystick.tscn" id="4_8trvs"]
 [ext_resource type="PackedScene" uid="uid://yvrqpre8n5s6" path="res://scenes/button.tscn" id="5_24k53"]
 [ext_resource type="PackedScene" uid="uid://chl6o1qx0lxwb" path="res://enemy/enemy.tscn" id="9_pdwrp"]
@@ -510,9 +511,15 @@ script = ExtResource("1_bx410")
 metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
 
 [node name="Player" parent="." unique_id=912361228 groups=["player"] instance=ExtResource("2_b55i6")]
-position = Vector2(-333, -37)
+position = Vector2(-258, -37)
 
-[node name="TileMap" type="TileMap" parent="." unique_id=383886849]
+[node name="AiCompanion" parent="." unique_id=1681515207 instance=ExtResource("3_jr0o4")]
+position = Vector2(-328, -38)
+collision_mask = 5
+attack_cooldown = 5.0
+debug_mode = true
+
+[node name="TileMap" type="TileMap" parent="." unique_id=383886849 groups=["navigation"]]
 position = Vector2(1, 0)
 tile_set = SubResource("TileSet_b55i6")
 format = 2
