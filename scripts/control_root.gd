@@ -23,7 +23,6 @@ func _ready():
 	for btn in buttons:
 		original_xs.append(btn.position.x)
 	
-	# Check if GameState exists before connecting
 	if has_node("/root/GameState"):
 		if not GameState.game_paused.is_connected(_on_game_paused):
 			GameState.game_paused.connect(_on_game_paused)
@@ -58,7 +57,6 @@ func _update_stats_display():
 	hp_label.text = "HP: " + str(GameState.player_health) + "/" + str(GameState.player_max_health)
 	level_label.text = "LEVEL: " + str(GameState.player_level)
 	exp_label.text = "EXP: " + str(GameState.current_exp) + "/" + str(GameState.exp_required)
-
 
 func _input(event):
 	if not visible: return
@@ -100,16 +98,14 @@ func _slide_left(btn, target_x):
 	t.tween_property(btn, "scale", Vector2.ONE, slide_time)
 	t.tween_property(btn, "modulate:a", 0.5, slide_time)
 
-
-
 func _on_button_pressed(index: int):
 	if not has_node("/root/GameState"):
 		return
 		
 	match index:
 		0: GameState.change_state(GameState.State.PLAYING)
-		1: print("Open Character Stats Menu")
-		2: print("Options Menu")
+		1: pass
+		2: pass
 		3: 
 			GameState.change_state(GameState.State.MENU)
 			get_tree().paused = false

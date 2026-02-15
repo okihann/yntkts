@@ -27,8 +27,36 @@ signal player_died
 signal player_respawned
 signal level_up(new_level)
 signal exp_gained(amount)
-signal level_completed
 signal stats_changed
+signal checkpoint_updated(position, health)
+signal health_changed(current_health, max_health)
+
+var current_state = State.MENU:
+	set(value):
+		if current_state != value:
+			var old_state = current_state
+			current_state = value
+			_handle_state_change(current_state, old_state)
+			state_changed.emit(current_state, old_state)
+
+var previous_state = State.MENU
+
+var player_health: int = 100:
+	set(value):
+		player_health = clamp(value, 0, player_max_health)
+		health_changed.emit(player_health, player_max_health)
+		if player_health <= 0 and current_state != State.RESPAWNING:
+			change_state(State.RESPAWNING)
+
+var player_max_health: int = 100
+var player_level: int = 1
+var current_exp: int = 0
+var exp_required: int = 100 
+
+var respawn_delay: float = 1.5 
+var checkpoint_position: Vector2 = Vector2.ZERO
+var checkpoint_health: int = 100
+var current_level: String = ""
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -40,27 +68,23 @@ func is_paused() -> bool:
 	return current_state == State.PAUSED
 
 func change_state(new_state: State):
-	if current_state == new_state: return
-	
-	previous_state = current_state
 	current_state = new_state
+
+func _handle_state_change(new_state: State, old_state: State):
+	previous_state = old_state
 	
 	match new_state:
 		State.MENU, State.LOADING:
 			get_tree().paused = false
 		State.PLAYING:
 			get_tree().paused = false
-			emit_signal("game_resumed")
+			game_resumed.emit()
 		State.PAUSED:
 			get_tree().paused = true
-			emit_signal("game_paused")
+			game_paused.emit()
 		State.RESPAWNING:
 			get_tree().paused = false
-			emit_signal("player_died")
-
-	emit_signal("state_changed", new_state, previous_state)
-
-# leveling
+			player_died.emit()
 
 func gain_exp(amount: int):
 	current_exp += amount
@@ -70,12 +94,10 @@ func gain_exp(amount: int):
 		_perform_level_up()
 
 func _perform_level_up():
-	# Increment level first
 	player_level += 1
 	current_exp -= exp_required
 	exp_required = int(exp_required * 1.2)
 	
-	# Reward for leveling up - update max health first, then set current health
 	player_max_health += 10
 	player_health = player_max_health
 	
@@ -90,19 +112,16 @@ func _perform_level_up():
 	print("Level up to: ", player_level, " | New Max HP: ", player_max_health, " | Point : ", attribute_point)
 
 func set_player_health(health: int):
-	player_health = clamp(health, 0, player_max_health)
-	if player_health <= 0:
-		if current_state != State.RESPAWNING:
-			change_state(State.RESPAWNING)
+	player_health = health
 
 func set_checkpoint(pos: Vector2, health: int = -1):
 	checkpoint_position = pos
 	checkpoint_health = health if health > 0 else player_health
-	print("[GameState] Checkpoint updated: ", pos)
+	checkpoint_updated.emit(checkpoint_position, checkpoint_health)
 
 func respawn_player():
 	player_health = checkpoint_health
-	emit_signal("player_respawned")
+	player_respawned.emit()
 	change_state(State.PLAYING)
 
 func load_level(level_path: String):

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cltonvde3oker"]
+
+[ext_resource type="Script" uid="uid://b7tovacb3bg71" path="res://AICompanion/HealParticle.gd" id="1_dyr7s"]
+
+[node name="HealParticle" type="Node2D" unique_id=945997038]
+script = ExtResource("1_dyr7s")
