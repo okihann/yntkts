@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://dgdyupsuue5fy"]
+[gd_scene format=3 uid="uid://c2lru670dokrn"]
 
-[ext_resource type="Script" uid="uid://dfp4nfdfrikft" path="res://scenes/level_up_ui.gd" id="1_0amag"]
+[ext_resource type="Script" path="res://scenes/level_up_ui.gd" id="1_0amag"]
 
 [node name="PointUI" type="CanvasLayer" unique_id=1884333597]
 script = ExtResource("1_0amag")

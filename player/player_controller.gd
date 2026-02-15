@@ -33,6 +33,10 @@ var is_knocked_back := false
 var knockback_timer: Timer
 var head_detection_area: Area2D
 
+# For AI companion detection
+var enemy_nearby := false
+var last_enemy_time := 0.0
+
 @onready var fade = get_tree().current_scene.get_node("DeadCanvas/Fade")
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
@@ -40,12 +44,6 @@ var head_detection_area: Area2D
 @onready var attack_timer = Timer.new()
 @onready var hitbox = $Hitbox
 
-
-func _input(event):
-	# kalo mobile ngeblock semua input mouse tanpa action attack
-	if OS.has_feature("mobile"):
-		if event is InputEventMouseButton:
-			get_viewport().set_input_as_handled()
 
 func _ready():
 	add_child(slide_timer)
@@ -107,7 +105,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	# knockback
+	# knockback - with reduced friction like AI companion
 	if is_knocked_back:
 		velocity.x = move_toward(velocity.x, 0, 8)
 		move_and_slide()
@@ -157,8 +155,30 @@ func _physics_process(delta):
 		check_enemies_on_head()
 
 	update_animation(direction, is_sprinting)
+	
+	# Update enemy detection for AI companion
+	_update_enemy_detection()
 
+# AI Companion detection - checks if player is engaging enemies
+func is_attacking_enemy() -> bool:
+	return enemy_nearby and (attacking or is_sliding)
 
+func _update_enemy_detection():
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	enemy_nearby = false
+	
+	for enemy in enemies:
+		if is_instance_valid(enemy):
+			var dist = global_position.distance_to(enemy.global_position)
+			if dist < 200:  # Detection range
+				enemy_nearby = true
+				last_enemy_time = Time.get_ticks_msec() / 1000.0
+				break
+	
+	# Keep enemy_nearby true for a short time after enemies leave
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if not enemy_nearby and (current_time - last_enemy_time) < 2.0:
+		enemy_nearby = true
 
 func check_enemy_collision():
 	for i in get_slide_collision_count():
@@ -187,8 +207,19 @@ func handle_normal_collision(enemy):
 
 		var dir = (global_position - enemy.global_position).normalized()
 		velocity.x = sign(dir.x) * player_knockback_force
-		velocity.y = -150
+		velocity.y = -100  # Reduced from -150 for more polished feel
+		
+		# Add visual feedback like AI companion
+		_flash_red()
+		
 		take_damage(touch_damage_to_player)
+
+# Polished knockback visual - same as AI companion
+func _flash_red():
+	if visualHero:
+		var tween = create_tween()
+		tween.tween_property(visualHero, "modulate", Color.RED, 0.1)
+		tween.tween_property(visualHero, "modulate", Color.WHITE, 0.1)
 
 func check_enemies_on_head():
 	if not head_detection_area: return
@@ -241,6 +272,11 @@ func take_damage(amount):
 	current_hp = clampi(current_hp - amount, 0, max_hp)
 	if has_node("/root/GameState"): GameState.player_health = current_hp
 	emit_signal("hp_changed", current_hp)
+	
+	# Flash red when taking damage (not during knockback, already flashed)
+	if not is_knocked_back:
+		_flash_red()
+	
 	if current_hp <= 0: die()
 
 func die():
@@ -269,6 +305,7 @@ func _on_player_respawned():
 		current_hp = max_hp
 	velocity = Vector2.ZERO
 	can_take_touch_damage = true
+	enemy_nearby = false
 	emit_signal("hp_changed", current_hp)
 	var tween = get_tree().create_tween()
 	tween.tween_property(fade, "modulate:a", 0.0, 0.3)
