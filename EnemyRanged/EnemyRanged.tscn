@@ -161,11 +161,7 @@ position = Vector2(8, -8)
 texture = ExtResource("2_xhc6b")
 hframes = 11
 vframes = 5
-<<<<<<< Updated upstream
-frame = 11
-=======
 frame = 44
->>>>>>> Stashed changes
 
 [node name="WallDetect" type="RayCast2D" parent="Pivot" unique_id=463645207]
 position = Vector2(11, 7)

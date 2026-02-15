@@ -9,6 +9,10 @@ var player_max_health: int = 100
 var player_level: int = 1
 var current_exp: int = 0
 var exp_required: int = 100 
+#tambahan
+var attribute_point: int = 0
+var attack_speed: int = 0
+var basic_attack: int = 10
 
 # checkpoint
 var respawn_delay: float = 1.5 
@@ -60,6 +64,7 @@ func change_state(new_state: State):
 
 func gain_exp(amount: int):
 	current_exp += amount
+	print("nilai current_exp : ", current_exp)
 	emit_signal("exp_gained", amount)
 	while current_exp >= exp_required:
 		_perform_level_up()
@@ -74,11 +79,15 @@ func _perform_level_up():
 	player_max_health += 10
 	player_health = player_max_health
 	
+	#untuk poin level
+	attribute_point += 3
+	#basic_attack += 50
+	
 	# Emit signals only once with the correct new level
 	emit_signal("level_up", player_level)
 	emit_signal("stats_changed")
 	
-	print("Level up to: ", player_level, " | New Max HP: ", player_max_health)
+	print("Level up to: ", player_level, " | New Max HP: ", player_max_health, " | Point : ", attribute_point)
 
 func set_player_health(health: int):
 	player_health = clamp(health, 0, player_max_health)
@@ -107,3 +116,4 @@ func _input(event):
 			change_state(State.PAUSED)
 		elif current_state == State.PAUSED:
 			change_state(State.PLAYING)
+	
