@@ -511,6 +511,10 @@ metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
 
 [node name="Player" parent="." unique_id=912361228 groups=["player"] instance=ExtResource("2_b55i6")]
 position = Vector2(-333, -37)
+slide_damage = 15
+touch_damage_to_player = 5
+head_detection_offset = Vector2(0, -25)
+head_detection_size = Vector2(40, 10)
 
 [node name="TileMap" type="TileMap" parent="." unique_id=383886849]
 position = Vector2(1, 0)
