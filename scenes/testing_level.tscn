@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://bymdaglm8rnt4" path="res://scenes/ui.tscn" id="10_re7k7"]
 [ext_resource type="PackedScene" uid="uid://pjqd1plive2r" path="res://scenes/checkpoint.tscn" id="11_24k53"]
 [ext_resource type="PackedScene" uid="uid://bgwtfndwg2v10" path="res://scenes/dead_zone.tscn" id="11_oob0o"]
+[ext_resource type="PackedScene" uid="uid://dw1rkjo0xhxul" path="res://scenes/enemy_spawner_1.tscn" id="14_jr0o4"]
+[ext_resource type="PackedScene" uid="uid://dgdyupsuue5fy" path="res://scenes/level_up_ui.tscn" id="15_bx410"]
 [ext_resource type="PackedScene" uid="uid://cxg47quittcgm" path="res://scenes/pause_menu.tscn" id="18_si45p"]
 [ext_resource type="PackedScene" uid="uid://difemr0kl3vma" path="res://scenes/pause_button.tscn" id="19_vxu0i"]
 
@@ -525,9 +527,6 @@ layer_0/tile_data = PackedInt32Array(1, 131072, 1, 2, 196608, 1, 3, 65536, 1, 4,
 [node name="Enemy" parent="." unique_id=869998696 instance=ExtResource("9_pdwrp")]
 position = Vector2(400, -4)
 
-[node name="Enemy2" parent="." unique_id=714685129 groups=["enemy"] instance=ExtResource("10_7w4r7")]
-position = Vector2(-7, -26)
-
 [node name="DeadZone" parent="." unique_id=1360481054 instance=ExtResource("11_oob0o")]
 position = Vector2(241, 77)
 
@@ -549,3 +548,10 @@ one_time_use = true
 [node name="Joystick" parent="." unique_id=1136162541 instance=ExtResource("4_8trvs")]
 
 [node name="Button" parent="." unique_id=567065856 instance=ExtResource("5_24k53")]
+
+[node name="EnemySpawner_1" parent="." unique_id=1081290633 instance=ExtResource("14_jr0o4")]
+position = Vector2(199, -203)
+enemyScene = ExtResource("10_7w4r7")
+
+[node name="PointUI" parent="." unique_id=1884333597 instance=ExtResource("15_bx410")]
+visible = false
