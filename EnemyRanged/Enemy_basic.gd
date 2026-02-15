@@ -146,6 +146,7 @@ func take_knockback_damage(amount, knockback_dir: Vector2, knockback_force: floa
 		velocity.y = -150
 
 func _on_enemy_animation_animation_finished(anim_name: StringName) -> void:
+<<<<<<< Updated upstream
 	match anim_name:
 		"GetHit", "Attack":
 			change_state(state.Idle)
@@ -153,3 +154,19 @@ func _on_enemy_animation_animation_finished(anim_name: StringName) -> void:
 			if has_node("/root/GameState"):
 				GameState.gain_exp(60)
 			queue_free()
+=======
+	#membuat sinyal ketika suatu animasi (jenis apapun itu selesai) - tidak perlu pemanggilan 
+	if anim_name == "GetHit":
+		current_state = state.Idle
+	#if anim_name == "Death":
+		#queue_free()
+	pass 
+
+func deathSystem():
+	queue_free()
+	await 
+	#$EnemyCollision.disabled
+	$EnemyCollision.set_deferred("disabled", true)
+	areaDetection.monitoring = false
+	pass
+>>>>>>> Stashed changes
