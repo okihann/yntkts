@@ -13,480 +13,320 @@ signal state_changed(old_state, new_state)
 @export var magic_damage: int = 15
 @export var movement_speed: float = 160.0
 @export var catchup_speed_multiplier: float = 1.8
-<<<<<<< Updated upstream
-@export var contact_damage_taken: int = 20 # Balanced damage
-
-@export_group("Combat Behavior")
-@export var combat_distance: float = 240.0 # Distance to stay at
-@export var min_combat_distance: float = 140.0 # Back away if closer than this
-=======
 @export var contact_damage_taken: int = 20
 
 @export_group("Combat Behavior")
-@export var combat_distance: float = 240.0
-@export var min_combat_distance: float = 140.0
->>>>>>> Stashed changes
-@export var heal_threshold: float = 0.6
-@export var self_heal_threshold: float = 0.4
+@export var combat_distance: float = 240.0 
+@export var min_combat_distance: float = 140.0 
+@export var heal_threshold: float = 0.6 # Player di bawah 60% HP
+@export var self_heal_threshold: float = 0.4 # AI di bawah 40% HP
 @export var detection_range: float = 450.0
 @export var aggro_duration: float = 3.0
 
 @export_group("Movement")
 @export var jump_velocity: float = -450.0
-@export var teleport_when_too_far: bool = true
 @export var teleport_distance: float = 700.0
-@export var wall_jump_check_dist: float = 40.0
-
-@export_group("Visual")
-@export var custom_tint: Color = Color.WHITE
-@export var apply_tint: bool = false
+@export var wall_jump_check_dist: float = 45.0
 
 @export_group("Cooldowns")
 @export var heal_cooldown: float = 5.0
 @export var attack_cooldown: float = 1.5
-<<<<<<< Updated upstream
-@export var damage_immunity_duration: float = 1.2 # Slightly longer to prevent "vanishing"
+@export var damage_immunity_duration: float = 1.2 
 @export var knockback_duration: float = 0.4
-=======
-@export var damage_immunity_duration: float = 1.2
-@export var knockback_duration: float = 0.4
->>>>>>> Stashed changes
-@export var jump_cooldown: float = 0.4
+@export var jump_cooldown: float = 0.35
 
-enum State { IDLE, FOLLOW, HEALING, ATTACKING, COMBAT }
-var current_state = State.IDLE:
-	set(value):
-		if current_state != value:
-			var old_state = current_state
-			current_state = value
-			state_changed.emit(old_state, current_state)
+enum State { IDLE, FOLLOW, HEALING, COMBAT }
+var current_state = State.IDLE
 
+# Internal Variables
 var player: CharacterBody2D = null
-var current_target: Node2D = null
-var spawn_position: Vector2
-var checkpoint_position: Vector2 = Vector2.ZERO
-
 var can_take_damage := true
 var is_knocked_back := false
 var is_dead := false
-
 var last_jump_time: float = 0.0
 var player_aggro_timer: float = 0.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer if has_node("AnimationPlayer") else null
-
 @onready var heal_timer: Timer = $HealTimer
 @onready var attack_timer: Timer = $AttackTimer
 @onready var damage_immunity_timer: Timer = $DamageImmunityTimer
 @onready var knockback_timer: Timer = $KnockbackTimer
 
 var wall_detector: RayCast2D
+var floor_detector: RayCast2D # Untuk deteksi jurang
 
 const HEAL_PARTICLE_PATH = "res://AICompanion/HealParticle.tscn"
 const MAGIC_PROJECTILE_PATH = "res://AICompanion/MagicProjectile.tscn"
-
 var heal_particle_scene = null
 var magic_projectile_scene = null
 
+# ==========================================================
+# 1. INITIALIZATION
+# ==========================================================
 func _ready():
 	add_to_group("companion")
-	spawn_position = global_position
-	checkpoint_position = global_position
-	
-	# Layer 2 (Companion), Masks 1 (World) and 3 (Enemies)
-	collision_layer = 2
-	collision_mask = 5
-	
-	# High Raycast for wall detection
-	wall_detector = RayCast2D.new()
-	wall_detector.position.y = -30 
-	wall_detector.target_position = Vector2(wall_jump_check_dist, 0)
-	wall_detector.collision_mask = 1 
-	add_child(wall_detector)
-	
+	_setup_collision()
+	_setup_detectors()
 	_load_scenes()
 	_setup_timers()
-	_connect_signals()
 	
 	await get_tree().process_frame
 	_find_player()
 
-func _load_scenes():
-	if ResourceLoader.exists(HEAL_PARTICLE_PATH):
-		heal_particle_scene = load(HEAL_PARTICLE_PATH)
-	if ResourceLoader.exists(MAGIC_PROJECTILE_PATH):
-		magic_projectile_scene = load(MAGIC_PROJECTILE_PATH)
+func _setup_collision():
+	collision_layer = 2 # Layer Companion
+	collision_mask = 5  # Tabrak World (1) dan Enemy (4)
+
+func _setup_detectors():
+	wall_detector = RayCast2D.new()
+	wall_detector.target_position = Vector2(wall_jump_check_dist, 0)
+	wall_detector.collision_mask = 1
+	add_child(wall_detector)
+	
+	floor_detector = RayCast2D.new()
+	floor_detector.position = Vector2(20, 0)
+	floor_detector.target_position = Vector2(0, 50)
+	floor_detector.collision_mask = 1
+	add_child(floor_detector)
 
 func _setup_timers():
-	heal_timer.wait_time = heal_cooldown
-	attack_timer.wait_time = attack_cooldown
-	damage_immunity_timer.wait_time = damage_immunity_duration
-	knockback_timer.wait_time = knockback_duration
+	heal_timer.one_shot = true
+	attack_timer.one_shot = true
+	damage_immunity_timer.one_shot = true
+	knockback_timer.one_shot = true
 	
-	damage_immunity_timer.timeout.connect(_on_damage_immunity_timeout)
-	knockback_timer.timeout.connect(_on_knockback_timeout)
-	
-	if animation_player:
-		animation_player.animation_finished.connect(_on_animation_player_animation_finished)
+	damage_immunity_timer.timeout.connect(func(): can_take_damage = true)
+	knockback_timer.timeout.connect(func(): is_knocked_back = false)
 
-func _connect_signals():
-	if has_node("/root/GameState"):
-		if not GameState.player_respawned.is_connected(_on_player_respawned):
-			GameState.player_respawned.connect(_on_player_respawned)
+func _load_scenes():
+	if ResourceLoader.exists(HEAL_PARTICLE_PATH): heal_particle_scene = load(HEAL_PARTICLE_PATH)
+	if ResourceLoader.exists(MAGIC_PROJECTILE_PATH): magic_projectile_scene = load(MAGIC_PROJECTILE_PATH)
 
 func _find_player():
 	var players = get_tree().get_nodes_in_group("player")
-	if players.size() > 0:
-		player = players[0]
+	if players.size() > 0: player = players[0]
 
+# ==========================================================
+# 2. CORE LOGIC
+# ==========================================================
 func _physics_process(delta: float) -> void:
-	if not player or not is_instance_valid(player) or is_dead:
-		return
-	
+	if not player or is_dead: return
 	if has_node("/root/GameState") and not GameState.is_playing():
 		velocity = Vector2.ZERO
 		return
-	
+
+	# Gravity
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-	
-	if player_aggro_timer > 0:
-		player_aggro_timer -= delta
 
-	_handle_knockback_logic()
-	_check_teleport_distance()
-	
-	if not is_knocked_back:
-		_update_ai_behavior(delta)
-		_handle_wall_detection()
+	if is_knocked_back:
+		velocity.x = move_toward(velocity.x, 0, 15)
+		move_and_slide()
+		return
+
+	_update_aggro_status(delta)
+	_brain_logic(delta)
+	_handle_obstacles()
+	_check_teleport()
 	
 	move_and_slide()
-	
-<<<<<<< Updated upstream
-	# Check for enemy contact
-	if can_take_damage:
-		_check_enemy_collisions()
-=======
-	if can_take_damage:
-		_check_enemy_collisions()
->>>>>>> Stashed changes
+	if can_take_damage: _check_enemy_collisions()
 
-func _handle_knockback_logic():
-	if is_knocked_back:
-<<<<<<< Updated upstream
-		# Rapidly slow down horizontal velocity during knockback
-		velocity.x = move_toward(velocity.x, 0, 10)
-
-func _check_enemy_collisions():
-	# Iterate through all things we are currently touching
-=======
-		velocity.x = move_toward(velocity.x, 0, 10)
-
-func _check_enemy_collisions():
->>>>>>> Stashed changes
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		var collider = collision.get_collider()
-		
-		if collider and collider.is_in_group("enemies"):
-<<<<<<< Updated upstream
-			# HIT DETECTED
-			_apply_hit_effects(collider)
-			break # STOP the loop so we don't take damage 5 times in one frame
-=======
-			_apply_hit_effects(collider)
-			break
->>>>>>> Stashed changes
-
-func _apply_hit_effects(source: Node2D):
-	can_take_damage = false
-	is_knocked_back = true
+func _update_aggro_status(delta):
+	# AI jadi agresif kalau player lagi nyerang
+	var player_is_attacking = false
+	if player.has_method("is_attacking_enemy") and player.is_attacking_enemy(): player_is_attacking = true
+	elif player.get("attacking") == true: player_is_attacking = true
 	
-	damage_immunity_timer.start()
-	knockback_timer.start()
-<<<<<<< Updated upstream
-	
-	# Push AI away from enemy
-	var knockback_dir = sign(global_position.x - source.global_position.x)
-	if knockback_dir == 0: knockback_dir = -1
-	
-	velocity.x = knockback_dir * 300 # Stronger push
-	velocity.y = -200 # Small hop up
-	
-	take_damage(contact_damage_taken)
-=======
-	
-	var knockback_dir = sign(global_position.x - source.global_position.x)
-	if knockback_dir == 0: knockback_dir = -1
-	
-	velocity.x = knockback_dir * 300
-	velocity.y = -200
-	
-	take_damage(contact_damage_taken)
->>>>>>> Stashed changes
-
-func _update_ai_behavior(delta: float):
-	if _check_player_aggro():
+	if player_is_attacking:
 		player_aggro_timer = aggro_duration
-	
-	# Heal Player takes priority
+	else:
+		player_aggro_timer = max(0, player_aggro_timer - delta)
+
+func _brain_logic(delta):
+	# 1. HEAL PLAYER (High Priority)
 	if _should_heal_player() and heal_timer.is_stopped():
-		_heal_player()
+		_heal_target(player)
 		return
 
-	# Combat behavior (Only if player is aggressive)
-	if player_aggro_timer > 0:
-		var nearest_enemy = _find_nearest_enemy()
-		if nearest_enemy:
-			if attack_timer.is_stopped():
-				_attack_enemy(nearest_enemy)
-			current_state = State.COMBAT
-			_combat_positioning(delta, nearest_enemy)
-			return
-
-	# Self heal (Only if NOT in a fight)
-	if _should_heal_self() and heal_timer.is_stopped() and player_aggro_timer <= 0:
-		_heal_self()
+	# 2. COMBAT (Medium Priority)
+	var target = _find_nearest_enemy()
+	if target and player_aggro_timer > 0:
+		current_state = State.COMBAT
+		_combat_behavior(delta, target)
 		return
 
-	# Idle/Follow
-	_follow_player(delta)
+	# 3. SELF HEAL (Low Priority)
+	if _should_heal_self() and heal_timer.is_stopped():
+		_heal_target(self)
+		return
 
-<<<<<<< Updated upstream
-=======
-func _combat_positioning(delta: float, enemy: Node2D):
+	# 4. FOLLOW
+	_follow_player_logic(delta)
+
+# ==========================================================
+# 3. BEHAVIORS
+# ==========================================================
+func _follow_player_logic(delta):
+	var dist_vec = player.global_position - global_position
+	var dist_abs = abs(dist_vec.x)
+	
+	if dist_abs < 60:
+		current_state = State.IDLE
+		velocity.x = move_toward(velocity.x, 0, movement_speed * delta * 10)
+		_face_direction(sign(dist_vec.x))
+	else:
+		current_state = State.FOLLOW
+		var speed = movement_speed
+		if dist_abs > 300: speed *= catchup_speed_multiplier
+		
+		velocity.x = sign(dist_vec.x) * speed
+		_face_direction(velocity.x)
+
+	# JUMP SYNC: Ikutan lompat kalau player lompat
+	if not player.is_on_floor() and player.velocity.y < 0 and is_on_floor():
+		_try_jump()
+
+func _combat_behavior(delta, enemy):
 	var dist_x = enemy.global_position.x - global_position.x
 	var abs_dist = abs(dist_x)
 	
+	# Attack if cooldown is over
+	if attack_timer.is_stopped():
+		_perform_attack(enemy)
+
+	# Positioning
 	if abs_dist < min_combat_distance:
-		var run_dir = -sign(dist_x)
-		velocity.x = run_dir * (movement_speed * 1.2)
-		_face_direction(sign(dist_x))
+		velocity.x = -sign(dist_x) * movement_speed * 1.2 # Back away
 	elif abs_dist > combat_distance:
-		velocity.x = sign(dist_x) * movement_speed
-		_face_direction(sign(dist_x))
+		velocity.x = sign(dist_x) * movement_speed # Close in
 	else:
 		velocity.x = move_toward(velocity.x, 0, movement_speed * delta * 5)
-		_face_direction(sign(dist_x))
+	
+	_face_direction(dist_x)
 
-func _follow_player(delta: float):
-	var dist = global_position.distance_to(player.global_position)
-	
-	if dist < 50:
-		current_state = State.IDLE
-		velocity.x = move_toward(velocity.x, 0, movement_speed * delta * 5)
-		return
-	
-	current_state = State.FOLLOW
-	var direction = sign(player.global_position.x - global_position.x)
-	var speed = movement_speed
-	
-	if dist > 350: speed *= catchup_speed_multiplier
-	
-	velocity.x = direction * speed
-	_face_direction(direction)
-	
-	if player.global_position.y < global_position.y - 60 and is_on_floor():
-		_try_jump()
-
->>>>>>> Stashed changes
-func _combat_positioning(delta: float, enemy: Node2D):
-	var dist_x = enemy.global_position.x - global_position.x
-	var abs_dist = abs(dist_x)
-	
-	if abs_dist < min_combat_distance:
-		# TOO CLOSE: Run away from enemy
-		var run_dir = -sign(dist_x)
-		velocity.x = run_dir * (movement_speed * 1.2)
-		_face_direction(sign(dist_x)) # Still face the enemy while backing away
-	elif abs_dist > combat_distance:
-		# TOO FAR: Move closer to enemy
-		velocity.x = sign(dist_x) * movement_speed
-		_face_direction(sign(dist_x))
-	else:
-		# SWEET SPOT: Stop moving
-		velocity.x = move_toward(velocity.x, 0, movement_speed * delta * 5)
-		_face_direction(sign(dist_x))
-
-func _follow_player(delta: float):
-	var dist = global_position.distance_to(player.global_position)
-	
-	if dist < 50:
-		current_state = State.IDLE
-		velocity.x = move_toward(velocity.x, 0, movement_speed * delta * 5)
-		return
-	
-	current_state = State.FOLLOW
-	var direction = sign(player.global_position.x - global_position.x)
-	var speed = movement_speed
-	
-	if dist > 350: speed *= catchup_speed_multiplier
-	
-	velocity.x = direction * speed
-	_face_direction(direction)
-	
-	if player.global_position.y < global_position.y - 60 and is_on_floor():
-		_try_jump()
-
-func _check_player_aggro() -> bool:
-	if not player: return false
-	if player.has_method("is_attacking_enemy") and player.is_attacking_enemy(): return true
-	if player.get("attacking") == true: return true
-	return false
-
-<<<<<<< Updated upstream
-=======
-func _find_nearest_enemy() -> Node2D:
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	var nearest: Node2D = null
-	var nearest_dist = detection_range
-	for enemy in enemies:
-		if not is_instance_valid(enemy): continue
-		var dist = global_position.distance_to(enemy.global_position)
-		if dist < nearest_dist:
-			nearest = enemy
-			nearest_dist = dist
-	return nearest
-
-func take_damage(amount: int):
-	if is_dead: return
-	
-	current_hp -= amount
-	current_hp = clamp(current_hp, 0, max_hp)
-	companion_damaged.emit(current_hp, max_hp)
-	
-	if sprite:
-		var tween = create_tween()
-		tween.tween_property(sprite, "modulate", Color.RED, 0.1)
-		tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
-	
-	if current_hp <= 0:
-		die()
-
-func die():
-	if is_dead: return
-	is_dead = true
-	companion_died.emit()
-	queue_free()
-
->>>>>>> Stashed changes
-func _find_nearest_enemy() -> Node2D:
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	var nearest: Node2D = null
-	var nearest_dist = detection_range
-	for enemy in enemies:
-		if not is_instance_valid(enemy): continue
-		var dist = global_position.distance_to(enemy.global_position)
-		if dist < nearest_dist:
-			nearest = enemy
-			nearest_dist = dist
-	return nearest
-
-func take_damage(amount: int):
-	if is_dead: return
-	
-	current_hp -= amount
-	current_hp = clamp(current_hp, 0, max_hp)
-	companion_damaged.emit(current_hp, max_hp)
-	
-	# Red Flash
-	if sprite:
-		var tween = create_tween()
-		tween.tween_property(sprite, "modulate", Color.RED, 0.1)
-		tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
-	
-	if current_hp <= 0:
-		die()
-
-func die():
-	if is_dead: return
-	is_dead = true
-	companion_died.emit()
-	queue_free()
-
-# --- Helpers ---
-
-func _should_heal_player() -> bool:
-	if not player: return false
-	var hp_pct = 1.0
-	if has_node("/root/GameState"):
-		hp_pct = float(GameState.player_health) / float(GameState.player_max_health)
-	elif player.get("current_hp") != null:
-		hp_pct = float(player.current_hp) / float(player.max_hp)
-	return hp_pct < heal_threshold
-
-func _should_heal_self() -> bool:
-	return (current_hp / max_hp) < self_heal_threshold
-
-func _heal_player():
-	current_state = State.HEALING
-	heal_timer.start()
-	velocity.x = 0
-	if animation_player and animation_player.has_animation("heal"):
-		animation_player.play("heal")
-	if player.has_method("take_damage"):
-		player.take_damage(-heal_amount)
-	_spawn_heal_effect(player.global_position)
-
-func _heal_self():
-	current_state = State.HEALING
-	heal_timer.start()
-	velocity.x = 0
-	current_hp = min(current_hp + heal_amount, max_hp)
-	companion_damaged.emit(current_hp, max_hp) 
-	_spawn_heal_effect(global_position)
-
-func _attack_enemy(enemy: Node2D):
-	current_state = State.ATTACKING
-	attack_timer.start()
-	_face_towards(enemy.global_position)
+func _perform_attack(enemy):
+	attack_timer.start(attack_cooldown)
 	if animation_player and animation_player.has_animation("attack"):
 		animation_player.play("attack")
 	
 	if magic_projectile_scene:
 		var proj = magic_projectile_scene.instantiate()
-		proj.global_position = global_position
+		proj.global_position = global_position + Vector2(0, -20)
+		get_tree().root.add_child(proj)
 		if proj.has_method("set_direction"):
 			proj.set_direction((enemy.global_position - global_position).normalized())
-		get_tree().root.add_child(proj)
 	elif enemy.has_method("take_damage"):
 		enemy.take_damage(magic_damage)
 
-func _spawn_heal_effect(pos: Vector2):
-	if heal_particle_scene:
-		var effect = heal_particle_scene.instantiate()
-		effect.global_position = pos
-		get_tree().root.add_child(effect)
+func _heal_target(target):
+	current_state = State.HEALING
+	heal_timer.start(heal_cooldown)
+	velocity.x = 0
+	
+	if animation_player and animation_player.has_animation("heal"):
+		animation_player.play("heal")
+	
+	if target == player:
+		if player.has_method("take_damage"): player.take_damage(-heal_amount)
+	else:
+		current_hp = min(current_hp + heal_amount, max_hp)
+		companion_damaged.emit(current_hp, max_hp)
+		
+	_spawn_heal_effect(target.global_position)
 
-func _face_towards(pos: Vector2):
-	if sprite: sprite.flip_h = pos.x > global_position.x
-
-func _face_direction(dir: float):
-	if sprite and dir != 0: sprite.flip_h = dir > 0
-
-func _handle_wall_detection():
-	if velocity.x != 0:
-		wall_detector.target_position.x = sign(velocity.x) * wall_jump_check_dist
-	if is_on_floor() and wall_detector.is_colliding():
+# ==========================================================
+# 4. UTILITIES & SENSES
+# ==========================================================
+func _handle_obstacles():
+	if not is_on_floor(): return
+	
+	# Update raycast direction
+	var move_dir = sign(velocity.x) if velocity.x != 0 else sign(player.global_position.x - global_position.x)
+	wall_detector.target_position.x = move_dir * wall_jump_check_dist
+	floor_detector.position.x = move_dir * 25
+	
+	# Jump if wall detected OR gap detected
+	if wall_detector.is_colliding() or not floor_detector.is_colliding():
 		_try_jump()
 
 func _try_jump():
-	var now = Time.get_ticks_msec() / 1000.0
-	if now - last_jump_time > jump_cooldown:
+	if is_on_floor() and Time.get_ticks_msec() / 1000.0 - last_jump_time > jump_cooldown:
 		velocity.y = jump_velocity
-		last_jump_time = now
+		last_jump_time = Time.get_ticks_msec() / 1000.0
 
-func _check_teleport_distance():
-	if teleport_when_too_far and player and global_position.distance_to(player.global_position) > teleport_distance:
-		global_position = player.global_position + Vector2(-50, 0)
+func _check_enemy_collisions():
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		if collider and collider.is_in_group("enemies"):
+			_take_hit(collider)
+			break
 
-func _on_damage_immunity_timeout(): can_take_damage = true
-func _on_knockback_timeout(): is_knocked_back = false
-func _on_animation_player_animation_finished(anim_name: String):
-	if current_state == State.HEALING or current_state == State.ATTACKING:
-		current_state = State.IDLE
+func _take_hit(source):
+	can_take_damage = false
+	is_knocked_back = true
+	damage_immunity_timer.start()
+	knockback_timer.start()
+	
+	var dir = sign(global_position.x - source.global_position.x)
+	velocity = Vector2((dir if dir != 0 else -1) * 300, -200)
+	take_damage(contact_damage_taken)
+
+func take_damage(amount):
+	current_hp = clamp(current_hp - amount, 0, max_hp)
+	companion_damaged.emit(current_hp, max_hp)
+	_flash_effect()
+	if current_hp <= 0: die()
+
+func _flash_effect():
+	var t = create_tween()
+	t.tween_property(sprite, "modulate", Color.RED, 0.1)
+	t.tween_property(sprite, "modulate", Color(5,5,5,1), 0.05)
+	t.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+
+func die():
+	is_dead = true
+	companion_died.emit()
+	queue_free()
+
+func _find_nearest_enemy() -> Node2D:
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	var nearest: Node2D = null
+	var min_dist = detection_range
+	for e in enemies:
+		if is_instance_valid(e):
+			var d = global_position.distance_to(e.global_position)
+			if d < min_dist:
+				nearest = e
+				min_dist = d
+	return nearest
+
+func _should_heal_player() -> bool:
+	if not player: return false
+	var hp_pct = 1.0
+	if has_node("/root/GameState"): hp_pct = float(GameState.player_health) / float(GameState.player_max_health)
+	return hp_pct < heal_threshold
+
+func _should_heal_self() -> bool:
+	return (current_hp / max_hp) < self_heal_threshold
+
+func _face_direction(dir):
+	if sprite and dir != 0: sprite.flip_h = dir > 0
+
+func _check_teleport():
+	if global_position.distance_to(player.global_position) > teleport_distance:
+		global_position = player.global_position + Vector2(-20, -10)
+		velocity = Vector2.ZERO
+
+func _spawn_heal_effect(pos):
+	if heal_particle_scene:
+		var p = heal_particle_scene.instantiate()
+		p.global_position = pos
+		get_tree().root.add_child(p)
 
 func _on_player_respawned():
 	is_dead = false
 	current_hp = max_hp
+	global_position = player.global_position
