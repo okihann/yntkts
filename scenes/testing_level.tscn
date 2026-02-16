@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://chl6o1qx0lxwb" path="res://enemy/enemy.tscn" id="9_pdwrp"]
 [ext_resource type="PackedScene" uid="uid://bu1rvaai72unl" path="res://scenes/dead_canvas.tscn" id="9_tttw2"]
 [ext_resource type="PackedScene" uid="uid://b035sqtwd0uw" path="res://EnemyRanged/EnemyRanged.tscn" id="10_7w4r7"]
-[ext_resource type="PackedScene" uid="uid://bymdaglm8nt4" path="res://scenes/ui.tscn" id="10_re7k7"]
+[ext_resource type="PackedScene" uid="uid://bymdaglm8rnt4" path="res://scenes/ui.tscn" id="10_re7k7"]
 [ext_resource type="PackedScene" uid="uid://pjqd1plive2r" path="res://scenes/checkpoint.tscn" id="11_24k53"]
 [ext_resource type="PackedScene" uid="uid://bgwtfndwg2v10" path="res://scenes/dead_zone.tscn" id="11_oob0o"]
 [ext_resource type="PackedScene" uid="uid://cvpvgxd6v01g3" path="res://scenes/enemy_spawner_1.tscn" id="14_jr0o4"]
@@ -514,10 +514,6 @@ metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
 
 [node name="Player" parent="." unique_id=912361228 groups=["player"] instance=ExtResource("2_b55i6")]
 position = Vector2(-333, -37)
-slide_damage = 15
-touch_damage_to_player = 5
-head_detection_offset = Vector2(0, -45)
-head_detection_size = Vector2(7.5, 5)
 
 [node name="AiCompanion" parent="." unique_id=1681515207 instance=ExtResource("3_jr0o4")]
 position = Vector2(-302, -39)
@@ -562,4 +558,3 @@ position = Vector2(199, -203)
 enemyScene = ExtResource("10_7w4r7")
 
 [node name="PointUI" parent="." unique_id=1884333597 instance=ExtResource("15_bx410")]
-visible = false
