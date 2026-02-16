@@ -33,6 +33,12 @@ var is_knocked_back := false
 var knockback_timer: Timer
 var head_detection_area: Area2D
 
+<<<<<<< Updated upstream
+=======
+var enemy_nearby := false
+var last_enemy_time := 0.0
+
+>>>>>>> Stashed changes
 @onready var fade = get_tree().current_scene.get_node("DeadCanvas/Fade")
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
@@ -40,6 +46,15 @@ var head_detection_area: Area2D
 @onready var attack_timer = Timer.new()
 @onready var hitbox = $Hitbox
 
+<<<<<<< Updated upstream
+=======
+
+func _input(event):
+	if OS.has_feature("mobile"):
+		if event is InputEventMouseButton:
+			get_viewport().set_input_as_handled()
+
+>>>>>>> Stashed changes
 func _ready():
 	add_child(slide_timer)
 	slide_timer.wait_time = 0.6
@@ -107,6 +122,7 @@ func setup_head_detection():
 	
 	add_child(head_detection_area)
 
+<<<<<<< Updated upstream
 func _unhandled_input(event):
 	if is_dead:
 		return
@@ -121,6 +137,8 @@ func _process(_delta):
 		return
 	
 	# Fallback input polling (works around UI blocking)
+=======
+>>>>>>> Stashed changes
 	if Input.is_action_just_pressed("attack"):
 		if not attacking and not is_knocked_back and not is_dead:
 			attack()
@@ -175,12 +193,19 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, SPEED * 0.5)
 
 	move_and_slide()
+<<<<<<< Updated upstream
 	check_enemy_collision()
 	
+=======
+	
+	check_enemy_collision()
+
+>>>>>>> Stashed changes
 	if not is_sliding:
 		check_enemies_on_head()
 	
 	update_animation(direction, is_sprinting)
+<<<<<<< Updated upstream
 
 func check_enemies_on_head():
 	if not head_detection_area or is_sliding:
@@ -199,6 +224,29 @@ func knock_off_enemy(enemy):
 			direction = 1
 		var knockback_dir = Vector2(direction, -0.5).normalized()
 		enemy.take_knockback_damage(0, knockback_dir, enemy_knockback_force * 0.7)
+=======
+	
+	_update_enemy_detection()
+
+func is_attacking_enemy() -> bool:
+	return enemy_nearby and (attacking or is_sliding)
+
+func _update_enemy_detection():
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	enemy_nearby = false
+	
+	for enemy in enemies:
+		if is_instance_valid(enemy):
+			var dist = global_position.distance_to(enemy.global_position)
+			if dist < 200:
+				enemy_nearby = true
+				last_enemy_time = Time.get_ticks_msec() / 1000.0
+				break
+	
+	var current_time = Time.get_ticks_msec() / 1000.0
+	if not enemy_nearby and (current_time - last_enemy_time) < 2.0:
+		enemy_nearby = true
+>>>>>>> Stashed changes
 
 func check_enemy_collision():
 	for i in get_slide_collision_count():
@@ -235,8 +283,52 @@ func handle_normal_collision(enemy):
 func _on_touch_damage_cooldown_timeout():
 	can_take_touch_damage = true
 
+<<<<<<< Updated upstream
 func _on_knockback_finished():
 	is_knocked_back = false
+=======
+func _flash_red():
+	if visualHero:
+		var tween = create_tween()
+		tween.tween_property(visualHero, "modulate", Color.RED, 0.1)
+		tween.tween_property(visualHero, "modulate", Color.WHITE, 0.1)
+
+func check_enemies_on_head():
+	if not head_detection_area: return
+	
+	var enemies_found = false
+	for enemy in head_detection_area.get_overlapping_bodies():
+		if enemy.is_in_group("enemies") and is_instance_valid(enemy):
+			if enemy.global_position.y > global_position.y - 20:
+				knock_off_enemy(enemy)
+				enemies_found = true
+	
+	if enemies_found:
+		_flash_red()
+
+func knock_off_enemy(enemy):
+	if enemy.has_method("take_knockback_damage"):
+		var direction = sign(enemy.global_position.x - global_position.x)
+		if direction == 0: direction = 1
+		var knockback_dir = Vector2(direction, -0.5).normalized()
+		enemy.take_knockback_damage(0, knockback_dir, enemy_knockback_force * 0.5)
+		
+		velocity.y = -200
+
+
+
+func setup_head_detection():
+	head_detection_area = Area2D.new()
+	head_detection_area.collision_layer = 0
+	head_detection_area.collision_mask = 4
+	var shape = CollisionShape2D.new()
+	var rect = RectangleShape2D.new()
+	rect.size = head_detection_size
+	shape.shape = rect
+	shape.position = head_detection_offset
+	head_detection_area.add_child(shape)
+	add_child(head_detection_area)
+>>>>>>> Stashed changes
 
 func attack():
 	attacking = true
@@ -286,8 +378,13 @@ func take_damage(amount):
 	
 	emit_signal("hp_changed", current_hp)
 	
+<<<<<<< Updated upstream
 	if current_hp <= 0:
 		die()
+=======
+	_flash_red()
+	if current_hp <= 0: die()
+>>>>>>> Stashed changes
 
 func die():
 	if is_dead:
@@ -331,12 +428,17 @@ func _on_player_respawned():
 	tween.tween_property(fade, "modulate:a", 0.0, 0.3)
 
 func _on_game_state_changed(new_state, _old_state):
+<<<<<<< Updated upstream
 	match new_state:
 		GameState.State.PLAYING:
 			if not is_dead:
 				set_physics_process(true)
 		GameState.State.PAUSED:
 			pass
+=======
+	if new_state == 1:
+		set_physics_process(true)
+>>>>>>> Stashed changes
 
 func save_checkpoint():
 	if has_node("/root/GameState"):
