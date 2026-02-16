@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dy37xr3pr352g" path="res://assets/UI/HealthBar/under.png" id="2_8dubc"]
 [ext_resource type="Texture2D" uid="uid://cdeavcghvsqk2" path="res://assets/UI/HealthBar/frame_final.png" id="3_p7vwb"]
 [ext_resource type="Texture2D" uid="uid://dhfq1w5nsau3c" path="res://assets/UI/HealthBar/progress_fix.png" id="4_ktti3"]
-[ext_resource type="Script" path="res://scripts/health_bar.gd" id="5_cgfq5"]
+[ext_resource type="Script" uid="uid://b72qbtm3no4vu" path="res://scripts/health_bar.gd" id="5_cgfq5"]
 
 [node name="UI" type="CanvasLayer" unique_id=556892818]
 

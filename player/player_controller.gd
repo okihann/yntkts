@@ -82,9 +82,13 @@ func _input(event):
 			get_viewport().set_input_as_handled()
 
 func _unhandled_input(event):
-	if is_dead or get_tree().paused: return
+	#print("input masuk : ", event)
+	if is_dead or get_tree().paused: 
+		#print("terjadi penolakan")
+		return
 	
 	if event.is_action_pressed("attack"):
+		#print("fungsi attack terpanggil")
 		# Hanya izinkan attack jika BUKAN klik mouse liar di mobile
 		if OS.has_feature("mobile") and event is InputEventMouseButton:
 			return 
