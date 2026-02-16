@@ -13,11 +13,19 @@ signal state_changed(old_state, new_state)
 @export var magic_damage: int = 15
 @export var movement_speed: float = 160.0
 @export var catchup_speed_multiplier: float = 1.8
+<<<<<<< Updated upstream
 @export var contact_damage_taken: int = 20 # Balanced damage
 
 @export_group("Combat Behavior")
 @export var combat_distance: float = 240.0 # Distance to stay at
 @export var min_combat_distance: float = 140.0 # Back away if closer than this
+=======
+@export var contact_damage_taken: int = 20
+
+@export_group("Combat Behavior")
+@export var combat_distance: float = 240.0
+@export var min_combat_distance: float = 140.0
+>>>>>>> Stashed changes
 @export var heal_threshold: float = 0.6
 @export var self_heal_threshold: float = 0.4
 @export var detection_range: float = 450.0
@@ -36,8 +44,13 @@ signal state_changed(old_state, new_state)
 @export_group("Cooldowns")
 @export var heal_cooldown: float = 5.0
 @export var attack_cooldown: float = 1.5
+<<<<<<< Updated upstream
 @export var damage_immunity_duration: float = 1.2 # Slightly longer to prevent "vanishing"
 @export var knockback_duration: float = 0.4
+=======
+@export var damage_immunity_duration: float = 1.2
+@export var knockback_duration: float = 0.4
+>>>>>>> Stashed changes
 @export var jump_cooldown: float = 0.4
 
 enum State { IDLE, FOLLOW, HEALING, ATTACKING, COMBAT }
@@ -150,25 +163,41 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
+<<<<<<< Updated upstream
 	# Check for enemy contact
 	if can_take_damage:
 		_check_enemy_collisions()
+=======
+	if can_take_damage:
+		_check_enemy_collisions()
+>>>>>>> Stashed changes
 
 func _handle_knockback_logic():
 	if is_knocked_back:
+<<<<<<< Updated upstream
 		# Rapidly slow down horizontal velocity during knockback
 		velocity.x = move_toward(velocity.x, 0, 10)
 
 func _check_enemy_collisions():
 	# Iterate through all things we are currently touching
+=======
+		velocity.x = move_toward(velocity.x, 0, 10)
+
+func _check_enemy_collisions():
+>>>>>>> Stashed changes
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
 		
 		if collider and collider.is_in_group("enemies"):
+<<<<<<< Updated upstream
 			# HIT DETECTED
 			_apply_hit_effects(collider)
 			break # STOP the loop so we don't take damage 5 times in one frame
+=======
+			_apply_hit_effects(collider)
+			break
+>>>>>>> Stashed changes
 
 func _apply_hit_effects(source: Node2D):
 	can_take_damage = false
@@ -176,6 +205,7 @@ func _apply_hit_effects(source: Node2D):
 	
 	damage_immunity_timer.start()
 	knockback_timer.start()
+<<<<<<< Updated upstream
 	
 	# Push AI away from enemy
 	var knockback_dir = sign(global_position.x - source.global_position.x)
@@ -185,6 +215,16 @@ func _apply_hit_effects(source: Node2D):
 	velocity.y = -200 # Small hop up
 	
 	take_damage(contact_damage_taken)
+=======
+	
+	var knockback_dir = sign(global_position.x - source.global_position.x)
+	if knockback_dir == 0: knockback_dir = -1
+	
+	velocity.x = knockback_dir * 300
+	velocity.y = -200
+	
+	take_damage(contact_damage_taken)
+>>>>>>> Stashed changes
 
 func _update_ai_behavior(delta: float):
 	if _check_player_aggro():
@@ -213,6 +253,44 @@ func _update_ai_behavior(delta: float):
 	# Idle/Follow
 	_follow_player(delta)
 
+<<<<<<< Updated upstream
+=======
+func _combat_positioning(delta: float, enemy: Node2D):
+	var dist_x = enemy.global_position.x - global_position.x
+	var abs_dist = abs(dist_x)
+	
+	if abs_dist < min_combat_distance:
+		var run_dir = -sign(dist_x)
+		velocity.x = run_dir * (movement_speed * 1.2)
+		_face_direction(sign(dist_x))
+	elif abs_dist > combat_distance:
+		velocity.x = sign(dist_x) * movement_speed
+		_face_direction(sign(dist_x))
+	else:
+		velocity.x = move_toward(velocity.x, 0, movement_speed * delta * 5)
+		_face_direction(sign(dist_x))
+
+func _follow_player(delta: float):
+	var dist = global_position.distance_to(player.global_position)
+	
+	if dist < 50:
+		current_state = State.IDLE
+		velocity.x = move_toward(velocity.x, 0, movement_speed * delta * 5)
+		return
+	
+	current_state = State.FOLLOW
+	var direction = sign(player.global_position.x - global_position.x)
+	var speed = movement_speed
+	
+	if dist > 350: speed *= catchup_speed_multiplier
+	
+	velocity.x = direction * speed
+	_face_direction(direction)
+	
+	if player.global_position.y < global_position.y - 60 and is_on_floor():
+		_try_jump()
+
+>>>>>>> Stashed changes
 func _combat_positioning(delta: float, enemy: Node2D):
 	var dist_x = enemy.global_position.x - global_position.x
 	var abs_dist = abs(dist_x)
@@ -257,6 +335,42 @@ func _check_player_aggro() -> bool:
 	if player.get("attacking") == true: return true
 	return false
 
+<<<<<<< Updated upstream
+=======
+func _find_nearest_enemy() -> Node2D:
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	var nearest: Node2D = null
+	var nearest_dist = detection_range
+	for enemy in enemies:
+		if not is_instance_valid(enemy): continue
+		var dist = global_position.distance_to(enemy.global_position)
+		if dist < nearest_dist:
+			nearest = enemy
+			nearest_dist = dist
+	return nearest
+
+func take_damage(amount: int):
+	if is_dead: return
+	
+	current_hp -= amount
+	current_hp = clamp(current_hp, 0, max_hp)
+	companion_damaged.emit(current_hp, max_hp)
+	
+	if sprite:
+		var tween = create_tween()
+		tween.tween_property(sprite, "modulate", Color.RED, 0.1)
+		tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+	
+	if current_hp <= 0:
+		die()
+
+func die():
+	if is_dead: return
+	is_dead = true
+	companion_died.emit()
+	queue_free()
+
+>>>>>>> Stashed changes
 func _find_nearest_enemy() -> Node2D:
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	var nearest: Node2D = null
