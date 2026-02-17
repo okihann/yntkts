@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://dvdkv6oayrvai" path="res://assets/UI/PauseMenu/Resume.png" id="6_v4r4p"]
 [ext_resource type="Texture2D" uid="uid://dsh5rrp7330o5" path="res://assets/UI/PauseMenu/Options.png" id="7_1s2dm"]
 [ext_resource type="Texture2D" uid="uid://b4p60khaaf3ur" path="res://assets/UI/PauseMenu/Exit.png" id="8_88e76"]
-[ext_resource type="Texture2D" uid="uid://tfnut4lhyakf" path="res://assets/UI/PauseMenu/Char.png" id="9_71k7c"]
 [ext_resource type="Texture2D" uid="uid://c2x5roo7g2ybl" path="res://assets/UI/PauseMenu/Untitled59_20260214131354.png" id="9_knqa7"]
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=2019243940]
@@ -36,18 +35,18 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.07058824, 0.078431375, 0.08627451, 1)
 
-[node name="TextureRect" type="TextureRect" parent="ControlRoot" unique_id=1807834150]
+[node name="StatsButton" type="TextureButton" parent="ControlRoot" unique_id=1592463928]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 25.0
-offset_top = -74.0
-offset_right = 395.0
-offset_bottom = 600.0
+offset_left = 55.0
+offset_top = -261.0
+offset_right = 425.0
+offset_bottom = 413.0
 grow_vertical = 2
-scale = Vector2(1.101, 1.145)
-texture = ExtResource("1_n87rw")
+scale = Vector2(0.889, 0.925)
+texture_normal = ExtResource("1_n87rw")
 
 [node name="Title" type="TextureRect" parent="ControlRoot" unique_id=147298568]
 layout_mode = 1
@@ -91,18 +90,12 @@ offset_right = 2460.0
 offset_bottom = 2176.0
 texture_normal = ExtResource("7_1s2dm")
 
-[node name="BtnCharacter" type="TextureButton" parent="ControlRoot/ButtonsGroup" unique_id=796934032]
-layout_mode = 0
-offset_top = 2192.0
-offset_right = 2460.0
-offset_bottom = 3272.0
-texture_normal = ExtResource("9_71k7c")
-
 [node name="BtnExit" type="TextureButton" parent="ControlRoot/ButtonsGroup" unique_id=351425944]
 layout_mode = 0
-offset_top = 3288.0
-offset_right = 2460.0
-offset_bottom = 4368.0
+offset_left = 67.6687
+offset_top = 2195.4888
+offset_right = 2527.6687
+offset_bottom = 3275.4888
 texture_normal = ExtResource("8_88e76")
 
 [node name="TextureRect2" type="TextureRect" parent="ControlRoot" unique_id=950599254]
@@ -170,5 +163,4 @@ theme_override_font_sizes/font_size = 48
 text = "100 / 100"
 
 [connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnOptions" to="ControlRoot" method="_on_btn_options_pressed"]
-[connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnCharacter" to="ControlRoot" method="_on_btn_character_pressed"]
 [connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnExit" to="ControlRoot" method="_on_btn_exit_pressed"]

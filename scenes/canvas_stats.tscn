@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://cgo5u0d3ve0o8"]
+
+[ext_resource type="Texture2D" uid="uid://cgpmc7g7sl34j" path="res://assets/UI/StatsMenu/heart-red.png" id="1_7uiu1"]
+[ext_resource type="Script" uid="uid://dfnniiqxscjgk" path="res://scripts/stats.gd" id="1_tqvmx"]
+[ext_resource type="Texture2D" uid="uid://bixq4mwjuwlwt" path="res://assets/UI/StatsMenu/Untitled62_20260217150518.png" id="3_11rni"]
+
+[node name="CanvasStats" type="CanvasLayer" unique_id=900416537]
+layer = 9
+script = ExtResource("1_tqvmx")
+metadata/_edit_vertical_guides_ = [24.0]
+
+[node name="StatsMenu" type="Control" parent="." unique_id=778813203]
+z_index = 10
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="StatsMenu" unique_id=79835928]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatsMenu" unique_id=1588557368]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -254.0
+offset_top = -50.0
+offset_right = -110.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.31, 3.31)
+theme_override_constants/separation = 24
+
+[node name="TextureButton" type="TextureButton" parent="StatsMenu/HBoxContainer" unique_id=565884828]
+layout_mode = 2
+texture_normal = ExtResource("1_7uiu1")
+
+[node name="TextureButton2" type="TextureButton" parent="StatsMenu/HBoxContainer" unique_id=1215777542]
+layout_mode = 2
+texture_normal = ExtResource("1_7uiu1")
+
+[node name="TextureButton3" type="TextureButton" parent="StatsMenu/HBoxContainer" unique_id=410904087]
+layout_mode = 2
+texture_normal = ExtResource("1_7uiu1")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="StatsMenu" unique_id=1470632653]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -344.0
+offset_top = -152.0
+offset_right = 352.0
+offset_bottom = -107.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 25
+
+[node name="HpText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=439863616]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Hp:          100"
+
+[node name="AtkText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=1172039906]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Atk:          10"
+
+[node name="AspdText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=989157060]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Atk Speed:          10"
+
+[node name="Title" type="Label" parent="StatsMenu" unique_id=1295249041]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 56.0
+offset_right = 35.0
+offset_bottom = 79.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 38
+text = "Level Up"
+
+[node name="Subtitle" type="Label" parent="StatsMenu" unique_id=2055613004]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -144.0
+offset_top = 128.0
+offset_right = 142.0
+offset_bottom = 177.0
+grow_horizontal = 2
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 35
+text = "Pick a bonus stat"
+
+[node name="Points" type="Label" parent="StatsMenu" unique_id=83730169]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -344.0
+offset_top = -72.0
+offset_right = -58.0
+offset_bottom = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 35
+text = "Points: 0"
+
+[node name="CloseButton" type="TextureButton" parent="StatsMenu" unique_id=508153494]
+layout_mode = 0
+offset_left = 52.0
+offset_top = 37.0
+offset_right = 116.0
+offset_bottom = 101.0
+scale = Vector2(0.775, 0.775)
+texture_normal = ExtResource("3_11rni")
+
+[connection signal="pressed" from="StatsMenu/CloseButton" to="." method="_on_close_button_pressed"]

@@ -11,7 +11,7 @@ var current_exp: int = 0
 var exp_required: int = 100 
 #tambahan
 var attribute_point: int = 0
-var attack_speed: int = 0
+var attack_speed: float = 0
 var basic_attack: int = 10
 
 # checkpoint
@@ -86,7 +86,7 @@ func _perform_level_up():
 	player_level += 1
 	current_exp -= exp_required
 	exp_required = int(exp_required * 1.2)
-	
+	checkpoint_health = player_max_health
 	player_max_health += 10
 	player_health = player_max_health
 	
@@ -109,7 +109,7 @@ func set_checkpoint(pos: Vector2, health: int = -1):
 	checkpoint_updated.emit(checkpoint_position, checkpoint_health)
 
 func respawn_player():
-	player_health = checkpoint_health
+	player_health = player_max_health
 	player_respawned.emit()
 	change_state(State.PLAYING)
 

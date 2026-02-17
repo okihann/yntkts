@@ -1,6 +1,6 @@
 extends Area2D
-
-@export var damage = GameState.basic_attack
+var base_damage = 10
+@export var damage = GameState.basic_attack 
 
 func _ready():
 	if not body_entered.is_connected(_on_body_entered):
