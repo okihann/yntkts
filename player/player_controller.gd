@@ -43,46 +43,45 @@ var head_detection_area: Area2D
 
 
 func _ready():
+	collision_layer = 2
+	collision_mask = 5
+
 	setup_timers()
 	setup_head_detection()
 	add_to_group("player")
 	spawn_position = global_position
-	
+
 	if has_node("/root/GameState"):
 		sync_stats_from_gamestate()
-		
+
 		if GameState.checkpoint_position == Vector2.ZERO:
 			GameState.set_checkpoint(spawn_position, GameState.player_health)
-		
+
 		GameState.change_state(GameState.State.PLAYING)
-		
+
 		if not GameState.stats_changed.is_connected(sync_stats_from_gamestate):
 			GameState.stats_changed.connect(sync_stats_from_gamestate)
-			
 		if not GameState.game_paused.is_connected(func(): set_physics_process(false)):
 			GameState.game_paused.connect(func(): set_physics_process(false))
 		if not GameState.game_resumed.is_connected(func(): set_physics_process(true)):
 			GameState.game_resumed.connect(func(): set_physics_process(true))
-		
 		if not GameState.state_changed.is_connected(_on_game_state_changed):
 			GameState.state_changed.connect(_on_game_state_changed)
 		if not GameState.player_respawned.is_connected(_on_player_respawned):
 			GameState.player_respawned.connect(_on_player_respawned)
 		if not GameState.level_up.is_connected(_on_level_up):
 			GameState.level_up.connect(_on_level_up)
-			
+
 	emit_signal("hp_changed", current_hp)
-	
+
 
 func sync_stats_from_gamestate():
 	max_hp = GameState.player_max_health
 	current_hp = GameState.player_health
 	emit_signal("hp_changed", current_hp)
-	print("Player Stats Synced: ", current_hp, "/", max_hp)
 
 
 func _input(event):
-	# block klik mouse di mobile biar gak nge-trigger attack random
 	if OS.has_feature("mobile"):
 		if event is InputEventMouseButton:
 			get_viewport().set_input_as_handled()
@@ -91,11 +90,9 @@ func _input(event):
 func _unhandled_input(event):
 	if is_dead or get_tree().paused:
 		return
-	
 	if event.is_action_pressed("attack"):
 		if OS.has_feature("mobile") and event is InputEventMouseButton:
-			return 
-
+			return
 		if not attacking and not is_knocked_back and not is_sliding:
 			attack()
 
@@ -103,7 +100,6 @@ func _unhandled_input(event):
 func _process(_delta):
 	if is_dead or get_tree().paused: return
 	if has_node("/root/GameState") and not GameState.is_playing(): return
-	
 	_update_enemy_detection()
 
 
@@ -141,7 +137,8 @@ func _physics_process(delta):
 
 	if is_sliding:
 		velocity.x = move_toward(velocity.x, 0, 10)
-		if abs(velocity.x) < 5: _on_slide_finished()
+		if abs(velocity.x) < 5:
+			_on_slide_finished()
 	elif not attacking:
 		var final_speed = SPEED * (SPRINT_MULTIPLIER if is_sprinting else 1.0)
 		if direction != 0:
@@ -155,8 +152,13 @@ func _physics_process(delta):
 
 	move_and_slide()
 	check_enemy_collision()
-	if not is_sliding: check_enemies_on_head()
+	if not is_sliding:
+		check_enemies_on_head()
 	update_animation(direction, is_sprinting)
+
+
+func is_attacking_enemy() -> bool:
+	return enemy_nearby and (attacking or is_sliding)
 
 
 func _update_enemy_detection():
@@ -168,8 +170,7 @@ func _update_enemy_detection():
 				enemy_nearby = true
 				last_enemy_time = Time.get_ticks_msec() / 1000.0
 				break
-	
-	# kasih buffer dikit biar status gak flicker
+
 	var current_time = Time.get_ticks_msec() / 1000.0
 	if not enemy_nearby and (current_time - last_enemy_time) < 2.0:
 		enemy_nearby = true
@@ -189,10 +190,12 @@ func check_enemy_collision():
 func handle_normal_collision(enemy):
 	if attacking or is_dead or is_knocked_back or not can_take_touch_damage:
 		return
-	
+
+	can_take_touch_damage = false
 	is_knocked_back = true
+	touch_damage_cooldown.start()
 	knockback_timer.start()
-	
+
 	var dir = (global_position - enemy.global_position).normalized()
 	var knock_x = sign(dir.x) if sign(dir.x) != 0 else 1
 	velocity = Vector2(knock_x * player_knockback_force, -150)
@@ -214,12 +217,10 @@ func check_enemies_on_head():
 			if global_position.y < enemy.global_position.y - 10:
 				knock_off_enemy(enemy)
 				stepped_on_enemy = true
-	
+
 	if stepped_on_enemy:
-		var t = create_tween()
-		t.tween_property(visualHero, "modulate", Color.RED, 0.05)
-		t.tween_property(visualHero, "modulate", Color.WHITE, 0.05)
 		velocity.y = -200
+		play_hit_flash()
 
 
 func knock_off_enemy(enemy):
@@ -230,18 +231,19 @@ func knock_off_enemy(enemy):
 
 
 func take_damage(amount):
-	if is_dead or not can_take_touch_damage: return
-	
-	GameState.player_health -= amount
-	current_hp = GameState.player_health
-	
+	if is_dead: return
+	if amount > 0 and not can_take_touch_damage: return
+
+	current_hp = clampi(current_hp - amount, 0, max_hp)
+	if has_node("/root/GameState"):
+		GameState.player_health = current_hp
+
 	emit_signal("hp_changed", current_hp)
-	play_hit_flash()
-	
-	can_take_touch_damage = false
-	touch_damage_cooldown.start()
-	
-	if current_hp <= 0: 
+
+	if amount > 0:
+		play_hit_flash()
+
+	if current_hp <= 0:
 		die()
 
 
@@ -307,7 +309,7 @@ func setup_head_detection():
 	head_detection_area.collision_mask = 4
 	head_detection_area.monitoring = true
 	head_detection_area.monitorable = false
-	
+
 	var shape = CollisionShape2D.new()
 	var rect = RectangleShape2D.new()
 	rect.size = head_detection_size
@@ -338,7 +340,7 @@ func _on_player_respawned():
 	can_take_touch_damage = true
 	set_physics_process(true)
 	visualHero.modulate = Color.WHITE
-	
+
 	if has_node("/root/GameState"):
 		global_position = GameState.checkpoint_position
 		current_hp = GameState.checkpoint_health
@@ -346,10 +348,11 @@ func _on_player_respawned():
 	else:
 		global_position = spawn_position
 		current_hp = max_hp
-	
+
 	velocity = Vector2.ZERO
+	enemy_nearby = false
 	emit_signal("hp_changed", current_hp)
-	
+
 	if fade:
 		var tween = get_tree().create_tween()
 		tween.tween_property(fade, "modulate:a", 0.0, 0.3)

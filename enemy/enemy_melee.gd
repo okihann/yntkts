@@ -164,7 +164,7 @@ func disable_hitbox():
 	hitbox.monitoring = false
 
 func _on_hitbox_body_entered(body):
-	if body.is_in_group("player") and body.has_method("take_damage"):
+	if (body.is_in_group("player") or body.is_in_group("companion")) and body.has_method("take_damage"):
 		body.take_damage(damage)
 
 func _on_attack_animation_finished():

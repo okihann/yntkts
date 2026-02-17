@@ -25,8 +25,12 @@ func _on_body_entered(body):
 	if body.is_in_group("enemy"):
 		return
 
-	# kalo kena player
 	if body.is_in_group("player") and body.has_method("take_damage"):
+		body.take_damage(damage)
+		queue_free()
+		return
+
+	if body.is_in_group("companion") and body.has_method("take_damage"):
 		body.take_damage(damage)
 		queue_free()
 		return
