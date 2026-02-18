@@ -51,7 +51,6 @@ func _ready():
 
 func update_pause_stats_display():
 	hp_label.text = "Hp: " + str(GameState.player_health) + "/" + str(GameState.player_max_health)
-	exp_label.text = "Exp: " + str(GameState.exp_gained) + "/" + str(GameState.exp_required)
 	level_label.text = "Level: " + str(GameState.player_level)
 func open_stats():
 	if stats_instance != null and is_instance_valid(stats_instance):

@@ -3,6 +3,11 @@
 [ext_resource type="Texture2D" uid="uid://cgpmc7g7sl34j" path="res://assets/UI/StatsMenu/heart-red.png" id="1_7uiu1"]
 [ext_resource type="Script" uid="uid://dfnniiqxscjgk" path="res://scripts/stats.gd" id="1_tqvmx"]
 [ext_resource type="Texture2D" uid="uid://bixq4mwjuwlwt" path="res://assets/UI/StatsMenu/Untitled62_20260217150518.png" id="3_11rni"]
+[ext_resource type="Texture2D" uid="uid://c6x03rm2yfhu2" path="res://assets/UI/StatsMenu/TinySwords.png" id="3_pb5b4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3phmi"]
+atlas = ExtResource("3_pb5b4")
+region = Rect2(0, 0, 16, 16)
 
 [node name="CanvasStats" type="CanvasLayer" unique_id=900416537]
 layer = 9
@@ -34,25 +39,44 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -254.0
-offset_top = -50.0
-offset_right = -110.0
-offset_bottom = -10.0
+offset_left = -336.0
+offset_top = -60.0
+offset_right = -192.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(3.31, 3.31)
-theme_override_constants/separation = 24
+scale = Vector2(4, 4)
+theme_override_constants/separation = 52
 
-[node name="TextureButton" type="TextureButton" parent="StatsMenu/HBoxContainer" unique_id=565884828]
+[node name="Control" type="Control" parent="StatsMenu/HBoxContainer" unique_id=1744399190]
 layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="StatsMenu/HBoxContainer/Control" unique_id=565884828]
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 40.0
 texture_normal = ExtResource("1_7uiu1")
 
-[node name="TextureButton2" type="TextureButton" parent="StatsMenu/HBoxContainer" unique_id=1215777542]
+[node name="Control2" type="Control" parent="StatsMenu/HBoxContainer" unique_id=1861385425]
 layout_mode = 2
-texture_normal = ExtResource("1_7uiu1")
 
-[node name="TextureButton3" type="TextureButton" parent="StatsMenu/HBoxContainer" unique_id=410904087]
+[node name="TextureButton2" type="TextureButton" parent="StatsMenu/HBoxContainer/Control2" unique_id=1215777542]
+layout_mode = 0
+offset_left = 24.338366
+offset_top = -0.90634453
+offset_right = 40.338364
+offset_bottom = 15.093656
+scale = Vector2(2.176, 2.176)
+texture_normal = SubResource("AtlasTexture_3phmi")
+
+[node name="Control3" type="Control" parent="StatsMenu/HBoxContainer" unique_id=1865230130]
 layout_mode = 2
+
+[node name="TextureButton3" type="TextureButton" parent="StatsMenu/HBoxContainer/Control3" unique_id=410904087]
+layout_mode = 0
+offset_left = 48.000008
+offset_right = 80.00001
+offset_bottom = 40.0
 texture_normal = ExtResource("1_7uiu1")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="StatsMenu" unique_id=1470632653]
@@ -131,11 +155,11 @@ text = "Points: 0"
 
 [node name="CloseButton" type="TextureButton" parent="StatsMenu" unique_id=508153494]
 layout_mode = 0
-offset_left = 52.0
-offset_top = 37.0
-offset_right = 116.0
-offset_bottom = 101.0
-scale = Vector2(0.775, 0.775)
+offset_left = 80.0
+offset_top = 64.0
+offset_right = 144.0
+offset_bottom = 128.0
+scale = Vector2(1.527, 1.527)
 texture_normal = ExtResource("3_11rni")
 
 [connection signal="pressed" from="StatsMenu/CloseButton" to="." method="_on_close_button_pressed"]
