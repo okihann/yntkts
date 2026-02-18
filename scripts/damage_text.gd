@@ -10,8 +10,6 @@ func setup(value, is_crit := false):
 		label.modulate = Color.DARK_RED
 	else:
 		label.add_theme_font_size_override("font_size", 12)
-		label.modulate = Color.DARK_RED
-		else:
 		label.modulate = Color.WHITE
 
 	var t = create_tween()
