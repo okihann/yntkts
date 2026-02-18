@@ -6,9 +6,9 @@ extends CanvasLayer
 @onready var aspd_text = $StatsMenu/HBoxContainer2/AspdText
 @onready var close_btn = $StatsMenu/CloseButton
 
-@onready var btn_add_hp = $StatsMenu/HBoxContainer/TextureButton
-@onready var btn_add_atk = $StatsMenu/HBoxContainer/TextureButton2
-@onready var btn_add_aspd = $StatsMenu/HBoxContainer/TextureButton3
+@onready var btn_add_hp = $StatsMenu/HBoxContainer/Control/TextureButton
+@onready var btn_add_atk = $StatsMenu/HBoxContainer/Control2/TextureButton2
+@onready var btn_add_aspd = $StatsMenu/HBoxContainer/Control3/TextureButton3
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS

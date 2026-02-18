@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://bgwtfndwg2v10" path="res://scenes/dead_zone.tscn" id="11_oob0o"]
 [ext_resource type="PackedScene" uid="uid://cvpvgxd6v01g3" path="res://scenes/enemy_spawner_1.tscn" id="14_jr0o4"]
 [ext_resource type="PackedScene" uid="uid://c2lru670dokrn" path="res://scenes/level_up_ui.tscn" id="15_bx410"]
+[ext_resource type="PackedScene" uid="uid://j3mrxtlqjel7" path="res://scenes/damage_text.tscn" id="17_n3ckw"]
 [ext_resource type="PackedScene" uid="uid://cxg47quittcgm" path="res://scenes/pause_menu.tscn" id="18_si45p"]
 [ext_resource type="PackedScene" uid="uid://difemr0kl3vma" path="res://scenes/pause_button.tscn" id="19_vxu0i"]
 
@@ -511,6 +512,7 @@ sources/0 = SubResource("TileSetAtlasSource_haa73")
 [node name="testing_level" type="Node2D" unique_id=813801286]
 script = ExtResource("1_bx410")
 metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
+metadata/_edit_vertical_guides_ = [24.0]
 
 [node name="Player" parent="." unique_id=912361228 groups=["player"] instance=ExtResource("2_b55i6")]
 position = Vector2(-333, -37)
@@ -558,3 +560,5 @@ enemyScene = ExtResource("10_7w4r7")
 [node name="Button" parent="." unique_id=567065856 instance=ExtResource("5_24k53")]
 
 [node name="PointUI" parent="." unique_id=1884333597 instance=ExtResource("15_bx410")]
+
+[node name="DamageText" parent="." unique_id=1424387138 instance=ExtResource("17_n3ckw")]

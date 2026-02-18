@@ -188,21 +188,23 @@ func check_enemy_collision():
 
 
 func handle_normal_collision(enemy):
-	if attacking or is_dead or is_knocked_back or not can_take_touch_damage:
+	if is_dead or is_knocked_back:
 		return
 
-	can_take_touch_damage = false
+	if not can_take_touch_damage:
+		return
+
 	is_knocked_back = true
-	touch_damage_cooldown.start()
 	knockback_timer.start()
 
 	var dir = (global_position - enemy.global_position).normalized()
 	var knock_x = sign(dir.x) if sign(dir.x) != 0 else 1
 	velocity = Vector2(knock_x * player_knockback_force, -150)
-
-	take_damage(touch_damage_to_player)
-
-
+	
+	take_damage(touch_damage_to_player, true)
+	can_take_touch_damage = false
+	touch_damage_cooldown.start()
+	
 func handle_slide_collision(enemy):
 	if enemy.has_method("take_knockback_damage"):
 		var dir = (enemy.global_position - global_position).normalized()
@@ -230,11 +232,15 @@ func knock_off_enemy(enemy):
 		enemy.take_knockback_damage(0, Vector2(dir_x, -0.5).normalized(), enemy_knockback_force * 0.5)
 
 
-func take_damage(amount):
-	if is_dead: return
-	if amount > 0 and not can_take_touch_damage: return
+func take_damage(amount: int, is_touch_damage := false):
+	if is_dead:
+		return
+
+	if is_touch_damage and not can_take_touch_damage:
+		return
 
 	current_hp = clampi(current_hp - amount, 0, max_hp)
+
 	if has_node("/root/GameState"):
 		GameState.player_health = current_hp
 
@@ -245,7 +251,6 @@ func take_damage(amount):
 
 	if current_hp <= 0:
 		die()
-
 
 func play_hit_flash():
 	var tween = get_tree().create_tween()

@@ -13,6 +13,8 @@ var exp_required: int = 100
 var attribute_point: int = 0
 var attack_speed: float = 0
 var basic_attack: int = 10
+var crit_rate: float = 0.2
+var crit_damage: float = 1.5
 
 # checkpoint
 var respawn_delay: float = 1.5 
@@ -49,6 +51,7 @@ var player_health: int = 100:
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	randomize()
 
 func is_playing() -> bool:
 	return current_state == State.PLAYING
@@ -59,6 +62,22 @@ func is_paused() -> bool:
 func change_state(new_state: State):
 	current_state = new_state
 
+func roll_damage(base):
+	var variance = randf_range(0.9, 1.1)
+	var dmg = base * variance
+
+	var is_crit = randf() < crit_rate
+	if is_crit:
+		dmg *= crit_damage
+		print("ngecritt ", dmg)
+	else:
+		print("gak crit ", dmg)
+
+	return {
+		"value": round(dmg),
+		"crit": is_crit
+	}
+	
 func _handle_state_change(new_state: State, old_state: State):
 	previous_state = old_state
 	
@@ -94,7 +113,6 @@ func _perform_level_up():
 	attribute_point += 3
 	#basic_attack += 50
 	
-	# Emit signals only once with the correct new level
 	emit_signal("level_up", player_level)
 	emit_signal("stats_changed")
 	
