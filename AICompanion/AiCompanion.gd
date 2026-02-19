@@ -509,6 +509,7 @@ func _flash_effect():
 func die():
 	if is_dead: return
 	is_dead = true
+	$CollisionShape2D.set_deferred("disabled", true)
 	companion_died.emit()
 	hide()
 	set_physics_process(false)

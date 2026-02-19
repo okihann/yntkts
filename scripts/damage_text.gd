@@ -18,4 +18,3 @@ func setup(value, is_crit := false, font_size := 15):
 
 	await t.finished
 	queue_free()
-
