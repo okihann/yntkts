@@ -2,9 +2,11 @@ extends Node2D
 
 @onready var player = $Player
 @onready var hp_ui = $UI/HealthBarRoot
-
+@onready var mobileBtn = $Button/Control/Control/MobileButtons
+@onready var pcAimLabel = $Button/Control/Control/Skill_Aim/PcAimLabel
+@onready var pcCastLabel = $Button/Control/Control/Skill_cast/PcCastLabel
 func _ready():
-	# Wait for player to initialize first
+	# $Control/Control/Skill_cast/PcCastLabelWait for player to initialize first
 	await get_tree().process_frame
 	
 	# Only sync if values weren't already set by player
@@ -28,8 +30,8 @@ func _ready():
 	
 	if has_node("Joystick"):
 		$Joystick.visible = is_mobile
-	if has_node("Button"):
-		$Button.visible = is_mobile
+		
+	mobileBtn.visible = is_mobile
 	
 	resize_healthbar()
 

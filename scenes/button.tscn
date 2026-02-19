@@ -10,6 +10,18 @@
 [ext_resource type="Texture2D" uid="uid://cctwgjy5im3jk" path="res://assets/UI/skill/button/Untitled65_20260219071759.png" id="6_iw4ej"]
 [ext_resource type="Texture2D" uid="uid://1ucf4o0gfxud" path="res://assets/UI/skill/button/Untitled65_20260219134321.png" id="6_jkx8l"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iw4ej"]
+bg_color = Color(0.9572255, 0.9572255, 0.9572255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jkx8l"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_top = 3.0
+expand_margin_bottom = 3.0
+
 [node name="Button" type="CanvasLayer" unique_id=567065856]
 script = ExtResource("1_is61r")
 
@@ -39,24 +51,6 @@ offset_right = -398.0
 offset_bottom = -358.0
 grow_horizontal = 0
 grow_vertical = 0
-
-[node name="Attack" type="TouchScreenButton" parent="Control/Control" unique_id=72425292]
-position = Vector2(39.646664, 29.57861)
-scale = Vector2(0.228, 0.228)
-texture_normal = ExtResource("1_1bdt2")
-action = "attack"
-
-[node name="Slide" type="TouchScreenButton" parent="Control/Control" unique_id=1563635191]
-position = Vector2(-51.11509, 211.1021)
-scale = Vector2(0.13, 0.13)
-texture_normal = ExtResource("2_8m7bo")
-action = "slide"
-
-[node name="Jump" type="TouchScreenButton" parent="Control/Control" unique_id=1592762295]
-position = Vector2(179, -68)
-scale = Vector2(0.13, 0.13)
-texture_normal = ExtResource("3_t81cg")
-action = "ui_accept"
 
 [node name="Skill_Aim" type="TouchScreenButton" parent="Control/Control" unique_id=1384647086]
 position = Vector2(-57.59806, -22.28525)
@@ -88,15 +82,85 @@ fill_mode = 5
 texture_progress = ExtResource("6_jkx8l")
 tint_progress = Color(1, 1, 1, 0.5764706)
 
+[node name="PcAimLabel" type="Label" parent="Control/Control/Skill_Aim" unique_id=749503033]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -86.30296
+offset_top = 1.4338684
+offset_right = 93.69702
+offset_bottom = 75.43387
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 54
+theme_override_styles/normal = SubResource("StyleBoxFlat_iw4ej")
+text = "E"
+horizontal_alignment = 1
+
 [node name="Skill_cast" type="TouchScreenButton" parent="Control/Control" unique_id=1217043376]
-visible = false
 position = Vector2(182.27228, -255.6726)
 scale = Vector2(0.447, 0.447)
 texture_normal = ExtResource("6_iw4ej")
 action = "skill_aim"
 
-[node name="Sprint" type="TouchScreenButton" parent="Control/Control" unique_id=1373293170]
-position = Vector2(182.2723, 204.61914)
+[node name="PcCastLabel" type="Label" parent="Control/Control/Skill_cast" unique_id=1437820840]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = 4.0
+offset_right = 90.0
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 54
+theme_override_styles/normal = SubResource("StyleBoxFlat_jkx8l")
+text = "L. Click"
+horizontal_alignment = 1
+
+[node name="MobileAimPos" type="Marker2D" parent="Control/Control" unique_id=1338954248]
+position = Vector2(-28.42465, -23.095623)
+
+[node name="MobileCastPos" type="Marker2D" parent="Control/Control" unique_id=1130832506]
+position = Vector2(207.39383, -210.29175)
+
+[node name="PcAimPos" type="Marker2D" parent="Control/Control" unique_id=2122309670]
+position = Vector2(248.72285, 265.39706)
+
+[node name="PcCastPos" type="Marker2D" parent="Control/Control" unique_id=1995783108]
+position = Vector2(243.05025, 129.25446)
+
+[node name="MobileButtons" type="Control" parent="Control/Control" unique_id=138232533]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Attack" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=72425292]
+position = Vector2(39.646667, 29.578598)
+scale = Vector2(0.22799999, 0.22799999)
+texture_normal = ExtResource("1_1bdt2")
+action = "attack"
+
+[node name="Jump" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1592762295]
+position = Vector2(179, -68)
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("3_t81cg")
+action = "ui_accept"
+
+[node name="Slide" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1563635191]
+position = Vector2(-51.11508, 211.10207)
+scale = Vector2(0.13, 0.13)
+texture_normal = ExtResource("2_8m7bo")
+action = "slide"
+
+[node name="Sprint" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1373293170]
+position = Vector2(182.27228, 204.61913)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("4_is61r")
 action = "sprint"
@@ -109,5 +173,5 @@ script = ExtResource("5_iw4ej")
 [connection signal="pressed" from="Control/Control/Skill_cast" to="." method="_on_skill_cast_pressed"]
 [connection signal="pressed" from="Control/Control/Skill_cast" to="Control/Control/Skill_Aim" method="_on_skill_cast_pressed"]
 [connection signal="pressed" from="Control/Control/Skill_cast" to="Control/Control/Skill_cast" method="_on_pressed"]
-[connection signal="pressed" from="Control/Control/Sprint" to="Control/Control/Sprint" method="_on_pressed"]
-[connection signal="released" from="Control/Control/Sprint" to="Control/Control/Sprint" method="_on_released"]
+[connection signal="pressed" from="Control/Control/MobileButtons/Sprint" to="Control/Control/MobileButtons/Sprint" method="_on_pressed"]
+[connection signal="released" from="Control/Control/MobileButtons/Sprint" to="Control/Control/MobileButtons/Sprint" method="_on_released"]
