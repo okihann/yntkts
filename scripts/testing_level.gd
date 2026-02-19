@@ -46,6 +46,6 @@ func resize_healthbar():
 		is_mobile = PlatformManager.is_mobile()
 	
 	if is_mobile:
-		hp_ui.scale = Vector2(scale_factor * 1.0, scale_factor * 1.0)
+		hp_ui.scale = hp_ui.scale * Vector2(scale_factor * 1.5, scale_factor * 1.5)
 	else:
-		hp_ui.scale = Vector2(scale_factor * 0.5, scale_factor * 0.5)
+		hp_ui.scale = hp_ui.scale * Vector2(scale_factor * 0.75, scale_factor * 0.75)

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://brdc5a0xc6n30"]
+
+[ext_resource type="Texture2D" uid="uid://rvys1k1t1hag" path="res://assets/UI/skill/Untitled64_20260218223107.png" id="1_62d8x"]
+
+[node name="AimIndicator" type="Node2D" unique_id=66715933]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=74708947]
+texture = ExtResource("1_62d8x")

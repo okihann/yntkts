@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 signal hp_changed(current_hp)
+signal skill_cd_updated(is_ready)
 
 const SPEED = 150.0
 const SPRINT_MULTIPLIER = 1.6
@@ -17,6 +18,8 @@ var is_knocked_back := false
 var can_take_touch_damage := true
 var enemy_nearby := false
 var last_enemy_time := 0.0
+var aim_from_ui := false
+var can_cast_bolt_skill := true
 
 var max_hp := 100
 var current_hp := max_hp
@@ -28,11 +31,18 @@ var spawn_position: Vector2 = Vector2.ZERO
 @export var enemy_knockback_force: float = 300.0
 @export var head_detection_offset: Vector2 = Vector2(0, -25)
 @export var head_detection_size: Vector2 = Vector2(40, 10)
+@export var lightning_scene: PackedScene
 
+var aiming_skill := false
+var aim_pos := Vector2.ZERO
+
+@onready var bolt_skill_cd_timer := Timer.new()
 @onready var fade = get_tree().current_scene.get_node_or_null("DeadCanvas/Fade")
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
 @onready var hitbox = $Hitbox
+@onready var aimBtn : TouchScreenButton
+
 
 var slide_timer := Timer.new()
 var attack_timer := Timer.new()
@@ -42,15 +52,19 @@ var knockback_timer := Timer.new()
 var head_detection_area: Area2D
 
 
+
 func _ready():
 	collision_layer = 2
 	collision_mask = 5
-
+	print($AimIndicator)
 	setup_timers()
 	setup_head_detection()
 	add_to_group("player")
 	spawn_position = global_position
-
+	add_child(bolt_skill_cd_timer)
+	bolt_skill_cd_timer.wait_time = GameState.bolt_skill_cd
+	bolt_skill_cd_timer.one_shot = true
+	bolt_skill_cd_timer.timeout.connect(on_bolt_skill_cd_finished)
 	if has_node("/root/GameState"):
 		sync_stats_from_gamestate()
 
@@ -75,11 +89,63 @@ func _ready():
 	emit_signal("hp_changed", current_hp)
 
 
+func on_bolt_skill_cd_finished():
+	can_cast_bolt_skill = true
+	emit_signal("skill_cd_updated", true)
+	
 func sync_stats_from_gamestate():
 	max_hp = GameState.player_max_health
 	current_hp = GameState.player_health
 	emit_signal("hp_changed", current_hp)
 
+func enter_skill_aim():
+	if aiming_skill or not can_cast_bolt_skill: 
+		return
+
+	aiming_skill = true
+	$AimIndicator.show()
+
+func update_aim():
+
+	aim_pos = get_global_mouse_position()
+	$AimIndicator.global_position = aim_pos
+	
+func check_cast_input():
+	if aim_from_ui:
+		return
+	
+	if Input.is_action_just_pressed("skill_cast"):
+		cast_skill(aim_pos)
+		cancel_skill_aim()
+func cancel_skill_aim():
+
+	if not aiming_skill:
+		return
+
+	aiming_skill = false
+	$AimIndicator.hide()
+
+func cast_skill(target_pos):
+	if not is_on_floor() or not can_cast_bolt_skill:
+		return
+	
+	var space = get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(target_pos, target_pos + Vector2(0, 1200))
+	query.collision_mask = 1
+	var result = space.intersect_ray(query)
+
+	if result.is_empty():
+		return
+
+	can_cast_bolt_skill = false
+	emit_signal("skill_cd_updated", false)
+	
+	var cd_duration = GameState.bolt_skill_cd if has_node("/root/GameState") else 3.0
+	bolt_skill_cd_timer.start(cd_duration)
+
+	var skill = lightning_scene.instantiate()
+	get_tree().current_scene.add_child(skill)
+	skill.global_position = result.position
 
 func _input(event):
 	if OS.has_feature("mobile"):
@@ -101,7 +167,15 @@ func _process(_delta):
 	if is_dead or get_tree().paused: return
 	if has_node("/root/GameState") and not GameState.is_playing(): return
 	_update_enemy_detection()
+	if Input.is_action_pressed("skill_aim"):
+		enter_skill_aim()
 
+	if Input.is_action_just_released("skill_aim"):
+		cancel_skill_aim()
+
+	if aiming_skill:
+		update_aim()
+		check_cast_input()
 
 func _physics_process(delta):
 	if has_node("/root/GameState") and not GameState.is_playing():
@@ -260,6 +334,8 @@ func play_hit_flash():
 
 
 func attack():
+	if aiming_skill:
+		return
 	attacking = true
 	stateMachineHero.travel("attack")
 	attack_timer.start(0.5)
@@ -337,8 +413,7 @@ func _on_slide_finished():
 func _on_respawn_timer_timeout():
 	if has_node("/root/GameState"): GameState.respawn_player()
 	else: get_tree().reload_current_scene()
-
-
+	
 func _on_player_respawned():
 	is_dead = false
 	is_knocked_back = false
@@ -346,6 +421,9 @@ func _on_player_respawned():
 	set_physics_process(true)
 	visualHero.modulate = Color.WHITE
 
+	bolt_skill_cd_timer.stop()
+	can_cast_bolt_skill = true
+	emit_signal("skill_cd_updated", true)
 	if has_node("/root/GameState"):
 		global_position = GameState.checkpoint_position
 		current_hp = GameState.checkpoint_health
@@ -361,6 +439,7 @@ func _on_player_respawned():
 	if fade:
 		var tween = get_tree().create_tween()
 		tween.tween_property(fade, "modulate:a", 0.0, 0.3)
+
 
 
 func _on_game_state_changed(new_state, _old_state):

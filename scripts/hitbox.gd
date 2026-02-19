@@ -10,7 +10,8 @@ func spawn_damage_text(pos, value, is_crit):
 	get_tree().current_scene.add_child(dt)
 
 	dt.global_position = pos + Vector2(randf_range(-10,10), -20)
-	dt.setup(value, is_crit)
+	var size = 18 if is_crit else 13
+	dt.setup(value, is_crit, size)
 	
 
 func _on_body_entered(body):

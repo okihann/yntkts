@@ -15,7 +15,8 @@ var attack_speed: float = 0
 var basic_attack: int = 10
 var crit_rate: float = 0.2
 var crit_damage: float = 1.5
-
+var bolt_skill_damage: int = 40
+var bolt_skill_cd : float = 5.0
 # checkpoint
 var respawn_delay: float = 1.5 
 var checkpoint_position: Vector2 = Vector2.ZERO

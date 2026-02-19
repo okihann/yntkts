@@ -21,7 +21,7 @@ offset_right = -28.0
 offset_bottom = -81.0
 grow_horizontal = 2
 grow_vertical = 0
-scale = Vector2(0.68914694, 0.62634045)
+scale = Vector2(0.434, 0.394)
 script = ExtResource("1_wm3ai")
 
 [node name="HealthBar" type="TextureProgressBar" parent="HealthBarRoot" unique_id=1664185231]

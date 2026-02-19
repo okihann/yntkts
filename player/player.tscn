@@ -2,7 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://dewnynca6dknf" path="res://player/playersprite.png" id="1_oul6g"]
 [ext_resource type="Script" uid="uid://tygypjecmxwu" path="res://player/player_controller.gd" id="1_rkbax"]
+[ext_resource type="PackedScene" uid="uid://c038s2tu2ooqc" path="res://scenes/dark_bolt_skill.tscn" id="2_qjkh3"]
 [ext_resource type="Script" uid="uid://b22bwrcwrpedi" path="res://scripts/hitbox.gd" id="3_g1dw6"]
+[ext_resource type="PackedScene" uid="uid://brdc5a0xc6n30" path="res://player/aim_indicator.tscn" id="5_g6k8r"]
 
 [sub_resource type="Animation" id="Animation_rkbax"]
 length = 0.001
@@ -473,6 +475,7 @@ height = 23.921856
 collision_layer = 2
 collision_mask = 21
 script = ExtResource("1_rkbax")
+lightning_scene = ExtResource("2_qjkh3")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1485415825]
 zoom = Vector2(2.763, 2.763)
@@ -516,6 +519,8 @@ shape = SubResource("CapsuleShape2D_rkbax")
 
 [node name="Timer" type="Timer" parent="." unique_id=1722286817]
 wait_time = 0.5
+
+[node name="AimIndicator" parent="." unique_id=66715933 instance=ExtResource("5_g6k8r")]
 
 [connection signal="body_entered" from="Hitbox" to="Hitbox" method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

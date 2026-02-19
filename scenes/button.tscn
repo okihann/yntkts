@@ -1,20 +1,30 @@
 [gd_scene format=3 uid="uid://yvrqpre8n5s6"]
 
 [ext_resource type="Texture2D" uid="uid://bo3fmkgxdddc8" path="res://assets/UI/Control/Attack_Button.png" id="1_1bdt2"]
+[ext_resource type="Script" uid="uid://bx2vu8akiud36" path="res://scenes/button.gd" id="1_is61r"]
 [ext_resource type="Texture2D" uid="uid://n2qu1472iieb" path="res://assets/UI/Control/Slide_Button.png" id="2_8m7bo"]
 [ext_resource type="Texture2D" uid="uid://cv8kyp26dtgj3" path="res://assets/UI/Control/Jump_Button.png" id="3_t81cg"]
+[ext_resource type="Texture2D" uid="uid://p70uoxgt5aan" path="res://assets/UI/skill/button/Untitled65_20260219071643.png" id="4_8m7bo"]
 [ext_resource type="Texture2D" uid="uid://dgusead7hftdo" path="res://assets/UI/Control/Sprint_Button.png" id="4_is61r"]
 [ext_resource type="Script" uid="uid://i46rmk01eyl5" path="res://sprint.gd" id="5_iw4ej"]
+[ext_resource type="Texture2D" uid="uid://cctwgjy5im3jk" path="res://assets/UI/skill/button/Untitled65_20260219071759.png" id="6_iw4ej"]
+[ext_resource type="Texture2D" uid="uid://1ucf4o0gfxud" path="res://assets/UI/skill/button/Untitled65_20260219134321.png" id="6_jkx8l"]
 
 [node name="Button" type="CanvasLayer" unique_id=567065856]
+script = ExtResource("1_is61r")
 
 [node name="Control" type="Control" parent="." unique_id=1673038871]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -433.99997
+offset_top = -185.0
+offset_right = -434.0
+offset_bottom = -185.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.234, 1.234)
 
 [node name="Control" type="Control" parent="Control" unique_id=1299244564]
 layout_mode = 1
@@ -31,12 +41,13 @@ grow_horizontal = 0
 grow_vertical = 0
 
 [node name="Attack" type="TouchScreenButton" parent="Control/Control" unique_id=72425292]
-scale = Vector2(0.25, 0.25)
+position = Vector2(39.646664, 29.57861)
+scale = Vector2(0.228, 0.228)
 texture_normal = ExtResource("1_1bdt2")
 action = "attack"
 
 [node name="Slide" type="TouchScreenButton" parent="Control/Control" unique_id=1563635191]
-position = Vector2(-28, 195.99998)
+position = Vector2(-51.11509, 211.1021)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("2_8m7bo")
 action = "slide"
@@ -47,12 +58,56 @@ scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("3_t81cg")
 action = "ui_accept"
 
+[node name="Skill_Aim" type="TouchScreenButton" parent="Control/Control" unique_id=1384647086]
+position = Vector2(-57.59806, -22.28525)
+scale = Vector2(0.447, 0.447)
+texture_normal = ExtResource("4_8m7bo")
+action = "skill_aim"
+
+[node name="Label" type="Label" parent="Control/Control/Skill_Aim" unique_id=1990234610]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 45
+text = "
+"
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Control/Control/Skill_Aim" unique_id=820377407]
+offset_right = 40.0
+offset_bottom = 40.0
+step = 0.01
+fill_mode = 5
+texture_progress = ExtResource("6_jkx8l")
+tint_progress = Color(1, 1, 1, 0.5764706)
+
+[node name="Skill_cast" type="TouchScreenButton" parent="Control/Control" unique_id=1217043376]
+visible = false
+position = Vector2(182.27228, -255.6726)
+scale = Vector2(0.447, 0.447)
+texture_normal = ExtResource("6_iw4ej")
+action = "skill_aim"
+
 [node name="Sprint" type="TouchScreenButton" parent="Control/Control" unique_id=1373293170]
-position = Vector2(174, 183)
+position = Vector2(182.2723, 204.61914)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("4_is61r")
 action = "sprint"
 script = ExtResource("5_iw4ej")
 
+[connection signal="pressed" from="Control/Control/Skill_Aim" to="." method="_on_skill_aim_pressed"]
+[connection signal="pressed" from="Control/Control/Skill_Aim" to="Control/Control/Skill_Aim" method="_on_pressed"]
+[connection signal="released" from="Control/Control/Skill_Aim" to="." method="_on_skill_aim_released"]
+[connection signal="released" from="Control/Control/Skill_Aim" to="Control/Control/Skill_Aim" method="_on_released"]
+[connection signal="pressed" from="Control/Control/Skill_cast" to="." method="_on_skill_cast_pressed"]
+[connection signal="pressed" from="Control/Control/Skill_cast" to="Control/Control/Skill_Aim" method="_on_skill_cast_pressed"]
+[connection signal="pressed" from="Control/Control/Skill_cast" to="Control/Control/Skill_cast" method="_on_pressed"]
 [connection signal="pressed" from="Control/Control/Sprint" to="Control/Control/Sprint" method="_on_pressed"]
 [connection signal="released" from="Control/Control/Sprint" to="Control/Control/Sprint" method="_on_released"]

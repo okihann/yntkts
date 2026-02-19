@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://c038s2tu2ooqc"]
+
+[ext_resource type="Script" uid="uid://cpovjfhdvrqre" path="res://scripts/dark_bolt_skill.gd" id="1_ufjku"]
+[ext_resource type="Texture2D" uid="uid://ch0ei1is60h0i" path="res://assets/UI/skill/Magic Pack 9 files/spritesheets/Dark-Bolt.png" id="2_otfb3"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2nq21"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(0, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qohsb"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(64, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uvv1g"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(128, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yw4l6"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(192, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1uhuc"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(256, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oml6m"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(320, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6kwgy"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(384, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gimfi"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(448, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m423b"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(512, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7rq2s"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(576, 0, 64, 88)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_10pa5"]
+atlas = ExtResource("2_otfb3")
+region = Rect2(640, 0, 64, 88)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2hbri"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2nq21")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qohsb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uvv1g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yw4l6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1uhuc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oml6m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6kwgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gimfi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m423b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7rq2s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_10pa5")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ufjku"]
+
+[node name="DarkBoltSkill" type="Node2D" unique_id=1450426442]
+scale = Vector2(2.2, 2.2)
+script = ExtResource("1_ufjku")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1356305558]
+position = Vector2(866.6667, -821.3334)
+sprite_frames = SubResource("SpriteFrames_2hbri")
+offset = Vector2(-866.6667, 781.3334)
+
+[node name="Area2D" type="Area2D" parent="." unique_id=785575373]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1381490103]
+scale = Vector2(3, 3)
+shape = SubResource("CircleShape2D_ufjku")
+
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
