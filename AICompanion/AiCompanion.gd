@@ -572,6 +572,7 @@ func _on_player_respawned():
 	is_knocked_back = false
 	is_dead = false
 	path_history.clear()
+	$CollisionShape2D.set_deferred("disabled", false)
 
 	show()
 	set_physics_process(true)
