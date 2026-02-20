@@ -4,6 +4,12 @@ extends CanvasLayer
 @onready var aim_button = $Control/Control/Skill_Aim
 @onready var cooldown_label = $Control/Control/Skill_Aim/Label
 @onready var cooldown_bar = $Control/Control/Skill_Aim/TextureProgressBar
+@onready var mobileAimMarker =  $Control/Control/MobileAimPos
+@onready var mobileCastMarker = $Control/Control/MobileCastPos
+@onready var PcAimMarker = $Control/Control/PcAimPos
+@onready var PcCastMarker = $Control/Control/PcCastPos
+@onready var pcALabel = $Control/Control/Skill_Aim/PcAimLabel
+@onready var pcCLabel = $Control/Control/Skill_cast/PcCastLabel
 
 func _process(_delta: float) -> void:
 	if player and player.bolt_skill_cd_timer:
@@ -22,12 +28,26 @@ func _process(_delta: float) -> void:
 
 
 func _ready() -> void:
+	castBtn.hide()
+	setup_ui_positions()
 	if player:
 		player.aimBtn = aim_button
 		if not player.skill_cd_updated.is_connected(_on_skill_cd_updated):
 			player.skill_cd_updated.connect(_on_skill_cd_updated)
 		_on_skill_cd_updated(player.can_cast_bolt_skill)
-
+		
+func setup_ui_positions():
+	if OS.has_feature("mobile"):
+		aim_button.global_position = mobileAimMarker.global_position
+		castBtn.global_position = mobileCastMarker.global_position
+		pcALabel.hide()
+		pcCLabel.hide()
+	else:
+		aim_button.global_position = PcAimMarker.global_position
+		castBtn.global_position = PcCastMarker
+		pcALabel.show()
+		pcCLabel.show()
+		
 func _on_skill_cd_updated(is_ready: bool) -> void:
 	if is_ready:
 		pass

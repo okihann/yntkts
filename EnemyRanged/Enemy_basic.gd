@@ -12,10 +12,11 @@ var arrowScene = preload("res://EnemyRanged/EnemyArrow.tscn")
 var target: Node2D = null
 
 var detectRange = 350.0
+var angryRange = 900.0
 var attackRange = 100.0
 var hpEnemy = 100.0
 var max_hp = 100.0
-
+var is_angry := false
 const speed = 70
 const jumpVelocity = -400.0
 
@@ -32,6 +33,8 @@ func _ready():
 	
 	add_to_group("enemies")
 	max_hp = hpEnemy
+	if has_node("/root/GameState"):
+		GameState.player_respawned.connect(_on_player_respawned)
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -40,6 +43,10 @@ func _physics_process(delta: float) -> void:
 	if current_state == state.Death:
 		move_and_slide()
 		return
+	if target and not is_instance_valid(target):
+		target = null
+		is_angry = false
+		change_state(state.Idle)
 
 	if is_knocked_back:
 		knockback_timer -= delta
@@ -54,9 +61,13 @@ func _physics_process(delta: float) -> void:
 
 	if target and is_instance_valid(target):
 		var distance = global_position.distance_to(target.global_position)
-		if distance > detectRange:
+		var max_range = angryRange if is_angry else detectRange
+		if distance > max_range:
 			target = null
-
+			is_angry = false
+			change_state(state.Idle)
+			anim_player.play("Idle")
+			
 	if current_state == state.Attack and target:
 		var new_dir = sign(target.global_position.x - global_position.x)
 		if new_dir != 0 and new_dir != attack_direction:
@@ -88,9 +99,19 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = 0
 		change_state(state.Idle)
-
+		anim_player.play("Idle")
+		
+	if current_state == state.Walk and target == null:
+		change_state(state.Idle)
 	move_and_slide()
 
+func _on_player_respawned():
+	target = null
+	is_angry = false
+	is_knocked_back = false
+	velocity = Vector2.ZERO
+	change_state(state.Idle)
+	
 func change_state(new_state):
 	if current_state == new_state:
 		return
@@ -102,6 +123,7 @@ func change_state(new_state):
 			anim_player.play("Idle")
 		state.Walk:
 			anim_player.play("Walk")
+			
 		state.Attack:
 			attack_direction = pivot.scale.x
 			anim_player.play("Attack")
@@ -122,17 +144,25 @@ func fire():
 	arrow.shooter = self
 	get_tree().root.add_child(arrow)
 
-func take_damage(amount):
+func take_damage(amount, source = null):
 	hpEnemy -= amount
+	
+	if source and source.is_in_group("player"):
+		target = source
+		is_angry = true
+		pivot.scale.x = sign(source.global_position.x - global_position.x)
 	if hpEnemy <= 0:
 		change_state(state.Death)
 	else:
 		change_state(state.GetHit)
 		velocity = Vector2.ZERO
 
-func take_knockback_damage(amount, knockback_dir: Vector2, knockback_force: float):
+func take_knockback_damage(amount, knockback_dir, knockback_force, source = null):
+
 	hpEnemy -= amount
-	
+
+	if source and source.is_in_group("player"):
+		target = source
 	if hpEnemy <= 0:
 		change_state(state.Death)
 		is_knocked_back = true

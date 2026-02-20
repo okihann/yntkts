@@ -13,6 +13,8 @@ extends CharacterBody2D
 var target: Node2D = null
 
 var detectRange = 350.0
+var angryRange = 900.0
+var is_angry := false
 var attackRange = 70.0
 var hpEnemy = 100.0
 var max_hp = 100.0
@@ -53,6 +55,9 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		
+	if target and current_state == state.Idle:
+		change_state(state.Walk)
 
 	if current_state == state.Death:
 		move_and_slide()
@@ -81,11 +86,13 @@ func _physics_process(delta: float) -> void:
 
 	if target and is_instance_valid(target):
 		var distance = global_position.distance_to(target.global_position)
-		
-		if distance > detectRange:
+		var max_range = angryRange if is_angry else detectRange
+		if distance > max_range:
 			target = null
-			velocity.x = 0
+			is_angry = false
 			change_state(state.Idle)
+			velocity.x = 0
+			anim_player.travel("idle")
 		else:
 			var horizontal_distance = abs(target.global_position.x - global_position.x)
 			var vertical_distance = abs(target.global_position.y - global_position.y)
@@ -96,6 +103,7 @@ func _physics_process(delta: float) -> void:
 
 			if horizontal_distance <= attackRange and vertical_distance < 50:
 				velocity.x = 0
+				anim_player.travel("idle")
 				if can_attack:
 					change_state(state.Attack)
 				else:
@@ -110,7 +118,10 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = 0
 		change_state(state.Idle)
-
+		
+	if current_state == state.Walk and target == null:
+		change_state(state.Idle)
+		anim_player.travel("idle")
 	move_and_slide()
 
 func change_state(new_state):
@@ -181,14 +192,16 @@ func _on_attack_animation_finished():
 func _on_attack_timer_timeout():
 	can_attack = true
 
-func take_damage(amount):
+func take_damage(amount, source = null):
 	hpEnemy -= amount
 	
+	if source and source.is_in_group("player"):
+		target = source
+		is_angry = true
+		
 	if hpEnemy <= 0:
 		change_state(state.Death)
 	else:
-		combo_step = 0
-		attackTimer.stop()
 		change_state(state.GetHit)
 		velocity = Vector2.ZERO
 

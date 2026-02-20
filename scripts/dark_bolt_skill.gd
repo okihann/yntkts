@@ -17,6 +17,6 @@ func _on_area_2d_body_entered(body) -> void:
 	var is_crit = randf() < GameState.crit_rate
 	var totalDamage = GameState.roll_damage(GameState.bolt_skill_damage)
 	if body.has_method("take_damage"):
-		body.take_damage(totalDamage.value)
+		body.take_damage(totalDamage.value, get_tree().get_first_node_in_group("player"))
 		spawn_damage_text(body.global_position, totalDamage.value, totalDamage.crit)
 		#print("sikat wok")
