@@ -70,9 +70,9 @@ func roll_damage(base):
 	var is_crit = randf() < crit_rate
 	if is_crit:
 		dmg *= crit_damage
-		print("ngecritt ", dmg)
-	else:
-		print("gak crit ", dmg)
+		#print("ngecritt ", dmg)
+	#else:
+		#print("gak crit ", dmg)
 
 	return {
 		"value": round(dmg),

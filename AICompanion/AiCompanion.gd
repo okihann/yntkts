@@ -74,7 +74,9 @@ var dodge_cooldown_timer: float = 0.0
 @onready var attack_timer: Timer = $AttackTimer
 @onready var damage_immunity_timer: Timer = $DamageImmunityTimer
 @onready var knockback_timer: Timer = $KnockbackTimer
+@onready var area_detector := $AreaDetector
 
+var nearest_enemy: Array = []
 var wall_detector: RayCast2D
 var ground_probe: RayCast2D
 
@@ -400,11 +402,15 @@ func _find_incoming_arrow() -> Node2D:
 
 
 func _find_dangerous_enemy() -> Node2D:
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	for enemy in enemies:
-		if not is_instance_valid(enemy): continue
-		if global_position.distance_to(enemy.global_position) < dodge_detect_range * 0.55:
-			return enemy
+	#var enemies = get_tree().get_nodes_in_group("enemies")
+	#for enemy in enemies:
+		#if not is_instance_valid(enemy): continue
+		#if global_position.distance_to(enemy.global_position) < dodge_detect_range * 0.55:
+			#return enemy
+	for e in nearest_enemy:
+		if not is_instance_valid(e): continue
+		if global_position.distance_to(e.global_position) < dodge_detect_range * 0.5:
+			return e
 	return null
 
 
@@ -438,14 +444,21 @@ func _start_dodge():
 
 func _get_enemy_avoidance_push() -> float:
 	var push = 0.0
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	for enemy in enemies:
-		if not is_instance_valid(enemy): continue
-		var dist = global_position.distance_to(enemy.global_position)
+	#var enemies = get_tree().get_nodes_in_group("enemies")
+	#for enemy in enemies:
+		#if not is_instance_valid(enemy): continue
+		#var dist = global_position.distance_to(enemy.global_position)
+		#var danger_radius = dodge_detect_range * 0.7
+		#if dist < danger_radius:
+			#var strength = (1.0 - dist / danger_radius) * movement_speed * 1.5
+			#push += sign(global_position.x - enemy.global_position.x) * strength
+	for e in nearest_enemy:
+		if not is_instance_valid(e): continue
+		var dist = global_position.distance_to(e.global_position)
 		var danger_radius = dodge_detect_range * 0.7
 		if dist < danger_radius:
 			var strength = (1.0 - dist / danger_radius) * movement_speed * 1.5
-			push += sign(global_position.x - enemy.global_position.x) * strength
+			push += sign(global_position.x - e.global_position.x) * strength
 	return push
 
 
@@ -517,10 +530,16 @@ func die():
 
 
 func _find_nearest_enemy() -> Node2D:
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	#var enemies = get_tree().get_nodes_in_group("enemies")
 	var nearest: Node2D = null
 	var min_dist = detection_range
-	for e in enemies:
+	#for e in enemies:
+		#if is_instance_valid(e):
+			#var d = global_position.distance_to(e.global_position)
+			#if d < min_dist:
+				#nearest = e
+				#min_dist = d
+	for e in nearest_enemy:
 		if is_instance_valid(e):
 			var d = global_position.distance_to(e.global_position)
 			if d < min_dist:
@@ -582,3 +601,19 @@ func _on_player_respawned():
 		global_position = player.global_position + Vector2(-50, 0)
 
 	companion_damaged.emit(current_hp, max_hp)
+
+
+func _on_area_detector_body_entered(body: Node2D) -> void:
+	#print("yg masuk : ", body.name)
+	if body.is_in_group("enemy"):
+		if not nearest_enemy.has(body):
+			nearest_enemy.append(body)
+			print("musuh masuk ke radar wok: ", body.name)
+	pass # Replace with function body.
+
+
+func _on_area_detector_body_exited(body: Node2D) -> void:
+	if body.is_in_group("enemy"):
+		if nearest_enemy.has(body):
+			nearest_enemy.erase(body)
+	pass # Replace with function body.
