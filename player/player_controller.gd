@@ -202,7 +202,7 @@ func _physics_process(delta):
 	var direction := Input.get_axis("ui_left", "ui_right")
 	var is_sprinting := Input.is_action_pressed("sprint")
 
-	if Input.is_action_just_pressed("ui_accept") and (is_on_floor() or coyote_timer > 0) and not is_sliding:
+	if Input.is_action_pressed("ui_accept") and (is_on_floor() or coyote_timer > 0) and not is_sliding:
 		velocity.y = JUMP_VELOCITY
 		coyote_timer = 0
 

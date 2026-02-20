@@ -28,6 +28,8 @@ func _process(_delta: float) -> void:
 
 
 func _ready() -> void:
+	$Control.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$Control/Control.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	castBtn.hide()
 	setup_ui_positions()
 	if player:
