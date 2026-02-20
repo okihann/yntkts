@@ -125,7 +125,8 @@ func cancel_skill_aim():
 
 	aiming_skill = false
 	$AimIndicator.hide()
-
+	castBtn.hide()
+	
 func cast_skill(target_pos):
 	if not is_on_floor() or not can_cast_bolt_skill:
 		return

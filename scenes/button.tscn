@@ -134,8 +134,7 @@ position = Vector2(207.39383, -210.29175)
 position = Vector2(227.65317, 270.25934)
 
 [node name="PcCastPos" type="Marker2D" parent="Control/Control" unique_id=1995783108]
-visible = false
-position = Vector2(225.22206, 168.15236)
+position = Vector2(234.94655, 70.09725)
 
 [node name="MobileButtons" type="Control" parent="Control/Control" unique_id=138232533]
 anchors_preset = 0

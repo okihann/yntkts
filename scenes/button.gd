@@ -62,12 +62,9 @@ func _on_skill_aim_pressed() -> void:
 		player.aim_from_ui = true
 		player.enter_skill_aim()
 
-
-
 func _on_skill_aim_released() -> void:
 	player.aim_from_ui = false
 	player.cancel_skill_aim()
-	castBtn.hide()
 
 func _on_skill_cast_pressed() -> void:
 	if player.aiming_skill:
