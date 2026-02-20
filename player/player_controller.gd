@@ -42,7 +42,7 @@ var aim_pos := Vector2.ZERO
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
 @onready var hitbox = $Hitbox
 @onready var aimBtn : TouchScreenButton
-
+@onready var castBtn : TouchScreenButton = $"../Button/Control/Control/Skill_cast"
 
 var slide_timer := Timer.new()
 var attack_timer := Timer.new()
@@ -103,6 +103,7 @@ func enter_skill_aim():
 		return
 
 	aiming_skill = true
+	castBtn.show()
 	$AimIndicator.show()
 
 func update_aim():

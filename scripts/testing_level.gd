@@ -5,10 +5,10 @@ extends Node2D
 @onready var mobileBtn = $Button/Control/Control/MobileButtons
 @onready var pcAimLabel = $Button/Control/Control/Skill_Aim/PcAimLabel
 @onready var pcCastLabel = $Button/Control/Control/Skill_cast/PcCastLabel
+@onready var castBtn = $Button/Control/Control/Skill_cast
 func _ready():
 	# $Control/Control/Skill_cast/PcCastLabelWait for player to initialize first
 	await get_tree().process_frame
-	
 	# Only sync if values weren't already set by player
 	if has_node("/root/GameState"):
 		# Player already synced with GameState, just update UI

@@ -44,7 +44,7 @@ func setup_ui_positions():
 		pcCLabel.hide()
 	else:
 		aim_button.global_position = PcAimMarker.global_position
-		castBtn.global_position = PcCastMarker
+		castBtn.global_position = PcCastMarker.global_position
 		pcALabel.show()
 		pcCLabel.show()
 		
@@ -59,8 +59,7 @@ func _on_skill_aim_pressed() -> void:
 	if player and player.can_cast_bolt_skill:
 		player.aim_from_ui = true
 		player.enter_skill_aim()
-		if player.aiming_skill:
-			castBtn.show()
+
 
 
 func _on_skill_aim_released() -> void:
