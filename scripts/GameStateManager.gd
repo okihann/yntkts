@@ -1,6 +1,6 @@
 extends Node
 
-enum State { MENU, PLAYING, PAUSED, RESPAWNING, LOADING }
+enum State { MENU, PLAYING, PAUSED, INVENTORY, RESPAWNING, LOADING }
 
 #var current_state = State.MENU
 var previous_state = State.MENU
@@ -94,6 +94,8 @@ func _handle_state_change(new_state: State, old_state: State):
 		State.RESPAWNING:
 			get_tree().paused = false
 			player_died.emit()
+		State.INVENTORY:
+			get_tree().paused = true
 
 func gain_exp(amount: int):
 	current_exp += amount
@@ -139,8 +141,18 @@ func load_level(level_path: String):
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
+		
 		if current_state == State.PLAYING:
 			change_state(State.PAUSED)
+
 		elif current_state == State.PAUSED:
 			change_state(State.PLAYING)
-	
+
+		elif current_state == State.INVENTORY:
+			change_state(State.PLAYING)
+			
+	if event.is_action_pressed("inventory"):
+		if current_state == State.PLAYING:
+			change_state(State.INVENTORY)
+		elif current_state == State.INVENTORY:
+			change_state(State.PLAYING)

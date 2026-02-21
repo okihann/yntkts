@@ -7,7 +7,7 @@ extends CharacterBody2D
 @onready var wallDetector = $Pivot/WallDetect
 @onready var markerArrow = $Pivot/Marker
 @onready var areaDetection = $Pivot/AreaDetection
-
+@export var money : ItemData
 var arrowScene = preload("res://EnemyRanged/EnemyArrow.tscn")
 var target: Node2D = null
 

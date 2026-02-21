@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://csa5bbjbupbxm"]
+
+[ext_resource type="Script" uid="uid://u7av7nhpgfal" path="res://Inventory/item_data.gd" id="1_hb7ol"]
+[ext_resource type="Texture2D" uid="uid://cdvnklc8i3se2" path="res://assets/Drops/Coins/Coins/Original Diminsions/Large/Blank Gold Piece.png" id="1_htu6x"]
+
+[resource]
+script = ExtResource("1_hb7ol")
+id = "currency"
+name = "Money"
+description = "This is a money, you can use it to buy something from the shop"
+icon = ExtResource("1_htu6x")
+metadata/_custom_type_script = "uid://u7av7nhpgfal"

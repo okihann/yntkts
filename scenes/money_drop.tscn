@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://iqoc6st4rjm"]
+
+[ext_resource type="Texture2D" uid="uid://cdvnklc8i3se2" path="res://assets/Drops/Coins/Coins/Original Diminsions/Large/Blank Gold Piece.png" id="1_dm5r7"]
+[ext_resource type="Script" uid="uid://bbmiv8xtprj5m" path="res://scripts/money_drop.gd" id="1_mqm5r"]
+[ext_resource type="Resource" uid="uid://csa5bbjbupbxm" path="res://Inventory/money.tres" id="2_4hd8b"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_k6kpj"]
+
+[node name="MoneyDrop" type="Area2D" unique_id=1326210650]
+script = ExtResource("1_mqm5r")
+item_data = ExtResource("2_4hd8b")
+amount = 10000
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2118604914]
+scale = Vector2(1.6, 1.6)
+shape = SubResource("CircleShape2D_k6kpj")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=942741523]
+texture = ExtResource("1_dm5r7")

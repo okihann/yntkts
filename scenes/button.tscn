@@ -145,7 +145,7 @@ offset_bottom = 40.0
 position = Vector2(39.646667, 29.578598)
 scale = Vector2(0.22799999, 0.22799999)
 texture_normal = ExtResource("1_1bdt2")
-action = "attack"
+action = "inventory"
 
 [node name="Jump" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1592762295]
 position = Vector2(179, -68)
