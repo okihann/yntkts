@@ -17,15 +17,16 @@ signal checkpoint_activated(checkpoint)
 
 func _ready():
 	body_entered.connect(_on_body_entered)
-	
+	add_to_group("checkpoints")
+
 	if has_node("Sprite2D"):
 		sprite = get_node("Sprite2D")
 	if has_node("AnimationPlayer"):
 		animation_player = get_node("AnimationPlayer")
-	
+
 	collision_layer = 1
 	collision_mask = 2
-	
+
 	if checkpoint_id == "":
 		checkpoint_id = "checkpoint_" + str(get_instance_id())
 
@@ -65,7 +66,7 @@ func activate(player: Node2D):
 			sprite.modulate = Color(0.5, 1.0, 0.5, 1.0)
 		
 		if show_activation_message:
-			print("💾 Checkpoint Saved!")
+			print("Checkpoint Saved!")
 		
 		emit_signal("checkpoint_activated", self)
 
@@ -74,3 +75,12 @@ func reset():
 	is_used = false
 	if sprite:
 		sprite.modulate = Color(1, 1, 1, 1)
+
+## Called by SaveManager after loading a save to restore this checkpoint's
+## activated state WITHOUT triggering healing, animations, or signals.
+## This way the player respawns here correctly but effects don't replay.
+func silent_activate() -> void:
+	is_activated = true
+	is_used      = true
+	if sprite:
+		sprite.modulate = Color(0.5, 1.0, 0.5, 1.0)

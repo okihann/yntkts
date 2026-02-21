@@ -14,8 +14,9 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="yntkts"
+config/name="Fall of Silence"
 run/main_scene="uid://bbuwmuu17lq50"
+config/custom_user_dir_name="FOS"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
@@ -25,6 +26,7 @@ GameState="*uid://byoavslxhdtlr"
 PlatformManager="*uid://barvusd4tiad"
 EnemyManager="*uid://cm4f7ab8of68u"
 InventoryManager="*uid://tqx1tjavogag"
+SaveManager="*uid://dcagq4kdm6m55"
 QuestManager="*uid://cq7k1wvbqm8lu"
 
 [dotnet]

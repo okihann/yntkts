@@ -17,10 +17,10 @@
 [ext_resource type="PackedScene" uid="uid://j3mrxtlqjel7" path="res://scenes/damage_text.tscn" id="17_n3ckw"]
 [ext_resource type="PackedScene" uid="uid://iqoc6st4rjm" path="res://scenes/money_drop.tscn" id="18_4owqe"]
 [ext_resource type="PackedScene" uid="uid://cxg47quittcgm" path="res://scenes/pause_menu.tscn" id="18_si45p"]
-[ext_resource type="Script" uid="uid://bbmiv8xtprj5m" path="res://scripts/money_drop.gd" id="19_pg4sr"]
 [ext_resource type="PackedScene" uid="uid://difemr0kl3vma" path="res://scenes/pause_button.tscn" id="19_vxu0i"]
 [ext_resource type="PackedScene" uid="uid://ccvwpq8qmmopl" path="res://scenes/slot_ui.tscn" id="21_16q1o"]
 [ext_resource type="PackedScene" uid="uid://bhch637ago7hr" path="res://scenes/inventory_ui.tscn" id="21_p3axr"]
+[ext_resource type="Script" uid="uid://yjcwaf2y3plr" path="res://scripts/testing_saving.gd" id="21_pg4sr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -569,11 +569,13 @@ enemyScene = ExtResource("10_7w4r7")
 [node name="MoneyDrop" parent="." unique_id=1326210650 instance=ExtResource("18_4owqe")]
 position = Vector2(-8, -21)
 collision_mask = 2
-script = ExtResource("19_pg4sr")
 
 [node name="SlotUI" parent="." unique_id=2018121209 instance=ExtResource("21_16q1o")]
 visible = false
 
 [node name="InventoryUI" parent="." unique_id=1542640298 instance=ExtResource("21_p3axr")]
+
+[node name="YESSIR" type="CanvasLayer" parent="." unique_id=1121430872]
+script = ExtResource("21_pg4sr")
 
 [connection signal="body_entered" from="MoneyDrop" to="MoneyDrop" method="_on_body_entered"]

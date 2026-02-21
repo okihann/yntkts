@@ -23,6 +23,8 @@ var checkpoint_position: Vector2 = Vector2.ZERO
 var checkpoint_health: int = 100
 var current_level: String = ""
 
+var playtime_seconds: float = 0.0
+
 signal state_changed(new_state, old_state)
 signal game_paused
 signal game_resumed
@@ -49,10 +51,13 @@ var player_health: int = 100:
 		if player_health <= 0 and current_state != State.RESPAWNING:
 			change_state(State.RESPAWNING)
 
-
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	randomize()
+
+func _process(delta: float) -> void:
+	if current_state == State.PLAYING:
+		playtime_seconds += delta
 
 func is_playing() -> bool:
 	return current_state == State.PLAYING
