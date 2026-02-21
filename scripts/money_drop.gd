@@ -12,4 +12,5 @@ func _ready():
 func _on_body_entered(body):
 	if body.is_in_group("player"):
 		InventoryManager.add_item(item_data, amount)
+		# QuestManager.add_progress("kill", "enemy")
 		queue_free()

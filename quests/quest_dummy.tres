@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="QuestData" format=3 uid="uid://du6yago3l8241"]
+
+[ext_resource type="Script" uid="uid://c01id0aj4jpmn" path="res://scripts/QuestObjective.gd" id="1_gx4ys"]
+[ext_resource type="Resource" uid="uid://dca568075sxra" path="res://quests/objectives_dummy.tres" id="2_cciyf"]
+[ext_resource type="Script" uid="uid://bu2v3jgp1gw1" path="res://scripts/QuestData.gd" id="2_p21xg"]
+
+[resource]
+script = ExtResource("2_p21xg")
+id = "quest l_kill_enemy"
+title = "Kill the enemy"
+description = "Kill all the enemies to get reward"
+objectives = Array[ExtResource("1_gx4ys")]([ExtResource("2_cciyf")])
+rewards_exp = 110
+rewards_gold = 20
+metadata/_custom_type_script = "uid://bu2v3jgp1gw1"

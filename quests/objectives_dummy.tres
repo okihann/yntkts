@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="QuestObjective" format=3 uid="uid://dca568075sxra"]
+
+[ext_resource type="Script" uid="uid://c01id0aj4jpmn" path="res://scripts/QuestObjective.gd" id="1_kf8yd"]
+
+[resource]
+script = ExtResource("1_kf8yd")
+type = "kill"
+target = "enemy"
+metadata/_custom_type_script = "uid://c01id0aj4jpmn"

@@ -20,7 +20,6 @@ var enemy_nearby := false
 var last_enemy_time := 0.0
 var aim_from_ui := false
 var can_cast_bolt_skill := true
-
 var max_hp := 100
 var current_hp := max_hp
 var spawn_position: Vector2 = Vector2.ZERO
@@ -54,6 +53,8 @@ var head_detection_area: Area2D
 
 
 func _ready():
+	var quest_dummy = load("res://quests/quest_dummy.tres")
+	QuestManager.start_quest(quest_dummy)
 	collision_layer = 2
 	collision_mask = 5
 	print($AimIndicator)

@@ -25,6 +25,7 @@ GameState="*uid://byoavslxhdtlr"
 PlatformManager="*uid://barvusd4tiad"
 EnemyManager="*uid://cm4f7ab8of68u"
 InventoryManager="*uid://tqx1tjavogag"
+QuestManager="*uid://cq7k1wvbqm8lu"
 
 [dotnet]
 
