@@ -7,6 +7,7 @@ var active_quests := {}
 
 func start_quest(q: QuestData):
 	active_quests[q.id] = q
+	print("START QUEST:", q.id)
 	quest_started.emit(q.id)
 
 func add_progress(type, target, amount := 1):

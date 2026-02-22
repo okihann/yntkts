@@ -24,6 +24,7 @@ expand_margin_bottom = 3.0
 
 [node name="Button" type="CanvasLayer" unique_id=567065856]
 script = ExtResource("1_is61r")
+metadata/_edit_vertical_guides_ = [-1969.0]
 
 [node name="Control" type="Control" parent="." unique_id=1673038871]
 layout_mode = 3

@@ -55,6 +55,7 @@ var head_detection_area: Area2D
 func _ready():
 	var quest_dummy = load("res://quests/quest_dummy.tres")
 	QuestManager.start_quest(quest_dummy)
+	
 	collision_layer = 2
 	collision_mask = 5
 	print($AimIndicator)

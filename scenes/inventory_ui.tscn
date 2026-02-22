@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bixq4mwjuwlwt" path="res://assets/UI/StatsMenu/Untitled62_20260217150518.png" id="3_eifbp"]
 
 [node name="InventoryUI" type="CanvasLayer" unique_id=1542640298]
+visible = false
 script = ExtResource("1_mdwe3")
 
 [node name="Control" type="Control" parent="." unique_id=1572996579]

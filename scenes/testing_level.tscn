@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://ccvwpq8qmmopl" path="res://scenes/slot_ui.tscn" id="21_16q1o"]
 [ext_resource type="PackedScene" uid="uid://bhch637ago7hr" path="res://scenes/inventory_ui.tscn" id="21_p3axr"]
 [ext_resource type="Script" uid="uid://yjcwaf2y3plr" path="res://scripts/testing_saving.gd" id="21_pg4sr"]
+[ext_resource type="PackedScene" uid="uid://di0kiv465tbx7" path="res://scenes/quest_page.tscn" id="22_p3axr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -516,13 +517,13 @@ sources/0 = SubResource("TileSetAtlasSource_haa73")
 [node name="testing_level" type="Node2D" unique_id=813801286]
 script = ExtResource("1_bx410")
 metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
-metadata/_edit_vertical_guides_ = [24.0]
+metadata/_edit_vertical_guides_ = [24.0, -370.0]
 
 [node name="Player" parent="." unique_id=912361228 instance=ExtResource("2_b55i6")]
 position = Vector2(-333, -37)
 
 [node name="AiCompanion" parent="." unique_id=1681515207 groups=["companion"] instance=ExtResource("3_jr0o4")]
-position = Vector2(-302, -39)
+position = Vector2(54, 699)
 max_hp = 50.0
 current_hp = 50.0
 attack_cooldown = 5.0
@@ -576,6 +577,9 @@ visible = false
 [node name="InventoryUI" parent="." unique_id=1542640298 instance=ExtResource("21_p3axr")]
 
 [node name="YESSIR" type="CanvasLayer" parent="." unique_id=1121430872]
+visible = false
 script = ExtResource("21_pg4sr")
+
+[node name="QuestPage" parent="." unique_id=222831098 instance=ExtResource("22_p3axr")]
 
 [connection signal="body_entered" from="MoneyDrop" to="MoneyDrop" method="_on_body_entered"]

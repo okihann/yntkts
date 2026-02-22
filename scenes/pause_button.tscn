@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://difemr0kl3vma"]
 
 [ext_resource type="Texture2D" uid="uid://bc30l5g6y5dnu" path="res://assets/UI/PauseMenu/Tak berjudul640_20260215111036.png" id="1_5rmv1"]
+[ext_resource type="Texture2D" uid="uid://b1skvslyak576" path="res://assets/UI/quest/Untitled71_20260222141439.png" id="2_rh5fn"]
 
 [node name="PauseButton" type="CanvasLayer" unique_id=892316168]
 
@@ -16,3 +17,9 @@ scale = Vector2(0.026, 0.026)
 [node name="TouchScreenButton" type="TouchScreenButton" parent="Control" unique_id=1961183353]
 texture_normal = ExtResource("1_5rmv1")
 action = "ui_cancel"
+
+[node name="TouchScreenButton2" type="TouchScreenButton" parent="Control" unique_id=1641027491]
+position = Vector2(846.15356, 5307.6904)
+scale = Vector2(75, 75)
+texture_normal = ExtResource("2_rh5fn")
+action = "quest_menu"

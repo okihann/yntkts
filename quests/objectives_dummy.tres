@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_kf8yd")
-type = "kill"
-target = "enemy"
+type = "Kill"
+target = "Enemy"
 metadata/_custom_type_script = "uid://c01id0aj4jpmn"

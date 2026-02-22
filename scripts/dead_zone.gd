@@ -5,9 +5,6 @@ signal body_killed(body)
 @onready var timer: Timer = $Timer
 @onready var fade: ColorRect = get_tree().current_scene.get_node("DeadCanvas/Fade")
 
-func _ready():
-	body_entered.connect(_on_body_entered)
-	timer.timeout.connect(_on_timer_timeout)
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("companion"):

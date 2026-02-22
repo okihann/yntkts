@@ -230,4 +230,5 @@ func _on_animation_finished(anim_name: StringName) -> void:
 		"death":
 			if has_node("/root/GameState"):
 				GameState.gain_exp(60)
+				QuestManager.add_progress("Kill", "Enemy")
 			queue_free()
