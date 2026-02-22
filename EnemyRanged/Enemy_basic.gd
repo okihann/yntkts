@@ -182,6 +182,7 @@ func _on_enemy_animation_animation_finished(anim_name: StringName) -> void:
 		"Death":
 			if has_node("/root/GameState"):
 				GameState.gain_exp(60)
+				QuestManager.add_progress("Kill", "Enemy")
 			queue_free()
 			
 	#membuat sinyal ketika suatu animasi (jenis apapun itu selesai) - tidak perlu pemanggilan 

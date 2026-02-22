@@ -166,3 +166,4 @@ func _input(event):
 			change_state(State.INVENTORY)
 		elif current_state == State.INVENTORY:
 			change_state(State.PLAYING)
+	

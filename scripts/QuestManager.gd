@@ -4,7 +4,42 @@ signal quest_updated(id)
 signal quest_completed(id)
 
 var active_quests := {}
+var quest_db := {}
 
+
+
+func _ready():
+	load_all_quests()
+	
+func load_all_quests():
+	var dir = DirAccess.open("res://quests")
+	if dir == null:
+		push_error("Quest folder not found")
+		return
+
+	dir.list_dir_begin()
+	var file = dir.get_next()
+
+	while file != "":
+		if file.ends_with(".tres"):
+			var res = load("res://quests/" + file)
+			
+			# FILTER TYPE DI SINI
+			if res is QuestData:
+				if res.id != "":
+					quest_db[res.id] = res
+					print("Loaded quest:", res.id)
+
+		file = dir.get_next()
+
+	dir.list_dir_end()
+
+func start_quest_by_id(id: String):
+	if quest_db.has(id):
+		start_quest(quest_db[id])
+	else:
+		push_error("ga ada quest id: " + id)
+		
 func start_quest(q: QuestData):
 	active_quests[q.id] = q
 	print("START QUEST:", q.id)

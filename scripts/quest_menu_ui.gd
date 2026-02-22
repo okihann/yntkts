@@ -11,14 +11,16 @@ func _ready():
 	add_to_group("quest_ui")
 	refresh_list()
 	
-	QuestManager.quest_started.connect(refresh_list)
-	QuestManager.quest_completed.connect(refresh_list)
-	QuestManager.quest_updated.connect(_on_quest_updated)
 
+	QuestManager.quest_started.connect(_on_quest_changed)
+	QuestManager.quest_updated.connect(_on_quest_changed)
+	QuestManager.quest_completed.connect(_on_quest_changed)
 
 func _on_quest_updated(id):
 	refresh_list()
-	
+
+func _on_quest_changed(id):
+	refresh_list()
 func refresh_list():
 	print("refresh wok")
 	print("active: ", QuestManager.active_quests)

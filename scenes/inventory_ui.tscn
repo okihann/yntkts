@@ -7,7 +7,6 @@
 [ext_resource type="FontFile" uid="uid://b2wa23dvvrqik" path="res://assets/Font pack By Mikiz/free_pixel/FreePixel.ttf" id="5_eifbp"]
 
 [node name="InventoryUI" type="CanvasLayer" unique_id=1542640298]
-visible = false
 script = ExtResource("1_mdwe3")
 
 [node name="Control" type="Control" parent="." unique_id=1572996579]
@@ -18,13 +17,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -266.0
-offset_top = -111.99997
-offset_right = -202.0
-offset_bottom = -47.99997
+offset_left = -808.0
+offset_top = -516.0
+offset_right = -744.0
+offset_bottom = -451.99997
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(3.4930925, 3.089624)
+scale = Vector2(7.542, 7.542)
 
 [node name="TextureRect" type="TextureRect" parent="Control" unique_id=1638747827]
 z_index = 1
@@ -68,7 +67,7 @@ expand_mode = 1
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="Control" unique_id=1748444674]
 z_index = 3
-position = Vector2(-39.182465, -0.112549186)
+position = Vector2(-16.97162, 11.6679945)
 scale = Vector2(0.104, 0.104)
 texture_normal = ExtResource("3_eifbp")
 action = "inventory"
@@ -81,29 +80,28 @@ offset_right = -54.947998
 offset_bottom = -38.559
 scale = Vector2(9.396266, 13.003783)
 mouse_filter = 2
-color = Color(0.25406232, 0.1604523, 0.08659736, 1)
+color = Color(0.07058824, 0.078431375, 0.08627451, 0.6313726)
 
 [node name="LeftPanel" type="HBoxContainer" parent="Control" unique_id=879200379]
 z_index = 5
 custom_minimum_size = Vector2(150, 80)
 layout_mode = 0
-offset_left = -10.060364
-offset_top = 30.163197
-offset_right = 139.93964
-offset_bottom = 110.16319
+offset_left = -5.568817
+offset_top = 29.965527
+offset_right = 144.43118
+offset_bottom = 109.96553
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Control/LeftPanel" unique_id=1817560231]
 z_index = 11
 custom_minimum_size = Vector2(150, 80)
 layout_mode = 2
-horizontal_scroll_mode = 2
-vertical_scroll_mode = 2
+horizontal_scroll_mode = 0
 
 [node name="GridContainer" type="GridContainer" parent="Control/LeftPanel/ScrollContainer" unique_id=254035958]
 z_index = 1080
 custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-columns = 12
+columns = 4
 metadata/_edit_use_anchors_ = true
 
 [node name="RightPanel" type="VBoxContainer" parent="Control" unique_id=1036141284]

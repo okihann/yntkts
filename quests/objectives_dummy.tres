@@ -6,4 +6,5 @@
 script = ExtResource("1_kf8yd")
 type = "Kill"
 target = "Enemy"
+required = 2
 metadata/_custom_type_script = "uid://c01id0aj4jpmn"

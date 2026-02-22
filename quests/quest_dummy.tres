@@ -6,7 +6,7 @@
 
 [resource]
 script = ExtResource("2_p21xg")
-id = "quest l_kill_enemy"
+id = "quest_dummy"
 title = "Kill the enemy"
 description = "Kill all the enemies to get reward"
 objectives = Array[ExtResource("1_gx4ys")]([ExtResource("2_cciyf")])

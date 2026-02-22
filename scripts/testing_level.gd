@@ -35,6 +35,16 @@ func _ready():
 	
 	resize_healthbar()
 
+func _process(_d):
+	if Dialogic.current_timeline != null:
+		_fix_dialog_mouse_filter(get_tree().root)
+
+func _fix_dialog_mouse_filter(node):
+	if node is Control and node.mouse_filter == Control.MOUSE_FILTER_STOP:
+		node.mouse_filter = Control.MOUSE_FILTER_PASS
+
+	for c in node.get_children():
+		_fix_dialog_mouse_filter(c)
 func _on_player_hp_changed(_current_hp):
 	if hp_ui.has_method("update_hp"):
 		hp_ui.update_hp()

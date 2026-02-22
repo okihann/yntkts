@@ -22,6 +22,8 @@
 [ext_resource type="PackedScene" uid="uid://bhch637ago7hr" path="res://scenes/inventory_ui.tscn" id="21_p3axr"]
 [ext_resource type="Script" uid="uid://yjcwaf2y3plr" path="res://scripts/testing_saving.gd" id="21_pg4sr"]
 [ext_resource type="PackedScene" uid="uid://di0kiv465tbx7" path="res://scenes/quest_page.tscn" id="22_p3axr"]
+[ext_resource type="Script" uid="uid://cn6f2sy1ifj2y" path="res://Dialogues/next_touch.gd" id="23_p3axr"]
+[ext_resource type="Script" uid="uid://b3t52mvmndyia" path="res://Dialogues/button.gd" id="24_7uy5g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -582,4 +584,24 @@ script = ExtResource("21_pg4sr")
 
 [node name="QuestPage" parent="." unique_id=222831098 instance=ExtResource("22_p3axr")]
 
+[node name="NextTouch" type="CanvasLayer" parent="." unique_id=1559584305]
+script = ExtResource("23_p3axr")
+
+[node name="Button" type="Button" parent="NextTouch" unique_id=1264852313 groups=["dialogue_touch"]]
+process_mode = 3
+z_index = 300
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -592.0
+offset_top = -321.0
+offset_right = -592.0
+offset_bottom = -321.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(3.711, 3.711)
+flat = true
+script = ExtResource("24_7uy5g")
+
 [connection signal="body_entered" from="MoneyDrop" to="MoneyDrop" method="_on_body_entered"]
+[connection signal="pressed" from="NextTouch/Button" to="NextTouch/Button" method="_on_pressed"]

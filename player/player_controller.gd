@@ -53,8 +53,7 @@ var head_detection_area: Area2D
 
 
 func _ready():
-	var quest_dummy = load("res://quests/quest_dummy.tres")
-	QuestManager.start_quest(quest_dummy)
+	Dialogic.start("dialogue_1_dummy")
 	
 	collision_layer = 2
 	collision_mask = 5
@@ -150,12 +149,6 @@ func cast_skill(target_pos):
 	var skill = lightning_scene.instantiate()
 	get_tree().current_scene.add_child(skill)
 	skill.global_position = result.position
-
-func _input(event):
-	if OS.has_feature("mobile"):
-		if event is InputEventMouseButton:
-			get_viewport().set_input_as_handled()
-
 
 func _unhandled_input(event):
 	if is_dead or get_tree().paused:
