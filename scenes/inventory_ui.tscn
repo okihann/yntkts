@@ -3,28 +3,32 @@
 [ext_resource type="Script" uid="uid://bm5y43eqqwpmm" path="res://scripts/inventory_ui.gd" id="1_mdwe3"]
 [ext_resource type="Texture2D" uid="uid://bj0wdtqelvi8m" path="res://assets/UI/Inventory/Untitled67_20260221083457.png" id="2_iradw"]
 [ext_resource type="Texture2D" uid="uid://bixq4mwjuwlwt" path="res://assets/UI/StatsMenu/Untitled62_20260217150518.png" id="3_eifbp"]
+[ext_resource type="FontFile" uid="uid://cy4xl01jqn061" path="res://assets/Font pack By Mikiz/8_bit_arcade/8-bit Arcade In.ttf" id="4_iradw"]
+[ext_resource type="FontFile" uid="uid://b2wa23dvvrqik" path="res://assets/Font pack By Mikiz/free_pixel/FreePixel.ttf" id="5_eifbp"]
 
 [node name="InventoryUI" type="CanvasLayer" unique_id=1542640298]
 visible = false
 script = ExtResource("1_mdwe3")
 
 [node name="Control" type="Control" parent="." unique_id=1572996579]
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -702.0
-offset_top = -339.0
-offset_right = -702.0
-offset_bottom = -339.0
+offset_left = -266.0
+offset_top = -111.99997
+offset_right = -202.0
+offset_bottom = -47.99997
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(9.443, 8.885)
+scale = Vector2(3.4930925, 3.089624)
 
 [node name="TextureRect" type="TextureRect" parent="Control" unique_id=1638747827]
 z_index = 1
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -34,22 +38,24 @@ anchor_bottom = 0.5
 offset_left = -89.16659
 offset_top = -21.722004
 offset_right = 38.833412
-offset_bottom = 42.277996
+offset_bottom = 42.278
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.868, 1.868)
 mouse_filter = 2
 texture = ExtResource("2_iradw")
+expand_mode = 1
 
 [node name="TextureRect2" type="TextureRect" parent="Control" unique_id=1874465950]
 z_index = 1
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 93.72022
+offset_left = 93.720215
 offset_top = -30.95104
 offset_right = 221.72021
 offset_bottom = 33.048958
@@ -58,6 +64,7 @@ grow_vertical = 2
 scale = Vector2(0.9209034, 2.131172)
 mouse_filter = 2
 texture = ExtResource("2_iradw")
+expand_mode = 1
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="Control" unique_id=1748444674]
 z_index = 3
@@ -80,10 +87,10 @@ color = Color(0.25406232, 0.1604523, 0.08659736, 1)
 z_index = 5
 custom_minimum_size = Vector2(150, 80)
 layout_mode = 0
-offset_left = -44.265594
-offset_top = -1.9133377
-offset_right = 105.734406
-offset_bottom = 78.08666
+offset_left = -10.060364
+offset_top = 30.163197
+offset_right = 139.93964
+offset_bottom = 110.16319
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Control/LeftPanel" unique_id=1817560231]
 z_index = 11
@@ -100,19 +107,26 @@ columns = 12
 metadata/_edit_use_anchors_ = true
 
 [node name="RightPanel" type="VBoxContainer" parent="Control" unique_id=1036141284]
+z_index = 2
 layout_mode = 0
-offset_left = 121.78333
-offset_top = -10.917275
-offset_right = 185.78333
-offset_bottom = 84.082726
+offset_left = 154.30452
+offset_top = 9.709909
+offset_right = 218.30452
+offset_bottom = 104.70991
 
 [node name="Icon" type="TextureRect" parent="Control/RightPanel" unique_id=1294169480]
 layout_mode = 2
+stretch_mode = 5
 
 [node name="Name" type="Label" parent="Control/RightPanel" unique_id=118416025]
+custom_minimum_size = Vector2(4, 4)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("4_iradw")
+theme_override_font_sizes/font_size = 16
 
 [node name="Desc" type="Label" parent="Control/RightPanel" unique_id=845435216]
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(8, 8)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("5_eifbp")
+theme_override_font_sizes/font_size = 8
 autowrap_mode = 2
