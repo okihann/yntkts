@@ -37,7 +37,6 @@ func _ready():
 	if has_node("/root/EnemyManager"):
 		EnemyManager.register_enemy(self)
 	
-	add_to_group("enemies")
 	add_to_group("enemy")
 	max_hp = hpEnemy
 	

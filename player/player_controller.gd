@@ -28,9 +28,13 @@ var spawn_position: Vector2 = Vector2.ZERO
 @export var touch_damage_to_player: int = 5
 @export var player_knockback_force: float = 150.0
 @export var enemy_knockback_force: float = 300.0
-@export var head_detection_offset: Vector2 = Vector2(0, -25)
-@export var head_detection_size: Vector2 = Vector2(40, 10)
+@export var head_detection_offset: Vector2 = Vector2(0, -45)
+@export var head_detection_size: Vector2 = Vector2(10, 10)
 @export var lightning_scene: PackedScene
+
+@export var fall_damage_threshold: float = 600.0
+@export var fall_damage_multiplier: float = 0.05
+var fall_velocity: float = 0.0
 
 var aiming_skill := false
 var aim_pos := Vector2.ZERO
@@ -49,8 +53,6 @@ var respawn_timer := Timer.new()
 var touch_damage_cooldown := Timer.new()
 var knockback_timer := Timer.new()
 var head_detection_area: Area2D
-
-
 
 func _ready():
 	var quest_dummy = load("res://quests/quest_dummy.tres")
@@ -188,6 +190,7 @@ func _physics_process(delta):
 
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		fall_velocity = velocity.y
 
 	if is_knocked_back:
 		velocity.x = move_toward(velocity.x, 0, 8)
@@ -195,6 +198,12 @@ func _physics_process(delta):
 		return
 
 	if is_on_floor():
+		if not was_on_floor: 
+			if fall_velocity > fall_damage_threshold:
+				var f_damage = int((fall_velocity - fall_damage_threshold) * fall_damage_multiplier)
+				if f_damage > 0:
+					take_damage(f_damage)
+					
 		coyote_timer = COYOTE_TIME
 		was_on_floor = true
 	else:
@@ -215,8 +224,8 @@ func _physics_process(delta):
 
 	if is_sliding:
 		velocity.x = move_toward(velocity.x, 0, 10)
-		if abs(velocity.x) < 5:
-			_on_slide_finished()
+		#if abs(velocity.x) < 5:
+			#_on_slide_finished()
 	elif not attacking:
 		var final_speed = SPEED * (SPRINT_MULTIPLIER if is_sprinting else 1.0)
 		if direction != 0:
@@ -240,7 +249,7 @@ func is_attacking_enemy() -> bool:
 
 
 func _update_enemy_detection():
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = get_tree().get_nodes_in_group("enemy")
 	enemy_nearby = false
 	for enemy in enemies:
 		if is_instance_valid(enemy):
@@ -258,7 +267,7 @@ func check_enemy_collision():
 	for i in range(get_slide_collision_count()):
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
-		if collider and collider.is_in_group("enemies"):
+		if collider and collider.is_in_group("enemy"):
 			if is_sliding:
 				handle_slide_collision(collider)
 			else:
@@ -293,13 +302,13 @@ func check_enemies_on_head():
 	if not head_detection_area: return
 	var stepped_on_enemy = false
 	for enemy in head_detection_area.get_overlapping_bodies():
-		if enemy.is_in_group("enemies") and is_instance_valid(enemy):
-			if global_position.y < enemy.global_position.y - 10:
+		if enemy.is_in_group("enemy") and is_instance_valid(enemy):
+			if enemy.global_position.y < global_position.y - 10:
 				knock_off_enemy(enemy)
 				stepped_on_enemy = true
 
 	if stepped_on_enemy:
-		velocity.y = -200
+		velocity.y = 200
 		play_hit_flash()
 
 
@@ -406,13 +415,16 @@ func setup_head_detection():
 
 func start_slide():
 	is_sliding = true
+	if head_detection_area:
+		head_detection_area.set_deferred("monitoring", false)
+	
 	velocity.x = (1 if visualHero.flip_h else -1) * SLIDE_SPEED
 	slide_timer.start()
 
-
 func _on_slide_finished():
 	is_sliding = false
-
+	if head_detection_area:
+		head_detection_area.set_deferred("monitoring", true)
 
 func _on_respawn_timer_timeout():
 	if has_node("/root/GameState"): GameState.respawn_player()
