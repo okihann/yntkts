@@ -2,47 +2,55 @@
 
 [ext_resource type="Script" uid="uid://buxci52ci2cb4" path="res://scripts/slot_ui.gd" id="1_vlebx"]
 [ext_resource type="Texture2D" uid="uid://cxl10qq7b6fk7" path="res://assets/UI/Inventory/Untitled68_20260221083700.png" id="1_wclmh"]
+[ext_resource type="FontFile" uid="uid://b2wa23dvvrqik" path="res://assets/Font pack By Mikiz/free_pixel/FreePixel.ttf" id="3_wclmh"]
 
 [node name="SlotUI" type="Control" unique_id=1655333442]
-custom_minimum_size = Vector2(64, 64)
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 64.0
-offset_bottom = 64.0
+offset_right = 32.0
+offset_bottom = 32.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 script = ExtResource("1_vlebx")
 
 [node name="TextureRect2" type="TextureRect" parent="." unique_id=823088905]
-custom_minimum_size = Vector2(64, 0)
+custom_minimum_size = Vector2(12, 12)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -8.0
+offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_wclmh")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1580152776]
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(12, 12)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 2.0
+offset_bottom = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 1
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="." unique_id=917807038]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 34.0
-offset_right = 9.0
-offset_bottom = 57.0
-theme_override_font_sizes/font_size = 32
+offset_left = 7.0
+offset_top = 19.0
+offset_right = 8.0
+offset_bottom = 30.000004
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_wclmh")
+theme_override_font_sizes/font_size = 8

@@ -567,7 +567,7 @@ enemyScene = ExtResource("10_7w4r7")
 [node name="DamageText" parent="." unique_id=1424387138 instance=ExtResource("17_n3ckw")]
 
 [node name="MoneyDrop" parent="." unique_id=1326210650 instance=ExtResource("18_4owqe")]
-position = Vector2(-8, -21)
+position = Vector2(-260, -55)
 collision_mask = 2
 
 [node name="SlotUI" parent="." unique_id=2018121209 instance=ExtResource("21_16q1o")]
@@ -576,6 +576,7 @@ visible = false
 [node name="InventoryUI" parent="." unique_id=1542640298 instance=ExtResource("21_p3axr")]
 
 [node name="YESSIR" type="CanvasLayer" parent="." unique_id=1121430872]
+visible = false
 script = ExtResource("21_pg4sr")
 
 [connection signal="body_entered" from="MoneyDrop" to="MoneyDrop" method="_on_body_entered"]
