@@ -1,9 +1,11 @@
 extends Button
 var quest
-
+signal quest_selected(id)
+var quest_id
 func setup(q):
 	quest = q
+	quest_id = q.id
 	$HBoxContainer/Label.text = q.title
 
 func _pressed():
-	get_tree().call_group("quest_ui", "show_quest_detail", quest)
+	quest_selected.emit(quest_id)

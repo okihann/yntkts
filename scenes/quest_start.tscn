@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://dm2jjhgykw0up"]
+
+[ext_resource type="Script" uid="uid://usfyvkphjua4" path="res://scripts/quest_start.gd" id="1_25v5g"]
+[ext_resource type="Texture2D" uid="uid://co1rip4ql7ib6" path="res://assets/UI/quest/Untitled73_20260223162117.png" id="2_8ye2v"]
+[ext_resource type="FontFile" uid="uid://v1neuwwtt03c" path="res://assets/UI/quest/fonts/static/Cinzel-Medium.ttf" id="3_5xmya"]
+[ext_resource type="FontFile" uid="uid://cl3hqipujo312" path="res://assets/UI/quest/fonts/static/Cinzel-ExtraBold.ttf" id="4_imask"]
+
+[node name="QuestStart" type="CanvasLayer" unique_id=241976210]
+script = ExtResource("1_25v5g")
+
+[node name="Control" type="Control" parent="." unique_id=576670127]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -372.0
+offset_top = -267.0
+offset_right = -332.0
+offset_bottom = -227.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=65248703]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = 83.0
+offset_right = 675.0
+offset_bottom = 343.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.203, 1.203)
+texture = ExtResource("2_8ye2v")
+
+[node name="Label" type="Label" parent="Control/TextureRect" unique_id=87097449]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -374.9
+offset_top = 40.0
+offset_right = 381.09998
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_5xmya")
+theme_override_font_sizes/font_size = 24
+text = "Started"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="QuestTitle" type="Label" parent="Control/TextureRect" unique_id=1391705171]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.24811
+offset_top = -70.14963
+offset_right = 102.75189
+offset_bottom = 1.8503723
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_imask")
+theme_override_font_sizes/font_size = 52
+text = "Quest 1"
+horizontal_alignment = 1
+vertical_alignment = 1

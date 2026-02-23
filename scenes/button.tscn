@@ -53,7 +53,7 @@ offset_bottom = -358.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="Skill_Aim" type="TouchScreenButton" parent="Control/Control" unique_id=1384647086]
+[node name="Skill_Aim" type="TouchScreenButton" parent="Control/Control" unique_id=1384647086 groups=["ui_all"]]
 position = Vector2(-57.59806, -22.28525)
 scale = Vector2(0.447, 0.447)
 texture_normal = ExtResource("4_8m7bo")
@@ -101,7 +101,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_iw4ej")
 text = "E"
 horizontal_alignment = 1
 
-[node name="Skill_cast" type="TouchScreenButton" parent="Control/Control" unique_id=1217043376]
+[node name="Skill_cast" type="TouchScreenButton" parent="Control/Control" unique_id=1217043376 groups=["ui_all"]]
 position = Vector2(182.27228, -255.6726)
 scale = Vector2(0.447, 0.447)
 texture_normal = ExtResource("6_iw4ej")
@@ -137,30 +137,30 @@ position = Vector2(227.65317, 270.25934)
 [node name="PcCastPos" type="Marker2D" parent="Control/Control" unique_id=1995783108]
 position = Vector2(234.94655, 70.09725)
 
-[node name="MobileButtons" type="Control" parent="Control/Control" unique_id=138232533]
+[node name="MobileButtons" type="Control" parent="Control/Control" unique_id=138232533 groups=["ui_mobile"]]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Attack" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=72425292]
+[node name="Attack" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=72425292 groups=["ui_mobile"]]
 position = Vector2(39.646667, 29.578598)
 scale = Vector2(0.22799999, 0.22799999)
 texture_normal = ExtResource("1_1bdt2")
 action = "attack"
 
-[node name="Jump" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1592762295]
+[node name="Jump" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1592762295 groups=["ui_mobile"]]
 position = Vector2(179, -68)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("3_t81cg")
 action = "ui_accept"
 
-[node name="Slide" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1563635191]
+[node name="Slide" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1563635191 groups=["ui_mobile"]]
 position = Vector2(-51.11508, 211.10207)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("2_8m7bo")
 action = "slide"
 
-[node name="Sprint" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1373293170]
+[node name="Sprint" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=1373293170 groups=["ui_mobile"]]
 position = Vector2(182.27228, 204.61913)
 scale = Vector2(0.13, 0.13)
 texture_normal = ExtResource("4_is61r")

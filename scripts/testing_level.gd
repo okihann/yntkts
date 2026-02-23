@@ -28,10 +28,6 @@ func _ready():
 	if has_node("/root/PlatformManager"):
 		is_mobile = PlatformManager.is_mobile()
 	
-	if has_node("Joystick"):
-		$Joystick.visible = is_mobile
-		
-	mobileBtn.visible = is_mobile
 	
 	resize_healthbar()
 

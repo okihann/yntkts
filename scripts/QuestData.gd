@@ -7,3 +7,4 @@ class_name QuestData
 @export var objectives: Array[QuestObjective]
 @export var rewards_exp: int
 @export var rewards_gold: int
+@export var completed: bool = false
