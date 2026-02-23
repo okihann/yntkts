@@ -77,6 +77,10 @@ audio/channel_defaults={
 }
 text/input_action="dialogic_default_action"
 
+[display]
+
+window/physics_interpolation=false
+
 [dotnet]
 
 project/assembly_name="yntkts"
@@ -178,6 +182,10 @@ pointing/emulate_touch_from_mouse=true
 2d_physics/layer_3="Enemy"
 2d_physics/layer_4="PlayerHitbox"
 2d_physics/layer_5="EnemyHitbox"
+
+[physics]
+
+common/physics_interpolation=true
 
 [rendering]
 

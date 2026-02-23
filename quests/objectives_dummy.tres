@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_kf8yd")
 type = "Kill"
+description = "Kill all the enemies"
 target = "Enemy"
 required = 2
 metadata/_custom_type_script = "uid://c01id0aj4jpmn"

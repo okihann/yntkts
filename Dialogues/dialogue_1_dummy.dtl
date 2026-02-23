@@ -1,5 +1,4 @@
-do NextTouch.show_dialog_touch()
-There are enemies righ there, kill them all and get your reward
+do GameState.set_player_can_move(false)
+There are enemies right there, kill them all and get your reward
 do QuestBridge.quest_start("quest_dummy")
-[wait_input]
-do NextTouch.hide_dialog_touch()
+do GameState.set_player_can_move(true)

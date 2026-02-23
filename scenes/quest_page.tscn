@@ -20,10 +20,12 @@ shadow_size = 8
 
 [node name="QuestPage" type="CanvasLayer" unique_id=222831098]
 process_mode = 3
+layer = 2
 script = ExtResource("1_vyx6g")
 
 [node name="QuestMenuUi" type="Control" parent="." unique_id=1928395082]
 process_mode = 3
+z_index = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -18,12 +18,11 @@
 [ext_resource type="PackedScene" uid="uid://iqoc6st4rjm" path="res://scenes/money_drop.tscn" id="18_4owqe"]
 [ext_resource type="PackedScene" uid="uid://cxg47quittcgm" path="res://scenes/pause_menu.tscn" id="18_si45p"]
 [ext_resource type="PackedScene" uid="uid://difemr0kl3vma" path="res://scenes/pause_button.tscn" id="19_vxu0i"]
-[ext_resource type="Script" uid="uid://yjcwaf2y3plr" path="res://scripts/testing_saving.gd" id="21_pg4sr"]
-[ext_resource type="PackedScene" uid="uid://bhch637ago7hr" path="res://scenes/inventory_ui.tscn" id="21_p3axr"]
 [ext_resource type="PackedScene" uid="uid://ccvwpq8qmmopl" path="res://scenes/slot_ui.tscn" id="21_16q1o"]
+[ext_resource type="PackedScene" uid="uid://bhch637ago7hr" path="res://scenes/inventory_ui.tscn" id="21_p3axr"]
+[ext_resource type="Script" uid="uid://yjcwaf2y3plr" path="res://scripts/testing_saving.gd" id="21_pg4sr"]
 [ext_resource type="PackedScene" uid="uid://di0kiv465tbx7" path="res://scenes/quest_page.tscn" id="22_p3axr"]
-[ext_resource type="Script" uid="uid://cn6f2sy1ifj2y" path="res://Dialogues/next_touch.gd" id="23_p3axr"]
-[ext_resource type="Script" uid="uid://b3t52mvmndyia" path="res://Dialogues/button.gd" id="24_7uy5g"]
+[ext_resource type="PackedScene" uid="uid://dm2jjhgykw0up" path="res://scenes/quest_start.tscn" id="23_p3axr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -522,7 +521,7 @@ metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
 metadata/_edit_vertical_guides_ = [24.0, -370.0]
 
 [node name="Player" parent="." unique_id=912361228 instance=ExtResource("2_b55i6")]
-position = Vector2(-333, -37)
+position = Vector2(-175, -50)
 
 [node name="AiCompanion" parent="." unique_id=1681515207 groups=["companion"] instance=ExtResource("3_jr0o4")]
 position = Vector2(54, 699)
@@ -554,6 +553,7 @@ position = Vector2(331, -84)
 enemyScene = ExtResource("10_7w4r7")
 
 [node name="PauseMenu2" parent="." unique_id=759882947 instance=ExtResource("18_si45p")]
+visible = false
 
 [node name="PauseButton" parent="." unique_id=1445842719 instance=ExtResource("19_vxu0i")]
 
@@ -577,30 +577,14 @@ collision_mask = 2
 visible = false
 
 [node name="InventoryUI" parent="." unique_id=1542640298 instance=ExtResource("21_p3axr")]
+visible = false
 
 [node name="YESSIR" type="CanvasLayer" parent="." unique_id=1121430872]
+visible = false
 script = ExtResource("21_pg4sr")
 
 [node name="QuestPage" parent="." unique_id=222831098 instance=ExtResource("22_p3axr")]
 
-[node name="NextTouch" type="CanvasLayer" parent="." unique_id=1559584305]
-script = ExtResource("23_p3axr")
-
-[node name="Button" type="Button" parent="NextTouch" unique_id=1264852313 groups=["dialogue_touch"]]
-process_mode = 3
-z_index = 300
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -592.0
-offset_top = -321.0
-offset_right = -592.0
-offset_bottom = -321.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(3.711, 3.711)
-flat = true
-script = ExtResource("24_7uy5g")
+[node name="QuestStart" parent="." unique_id=241976210 instance=ExtResource("23_p3axr")]
 
 [connection signal="body_entered" from="MoneyDrop" to="MoneyDrop" method="_on_body_entered"]
-[connection signal="pressed" from="NextTouch/Button" to="NextTouch/Button" method="_on_pressed"]

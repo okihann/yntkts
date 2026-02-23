@@ -74,11 +74,11 @@ action = "inventory"
 
 [node name="ColorRect" type="ColorRect" parent="Control" unique_id=1933699622]
 layout_mode = 1
-offset_left = -94.948
-offset_top = -78.559
-offset_right = -54.947998
-offset_bottom = -38.559
-scale = Vector2(9.396266, 13.003783)
+offset_left = -86.18404
+offset_top = -46.80456
+offset_right = -46.184036
+offset_bottom = -6.8045616
+scale = Vector2(9.655328, 5.9409766)
 mouse_filter = 2
 color = Color(0.07058824, 0.078431375, 0.08627451, 0.6313726)
 

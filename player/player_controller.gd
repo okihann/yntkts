@@ -9,6 +9,7 @@ const JUMP_VELOCITY = -400.0
 const SLIDE_SPEED = 400.0
 const COYOTE_TIME = 0.1
 
+var first_frame_done := false
 var is_sliding := false
 var attacking := false
 var coyote_timer := 0.0
@@ -38,6 +39,7 @@ var fall_velocity: float = 0.0
 
 var aiming_skill := false
 var aim_pos := Vector2.ZERO
+var skip_next_fall_anim := false
 
 @onready var bolt_skill_cd_timer := Timer.new()
 @onready var fade = get_tree().current_scene.get_node_or_null("DeadCanvas/Fade")
@@ -53,10 +55,14 @@ var respawn_timer := Timer.new()
 var touch_damage_cooldown := Timer.new()
 var knockback_timer := Timer.new()
 var head_detection_area: Area2D
+var can_move := true
 
 func _ready():
+	stateMachineHero.travel("idle")
+	first_frame_done = false
+	was_on_floor = true
+	velocity = Vector2.ZERO
 	Dialogic.start("dialogue_1_dummy")
-	
 	collision_layer = 2
 	collision_mask = 5
 	print($AimIndicator)
@@ -91,7 +97,14 @@ func _ready():
 
 	emit_signal("hp_changed", current_hp)
 
-
+func set_can_move(value: bool):
+	can_move = value
+	if can_move:
+		if is_on_floor():
+			velocity.y = 0
+			skip_next_fall_anim = true
+			stateMachineHero.travel("idle")
+			
 func on_bolt_skill_cd_finished():
 	can_cast_bolt_skill = true
 	emit_signal("skill_cd_updated", true)
@@ -102,6 +115,8 @@ func sync_stats_from_gamestate():
 	emit_signal("hp_changed", current_hp)
 
 func enter_skill_aim():
+	if not can_move:
+		return
 	if aiming_skill or not can_cast_bolt_skill: 
 		return
 
@@ -113,6 +128,7 @@ func update_aim():
 
 	aim_pos = get_global_mouse_position()
 	$AimIndicator.global_position = aim_pos
+	
 	
 func check_cast_input():
 	if aim_from_ui:
@@ -153,6 +169,8 @@ func cast_skill(target_pos):
 	skill.global_position = result.position
 
 func _unhandled_input(event):
+	if not can_move:
+		return
 	if is_dead or get_tree().paused:
 		return
 	if event.is_action_pressed("attack"):
@@ -177,10 +195,19 @@ func _process(_delta):
 		check_cast_input()
 
 func _physics_process(delta):
+	if not first_frame_done:
+		stateMachineHero.travel("idle")
+		first_frame_done = true
+		return
+	
 	if has_node("/root/GameState") and not GameState.is_playing():
 		velocity = Vector2.ZERO
 		return
-
+		
+	if not can_move:
+		velocity = Vector2.ZERO
+		return
+		
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 		fall_velocity = velocity.y
@@ -191,6 +218,7 @@ func _physics_process(delta):
 		return
 
 	if is_on_floor():
+		
 		if not was_on_floor: 
 			if fall_velocity > fall_damage_threshold:
 				var f_damage = int((fall_velocity - fall_damage_threshold) * fall_damage_multiplier)
@@ -467,9 +495,15 @@ func _on_level_up(_level):
 
 func update_animation(direction, is_sprinting):
 	if attacking: return
-	if is_on_floor():
-		if is_sliding: stateMachineHero.travel("sliding")
-		elif direction == 0: stateMachineHero.travel("idle")
-		else: stateMachineHero.travel("running" if is_sprinting else "walking")
-	else:
+	
+	if not is_on_floor():
+		if skip_next_fall_anim:
+			skip_next_fall_anim = false
+			stateMachineHero.travel("idle")
+			return
 		stateMachineHero.travel("jumping" if velocity.y < 0 else "fall")
+		return
+	
+	if is_sliding: stateMachineHero.travel("sliding")
+	elif direction == 0: stateMachineHero.travel("idle")
+	else: stateMachineHero.travel("running" if is_sprinting else "walking")

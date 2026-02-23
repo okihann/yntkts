@@ -8,6 +8,7 @@ var previous_state = State.MENU
 var player_max_health: int = 100
 var player_level: int = 1
 var current_exp: int = 0
+var player
 var exp_required: int = 100 
 #tambahan
 var attribute_point: int = 0
@@ -53,8 +54,13 @@ var player_health: int = 100:
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	player = get_tree().get_first_node_in_group("player")
 	randomize()
-
+	
+func set_player_can_move(can_move: bool):
+	if player:
+		player.can_move = can_move
+		
 func _process(delta: float) -> void:
 	if current_state == State.PLAYING:
 		playtime_seconds += delta
