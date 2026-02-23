@@ -1,6 +1,12 @@
 do GameState.set_player_can_move(false)
+<<<<<<< HEAD
 do GameState.set_ui_button_visibility(false)
 There are enemies right there, kill them all and get your reward
 do QuestBridge.quest_start("quest_dummy")
 do GameState.set_player_can_move(true)
 do GameState.set_ui_button_visibility(true)
+=======
+There are enemies right there, kill them all and get your reward
+do QuestBridge.quest_start("quest_dummy")
+do GameState.set_player_can_move(true)
+>>>>>>> d3296e06c6b5016655e6b39d309e69ca0182efd5

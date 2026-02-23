@@ -60,7 +60,7 @@ func _ready():
 func set_player_can_move(can_move: bool):
 	if player:
 		player.can_move = can_move
-		
+
 func set_ui_button_visibility(is_visible: bool):
 	var is_mobile = false
 	if has_node("/root/PlatformManager"):
@@ -73,6 +73,7 @@ func set_ui_button_visibility(is_visible: bool):
 		for btn in get_tree().get_nodes_in_group("ui_mobile"):
 			btn.visible = is_visible
 			
+
 func _process(delta: float) -> void:
 	if current_state == State.PLAYING:
 		playtime_seconds += delta
