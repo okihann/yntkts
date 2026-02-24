@@ -31,13 +31,13 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -433.99997
-offset_top = -185.0
-offset_right = -434.0
-offset_bottom = -185.0
+offset_left = 145.0
+offset_top = 97.0
+offset_right = 145.0
+offset_bottom = 97.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(1.234, 1.234)
+scale = Vector2(0.9069322, 0.912622)
 
 [node name="Control" type="Control" parent="Control" unique_id=1299244564]
 layout_mode = 1
@@ -132,10 +132,10 @@ position = Vector2(-28.42465, -23.095623)
 position = Vector2(207.39383, -210.29175)
 
 [node name="PcAimPos" type="Marker2D" parent="Control/Control" unique_id=2122309670]
-position = Vector2(227.65317, 270.25934)
+position = Vector2(260.71454, 168.57419)
 
 [node name="PcCastPos" type="Marker2D" parent="Control/Control" unique_id=1995783108]
-position = Vector2(234.94655, 70.09725)
+position = Vector2(259.61197, 9.691328)
 
 [node name="MobileButtons" type="Control" parent="Control/Control" unique_id=138232533 groups=["ui_mobile"]]
 anchors_preset = 0

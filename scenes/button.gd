@@ -45,6 +45,8 @@ func setup_ui_positions():
 		pcALabel.hide()
 		pcCLabel.hide()
 	else:
+		#$Control.hide()
+		$Control/Control/MobileButtons.hide()
 		aim_button.global_position = PcAimMarker.global_position
 		castBtn.global_position = PcCastMarker.global_position
 		pcALabel.show()
