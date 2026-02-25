@@ -9,7 +9,7 @@ func add_item(item_data: ItemData, amount := 1):
 	var remaining = amount
 	
 	for slot in items:
-		if slot["data"].id == item_data.id:
+		if slot["data"].item_id == item_data.item_id:
 			var space_left = item_data.max_stack - slot["count"]
 			
 			if space_left > 0:
@@ -31,7 +31,6 @@ func add_item(item_data: ItemData, amount := 1):
 		})
 		remaining -= add_amount
 
-	print("dapet:", item_data.name, "x", amount)
 	inventory_changed.emit()
 
 func remove_item(id: String, amount := 1):

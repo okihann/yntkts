@@ -107,24 +107,33 @@ metadata/_edit_use_anchors_ = true
 [node name="RightPanel" type="VBoxContainer" parent="Control" unique_id=1036141284]
 z_index = 2
 layout_mode = 0
-offset_left = 154.30452
-offset_top = 9.709909
-offset_right = 218.30452
-offset_bottom = 104.70991
+offset_left = 163.6171
+offset_top = 24.661894
+offset_right = 253.6171
+offset_bottom = 151.6619
+scale = Vector2(0.466, 0.466)
+theme_override_constants/separation = 1
+alignment = 1
 
 [node name="Icon" type="TextureRect" parent="Control/RightPanel" unique_id=1294169480]
+custom_minimum_size = Vector2(90, 90)
 layout_mode = 2
+expand_mode = 1
 stretch_mode = 5
 
 [node name="Name" type="Label" parent="Control/RightPanel" unique_id=118416025]
 custom_minimum_size = Vector2(4, 4)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_iradw")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Desc" type="Label" parent="Control/RightPanel" unique_id=845435216]
 custom_minimum_size = Vector2(8, 8)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_eifbp")
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 2

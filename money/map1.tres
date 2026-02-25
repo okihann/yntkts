@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://mtefkia03hsx"]
+
+[ext_resource type="Texture2D" uid="uid://b1skvslyak576" path="res://assets/UI/quest/Untitled71_20260222141439.png" id="1_wsq20"]
+[ext_resource type="Script" uid="uid://u7av7nhpgfal" path="res://Inventory/item_data.gd" id="2_8ysk6"]
+
+[resource]
+script = ExtResource("2_8ysk6")
+item_id = "map1"
+item_name = "Map"
+price = 50
+icon = ExtResource("1_wsq20")
+description = "This is a map"
+metadata/_custom_type_script = "uid://u7av7nhpgfal"

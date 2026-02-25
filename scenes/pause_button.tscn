@@ -22,4 +22,4 @@ action = "ui_cancel"
 position = Vector2(846.15356, 5307.6904)
 scale = Vector2(75, 75)
 texture_normal = ExtResource("2_rh5fn")
-action = "quest_menu"
+action = "interact"

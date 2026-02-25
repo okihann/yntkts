@@ -6,6 +6,7 @@ extends Node2D
 @onready var pcAimLabel = $Button/Control/Control/Skill_Aim/PcAimLabel
 @onready var pcCastLabel = $Button/Control/Control/Skill_cast/PcCastLabel
 @onready var castBtn = $Button/Control/Control/Skill_cast
+
 func _ready():
 	# $Control/Control/Skill_cast/PcCastLabelWait for player to initialize first
 	await get_tree().process_frame

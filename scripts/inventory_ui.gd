@@ -38,7 +38,7 @@ func refresh_ui():
 
 func _update_detail(data: ItemData):
 	if data:
-		name_label.text = data.name
+		name_label.text = data.item_name
 		desc_label.text = data.description
 		big_icon.texture = data.icon
 		big_icon.show()

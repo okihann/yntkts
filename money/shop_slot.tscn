@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://ccvtxaa3sxcug"]
+
+[ext_resource type="Script" uid="uid://g6585cymplhd" path="res://money/shop_slot.gd" id="1_84j76"]
+[ext_resource type="Texture2D" uid="uid://bmeu8tgwhe8na" path="res://assets/Shop/Potions V3/PNGs/Green Potion/Size x300/Opened/green-potion-opened-006.png" id="2_08x4r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_08x4r"]
+bg_color = Color(0.27538076, 0.2753808, 0.27538067, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+anti_aliasing = false
+
+[node name="ShopSlot" type="HBoxContainer" unique_id=296475598]
+custom_minimum_size = Vector2(230, 450)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -818.0
+offset_top = -141.0
+offset_right = -18.0
+offset_bottom = 309.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(5.214, 5.214)
+alignment = 1
+script = ExtResource("1_84j76")
+metadata/_edit_vertical_guides_ = [-1633.0]
+
+[node name="Panel" type="Panel" parent="." unique_id=1355892445]
+custom_minimum_size = Vector2(230, 450)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_08x4r")
+
+[node name="NameLabel" type="Label" parent="Panel" unique_id=1504130575]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -115.0
+offset_top = 20.0
+offset_right = 115.0
+offset_bottom = 43.0
+grow_horizontal = 2
+text = "Medicine"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Panel" unique_id=523657791]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 0
+offset_top = 27.0
+offset_right = 230.0
+offset_bottom = 219.0
+texture = ExtResource("2_08x4r")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InfoVbox" type="VBoxContainer" parent="Panel" unique_id=977053]
+layout_mode = 0
+offset_top = 223.0
+offset_right = 230.0
+offset_bottom = 223.0
+
+[node name="StockLabel" type="Label" parent="Panel" unique_id=1074037686]
+layout_mode = 0
+offset_top = 227.0
+offset_right = 230.0
+offset_bottom = 250.0
+text = "Stock: 3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="Panel" unique_id=1296926488]
+layout_mode = 0
+offset_top = 254.0
+offset_right = 230.0
+offset_bottom = 285.0
+text = "Buy"
+
+[node name="PriceLabel" type="Label" parent="Panel" unique_id=1415592656]
+layout_mode = 0
+offset_top = 289.0
+offset_right = 230.0
+offset_bottom = 312.0
+text = "testttttt"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Panel/Button" to="." method="_on_button_pressed"]

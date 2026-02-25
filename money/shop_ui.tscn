@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://fubc13j8tbtu"]
+
+[ext_resource type="Script" uid="uid://cxbofqxa878hr" path="res://money/shop_ui.gd" id="1_00w1p"]
+[ext_resource type="Texture2D" uid="uid://bixq4mwjuwlwt" path="res://assets/UI/StatsMenu/Untitled62_20260217150518.png" id="2_wvnfj"]
+
+[node name="ShopUi" type="CanvasLayer" unique_id=1954081192]
+layer = 2
+script = ExtResource("1_00w1p")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=899675392]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1492585611]
+custom_minimum_size = Vector2(850, 600)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -249.76599
+offset_top = -300.0
+offset_right = 250.23401
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 0
+
+[node name="SlotContainer" type="HBoxContainer" parent="ScrollContainer" unique_id=12338816]
+custom_minimum_size = Vector2(850, 600)
+layout_mode = 2
+theme_override_constants/separation = 128
+alignment = 1
+
+[node name="MoneyLabel" type="Label" parent="." unique_id=1232737829]
+custom_minimum_size = Vector2(256, 10)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -104.0
+offset_right = -120.0
+offset_bottom = -81.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 38
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseBtn" type="TouchScreenButton" parent="." unique_id=411847641]
+position = Vector2(73, 36)
+texture_normal = ExtResource("2_wvnfj")
+action = "ui_cancel"
+
+[connection signal="pressed" from="CloseBtn" to="." method="_on_close_btn_pressed"]

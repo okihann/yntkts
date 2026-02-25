@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://d06wy65qnbxjv"]
+
+[ext_resource type="Script" uid="uid://tgdf3vdweu14" path="res://money/shop.gd" id="1_ludy1"]
+[ext_resource type="Texture2D" uid="uid://dewnynca6dknf" path="res://player/playersprite.png" id="2_534cx"]
+[ext_resource type="Script" uid="uid://u7av7nhpgfal" path="res://Inventory/item_data.gd" id="2_wkc7x"]
+[ext_resource type="Resource" uid="uid://d21twq4haobrb" path="res://money/medicine.tres" id="3_bu0hm"]
+[ext_resource type="Resource" uid="uid://mtefkia03hsx" path="res://money/map1.tres" id="4_bu0hm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wkc7x"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bu0hm"]
+atlas = ExtResource("2_534cx")
+region = Rect2(0, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ua6p2"]
+atlas = ExtResource("2_534cx")
+region = Rect2(80, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6t1me"]
+atlas = ExtResource("2_534cx")
+region = Rect2(160, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m7vkv"]
+atlas = ExtResource("2_534cx")
+region = Rect2(240, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6nb71"]
+atlas = ExtResource("2_534cx")
+region = Rect2(320, 0, 80, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nbn12"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bu0hm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ua6p2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6t1me")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m7vkv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6nb71")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[node name="Shop" type="Node2D" unique_id=839335450]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=536813498]
+collision_mask = 2
+script = ExtResource("1_ludy1")
+items_to_sell = Array[ExtResource("2_wkc7x")]([ExtResource("3_bu0hm"), ExtResource("4_bu0hm")])
+quantities = Array[int]([3, 2])
+timeline_name = "shop"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=431178876]
+scale = Vector2(4.901, 4.901)
+shape = SubResource("CircleShape2D_wkc7x")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=898056292]
+sprite_frames = SubResource("SpriteFrames_nbn12")
+autoplay = "default"
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]

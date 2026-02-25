@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://yjcwaf2y3plr" path="res://scripts/testing_saving.gd" id="21_pg4sr"]
 [ext_resource type="PackedScene" uid="uid://di0kiv465tbx7" path="res://scenes/quest_page.tscn" id="22_p3axr"]
 [ext_resource type="PackedScene" uid="uid://dm2jjhgykw0up" path="res://scenes/quest_start.tscn" id="23_p3axr"]
+[ext_resource type="PackedScene" uid="uid://d06wy65qnbxjv" path="res://money/shop.tscn" id="26_iwfb5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
 texture = ExtResource("1_haa73")
@@ -518,7 +519,7 @@ sources/0 = SubResource("TileSetAtlasSource_haa73")
 [node name="testing_level" type="Node2D" unique_id=813801286]
 script = ExtResource("1_bx410")
 metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
-metadata/_edit_vertical_guides_ = [24.0, -370.0]
+metadata/_edit_vertical_guides_ = [24.0, -370.0, -172.0]
 
 [node name="Player" parent="." unique_id=912361228 instance=ExtResource("2_b55i6")]
 position = Vector2(-182, -47)
@@ -553,7 +554,6 @@ position = Vector2(331, -84)
 enemyScene = ExtResource("10_7w4r7")
 
 [node name="PauseMenu2" parent="." unique_id=759882947 instance=ExtResource("18_si45p")]
-visible = false
 
 [node name="PauseButton" parent="." unique_id=1445842719 groups=["ui_all"] instance=ExtResource("19_vxu0i")]
 
@@ -586,5 +586,8 @@ script = ExtResource("21_pg4sr")
 [node name="QuestPage" parent="." unique_id=222831098 instance=ExtResource("22_p3axr")]
 
 [node name="QuestStart" parent="." unique_id=241976210 instance=ExtResource("23_p3axr")]
+
+[node name="Shop" parent="." unique_id=839335450 instance=ExtResource("26_iwfb5")]
+position = Vector2(14, -39)
 
 [connection signal="body_entered" from="MoneyDrop" to="MoneyDrop" method="_on_body_entered"]

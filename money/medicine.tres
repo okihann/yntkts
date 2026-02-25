@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://d21twq4haobrb"]
+
+[ext_resource type="Texture2D" uid="uid://xobxuqx5bady" path="res://assets/Shop/Potions V3/PNGs/Green Potion/Size x300/Opened/green-potion-opened-005.png" id="1_qj0o0"]
+[ext_resource type="Script" uid="uid://u7av7nhpgfal" path="res://Inventory/item_data.gd" id="2_rahsd"]
+
+[resource]
+script = ExtResource("2_rahsd")
+item_id = "medicine1"
+item_name = "Medicine"
+price = 100
+icon = ExtResource("1_qj0o0")
+description = "This is a medicine"
+metadata/_custom_type_script = "uid://u7av7nhpgfal"

@@ -1,0 +1,5 @@
+do GameState.set_player_can_move(false)
+do GameState.set_ui_button_visibility(false)
+Seller: Take what you need, pay what you can!
+do GameState.set_player_can_move(true)
+do GameState.set_ui_button_visibility(true)

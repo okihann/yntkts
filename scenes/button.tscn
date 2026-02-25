@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cv8kyp26dtgj3" path="res://assets/UI/Control/Jump_Button.png" id="3_t81cg"]
 [ext_resource type="Texture2D" uid="uid://p70uoxgt5aan" path="res://assets/UI/skill/button/Untitled65_20260219071643.png" id="4_8m7bo"]
 [ext_resource type="Texture2D" uid="uid://dgusead7hftdo" path="res://assets/UI/Control/Sprint_Button.png" id="4_is61r"]
+[ext_resource type="Texture2D" uid="uid://5wyceyyj7h0v" path="res://assets/Shop/Untitled75_20260225230753.png" id="5_8r4pl"]
 [ext_resource type="Script" uid="uid://i46rmk01eyl5" path="res://sprint.gd" id="5_iw4ej"]
 [ext_resource type="Texture2D" uid="uid://cctwgjy5im3jk" path="res://assets/UI/skill/button/Untitled65_20260219071759.png" id="6_iw4ej"]
 [ext_resource type="Texture2D" uid="uid://1ucf4o0gfxud" path="res://assets/UI/skill/button/Untitled65_20260219134321.png" id="6_jkx8l"]
@@ -101,7 +102,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_iw4ej")
 text = "E"
 horizontal_alignment = 1
 
-[node name="Skill_cast" type="TouchScreenButton" parent="Control/Control" unique_id=1217043376 groups=["ui_all"]]
+[node name="Skill_cast" type="TouchScreenButton" parent="Control/Control" unique_id=1217043376]
 position = Vector2(182.27228, -255.6726)
 scale = Vector2(0.447, 0.447)
 texture_normal = ExtResource("6_iw4ej")
@@ -126,10 +127,10 @@ text = "L. Click"
 horizontal_alignment = 1
 
 [node name="MobileAimPos" type="Marker2D" parent="Control/Control" unique_id=1338954248]
-position = Vector2(-28.42465, -23.095623)
+position = Vector2(15.933321, -45.09587)
 
 [node name="MobileCastPos" type="Marker2D" parent="Control/Control" unique_id=1130832506]
-position = Vector2(207.39383, -210.29175)
+position = Vector2(305.92188, -323.41483)
 
 [node name="PcAimPos" type="Marker2D" parent="Control/Control" unique_id=2122309670]
 position = Vector2(260.71454, 168.57419)
@@ -137,10 +138,35 @@ position = Vector2(260.71454, 168.57419)
 [node name="PcCastPos" type="Marker2D" parent="Control/Control" unique_id=1995783108]
 position = Vector2(259.61197, 9.691328)
 
+[node name="InteractBtn" type="TouchScreenButton" parent="Control/Control" unique_id=1390476022 groups=["interact_btn"]]
+position = Vector2(-470, -255.479)
+scale = Vector2(1.771, 1.771)
+texture_normal = ExtResource("5_8r4pl")
+action = "interact"
+
+[node name="Label" type="Label" parent="Control/Control/InteractBtn" unique_id=815851981]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.002377
+offset_top = -12.906435
+offset_right = 30.99762
+offset_bottom = 10.093565
+grow_horizontal = 2
+grow_vertical = 2
+text = "Interact"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="MobileButtons" type="Control" parent="Control/Control" unique_id=138232533 groups=["ui_mobile"]]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 2.7018993
+offset_top = -108.64903
+offset_right = 42.7019
+offset_bottom = -68.64903
+scale = Vector2(1.366, 1.366)
 
 [node name="Attack" type="TouchScreenButton" parent="Control/Control/MobileButtons" unique_id=72425292 groups=["ui_mobile"]]
 position = Vector2(39.646667, 29.578598)

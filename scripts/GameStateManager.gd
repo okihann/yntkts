@@ -23,7 +23,12 @@ var respawn_delay: float = 1.5
 var checkpoint_position: Vector2 = Vector2.ZERO
 var checkpoint_health: int = 100
 var current_level: String = ""
+var player_money: int = 500:
+	set(value):
+		player_money = max(value, 0)
+		money_changed.emit(player_money)
 
+signal money_changed
 var playtime_seconds: float = 0.0
 
 signal state_changed(new_state, old_state)
@@ -77,6 +82,14 @@ func set_ui_button_visibility(is_visible: bool):
 func _process(delta: float) -> void:
 	if current_state == State.PLAYING:
 		playtime_seconds += delta
+func add_money(amount: int):
+	player_money += amount
+
+func spend_money(amount: int) -> bool:
+	if player_money >= amount:
+		player_money -= amount
+		return true
+	return false
 
 func is_playing() -> bool:
 	return current_state == State.PLAYING
@@ -179,6 +192,8 @@ func _input(event):
 			
 		elif current_state == State.UI_MENU:
 			UiManager.close_current_menu()
+			get_viewport().set_input_as_handled()
+
 			
 	if event.is_action_pressed("inventory"):
 		if current_state == State.PLAYING:
