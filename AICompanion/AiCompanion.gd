@@ -4,7 +4,6 @@ signal healed_player(amount)
 signal attacked_enemy(enemy, damage)
 signal companion_damaged(current_hp, max_hp)
 signal companion_died
-signal state_changed(old_state, new_state)
 
 @export_group("Stats")
 @export var max_hp: float = 200.0
@@ -58,6 +57,7 @@ var is_knocked_back := false
 var is_dead := false
 var last_jump_time: float = 0.0
 var player_aggro_timer: float = 0.0
+var _cached_ai_side: int = 1
 
 var path_history: Array = []
 var record_timer: float = 0.0
@@ -78,7 +78,8 @@ var dodge_cooldown_timer: float = 0.0
 
 var nearest_enemy: Array = []
 var wall_detector: RayCast2D
-var ground_probe: RayCast2D
+var _space_state: PhysicsDirectSpaceState2D
+var _ai_rid: RID
 
 const HEAL_PARTICLE_PATH = "res://AICompanion/HealParticle.tscn"
 const MAGIC_PROJECTILE_PATH = "res://AICompanion/MagicProjectile.tscn"
@@ -95,6 +96,7 @@ func _ready():
 
 	await get_tree().process_frame
 	_find_player()
+	_ai_rid = get_rid()
 
 	if has_node("/root/GameState"):
 		if not GameState.player_respawned.is_connected(_on_player_respawned):
@@ -112,12 +114,6 @@ func _setup_detectors():
 	wall_detector.target_position = Vector2(wall_jump_check_dist, 0)
 	wall_detector.collision_mask = 1
 	add_child(wall_detector)
-
-	ground_probe = RayCast2D.new()
-	ground_probe.target_position = Vector2(0, 80)
-	ground_probe.collision_mask = 1
-	ground_probe.enabled = false
-	add_child(ground_probe)
 
 
 func _setup_timers():
@@ -149,10 +145,17 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 
+	_space_state = get_world_2d().direct_space_state
+
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 		if velocity.y > 0:
 			_avoid_landing_on_enemy()
+		if not is_knocked_back and current_state == State.FOLLOW and not path_history.is_empty():
+			var air_target_x = path_history[path_history.size() - 1]["position"].x
+			var air_dir = sign(air_target_x - global_position.x)
+			if air_dir != 0:
+				velocity.x = move_toward(velocity.x, air_dir * movement_speed, 200.0 * delta)
 
 	if is_knocked_back:
 		velocity.x = move_toward(velocity.x, 0, 15)
@@ -181,15 +184,16 @@ func _record_player_path(delta: float):
 		return
 	record_timer = 0.0
 
+	var now_sec = Time.get_ticks_msec() / 1000.0
 	path_history.append({
 		"position": player.global_position,
 		"velocity_y": player.velocity.y,
 		"on_floor": player.is_on_floor(),
 		"facing": -1 if player.get("visualHero") and player.visualHero.flip_h else 1,
-		"time": Time.get_ticks_msec() / 1000.0
+		"time": now_sec
 	})
 
-	var cutoff = Time.get_ticks_msec() / 1000.0 - (follow_delay + 2.0)
+	var cutoff = now_sec - (follow_delay + 2.0)
 	while path_history.size() > 0 and path_history[0]["time"] < cutoff:
 		path_history.pop_front()
 
@@ -243,6 +247,7 @@ func _brain_logic(delta):
 	_follow_recorded_path()
 
 
+
 func _follow_recorded_path():
 	var snapshot = _get_delayed_snapshot()
 
@@ -252,62 +257,79 @@ func _follow_recorded_path():
 		return
 
 	var target_pos: Vector2 = snapshot["position"]
-	var facing: int = snapshot.get("facing", 1)
-	var offset_pos = target_pos + Vector2(facing * spatial_offset, 0)
+
+	var raw_diff = global_position.x - player.global_position.x
+	if abs(raw_diff) > spatial_offset * 0.6:
+		_cached_ai_side = sign(raw_diff)
+	var offset_pos = target_pos + Vector2(_cached_ai_side * spatial_offset * 0.5, 0)
 
 	var safe_target = _get_safe_target(offset_pos, target_pos)
 
 	var dist_x = safe_target.x - global_position.x
-	var dist_y = target_pos.y - global_position.y
 	var h_dist = abs(dist_x)
+	var move_dir = sign(dist_x)
 
-	if h_dist < arrival_threshold:
+	var live_dist_y = player.global_position.y - global_position.y
+
+	var void_ahead: bool = false
+	if is_on_floor() and move_dir != 0:
+		var check_from = global_position + Vector2(move_dir * 32, 0)
+		var q = PhysicsRayQueryParameters2D.create(check_from, check_from + Vector2(0, 100), 1)
+		q.exclude = [_ai_rid]
+		void_ahead = _space_state.intersect_ray(q).is_empty()
+
+	var on_same_level = abs(live_dist_y) < 80
+	if h_dist < arrival_threshold and on_same_level:
 		current_state = State.IDLE
 		velocity.x = move_toward(velocity.x, 0, 20)
 	else:
 		current_state = State.FOLLOW
 		var speed = movement_speed
 		if h_dist > 300: speed *= catchup_speed_multiplier
-		velocity.x = sign(dist_x) * speed
-		_face_direction(dist_x)
 
-	_handle_jump_sync(snapshot, dist_y)
+		if void_ahead:
+			velocity.x = 0.0
+			if live_dist_y > 20:
+				velocity.x = sign(dist_x) * speed * 0.5
+			else:
+				var land_from = global_position + Vector2(move_dir * 100, -250)
+				var land_q = PhysicsRayQueryParameters2D.create(land_from, land_from + Vector2(0, 700), 1)
+				land_q.exclude = [_ai_rid]
+				if not _space_state.intersect_ray(land_q).is_empty():
+					_try_jump()
+					velocity.x = sign(dist_x) * movement_speed
+		else:
+			velocity.x = sign(dist_x) * speed
+			if is_on_floor() and live_dist_y < -80:
+				_try_jump()
 
-	var avoidance = _get_enemy_avoidance_push()
-	if avoidance != 0.0:
-		velocity.x = move_toward(velocity.x, velocity.x + avoidance, movement_speed * 6.0 * get_physics_process_delta_time())
+		if abs(velocity.x) > 20:
+			_face_direction(velocity.x)
 
 	wall_detector.target_position.x = sign(dist_x) * wall_jump_check_dist if dist_x != 0 else wall_jump_check_dist
 	if is_on_floor() and wall_detector.is_colliding() and abs(velocity.x) > 10:
 		_try_jump()
 
+	var avoidance = _get_enemy_avoidance_push()
+	if avoidance != 0.0:
+		velocity.x = move_toward(velocity.x, velocity.x + avoidance, movement_speed * 6.0 * get_physics_process_delta_time())
+
 
 func _get_safe_target(offset_pos: Vector2, fallback_pos: Vector2) -> Vector2:
-	ground_probe.global_position = offset_pos
-	ground_probe.force_raycast_update()
-
-	if ground_probe.is_colliding():
+	if _cast_down(offset_pos, 80.0):
 		return offset_pos
-
 	var steps = 3
 	var step_size = (fallback_pos.x - offset_pos.x) / steps
 	for i in range(1, steps + 1):
 		var test_x = offset_pos.x + step_size * i
-		ground_probe.global_position = Vector2(test_x, offset_pos.y)
-		ground_probe.force_raycast_update()
-		if ground_probe.is_colliding():
+		if _cast_down(Vector2(test_x, offset_pos.y), 80.0):
 			return Vector2(test_x, fallback_pos.y)
-
 	return fallback_pos
 
-
-func _handle_jump_sync(snapshot: Dictionary, dist_y: float):
-	if not is_on_floor(): return
-	var need_to_go_up = dist_y < -40
-	var player_was_jumping = snapshot["velocity_y"] < -100 and not snapshot["on_floor"]
-	if player_was_jumping and need_to_go_up:
-		_try_jump()
-
+func _cast_down(from: Vector2, length: float) -> bool:
+	var q = PhysicsRayQueryParameters2D.create(from, from + Vector2(0, length), 1)
+	q.exclude = [_ai_rid]
+	return not _space_state.intersect_ray(q).is_empty()
 
 func _combat_behavior(delta, enemy):
 	var dist_x = enemy.global_position.x - global_position.x
@@ -402,11 +424,6 @@ func _find_incoming_arrow() -> Node2D:
 
 
 func _find_dangerous_enemy() -> Node2D:
-	#var enemies = get_tree().get_nodes_in_group("enemies")
-	#for enemy in enemies:
-		#if not is_instance_valid(enemy): continue
-		#if global_position.distance_to(enemy.global_position) < dodge_detect_range * 0.55:
-			#return enemy
 	for e in nearest_enemy:
 		if not is_instance_valid(e): continue
 		if global_position.distance_to(e.global_position) < dodge_detect_range * 0.5:
@@ -444,14 +461,6 @@ func _start_dodge():
 
 func _get_enemy_avoidance_push() -> float:
 	var push = 0.0
-	#var enemies = get_tree().get_nodes_in_group("enemies")
-	#for enemy in enemies:
-		#if not is_instance_valid(enemy): continue
-		#var dist = global_position.distance_to(enemy.global_position)
-		#var danger_radius = dodge_detect_range * 0.7
-		#if dist < danger_radius:
-			#var strength = (1.0 - dist / danger_radius) * movement_speed * 1.5
-			#push += sign(global_position.x - enemy.global_position.x) * strength
 	for e in nearest_enemy:
 		if not is_instance_valid(e): continue
 		var dist = global_position.distance_to(e.global_position)
@@ -463,8 +472,7 @@ func _get_enemy_avoidance_push() -> float:
 
 
 func _avoid_landing_on_enemy():
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	for enemy in enemies:
+	for enemy in nearest_enemy:
 		if not is_instance_valid(enemy): continue
 		var diff = enemy.global_position - global_position
 		if diff.y > 0 and diff.y < 80 and abs(diff.x) < 40:
@@ -529,15 +537,8 @@ func die():
 
 
 func _find_nearest_enemy() -> Node2D:
-	#var enemies = get_tree().get_nodes_in_group("enemies")
 	var nearest: Node2D = null
 	var min_dist = detection_range
-	#for e in enemies:
-		#if is_instance_valid(e):
-			#var d = global_position.distance_to(e.global_position)
-			#if d < min_dist:
-				#nearest = e
-				#min_dist = d
 	for e in nearest_enemy:
 		if is_instance_valid(e):
 			var d = global_position.distance_to(e.global_position)
@@ -567,9 +568,21 @@ func _face_direction(dir):
 
 func _check_teleport():
 	if global_position.distance_to(player.global_position) > teleport_distance:
-		global_position = player.global_position + Vector2(-50, 0)
+		global_position = _find_safe_landing_near_player()
 		velocity = Vector2.ZERO
 		path_history.clear()
+
+
+func _find_safe_landing_near_player() -> Vector2:
+	var offsets = [-60.0, 60.0, -120.0, 120.0, -20.0, 20.0, 0.0]
+	for offset_x in offsets:
+		var test_top = player.global_position + Vector2(offset_x, -40)
+		var q = PhysicsRayQueryParameters2D.create(test_top, test_top + Vector2(0, 400), 1)
+		q.exclude = [_ai_rid]
+		var hit = _space_state.intersect_ray(q)
+		if not hit.is_empty():
+			return hit["position"] + Vector2(0, -2)
+	return player.global_position
 
 
 func _spawn_heal_effect(pos):
@@ -579,7 +592,7 @@ func _spawn_heal_effect(pos):
 		get_tree().root.add_child(p)
 
 
-func _on_animation_finished(anim_name: String):
+func _on_animation_finished(_anim_name: String):
 	if current_state == State.HEALING or current_state == State.COMBAT:
 		current_state = State.IDLE
 
@@ -600,7 +613,6 @@ func _on_player_respawned():
 		global_position = player.global_position + Vector2(-50, 0)
 
 	companion_damaged.emit(current_hp, max_hp)
-
 
 func _on_area_detector_body_entered(body: Node2D) -> void:
 	#print("yg masuk : ", body.name)
