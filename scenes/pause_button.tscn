@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bc30l5g6y5dnu" path="res://assets/UI/PauseMenu/Tak berjudul640_20260215111036.png" id="1_5rmv1"]
 [ext_resource type="Texture2D" uid="uid://b1skvslyak576" path="res://assets/UI/quest/Untitled71_20260222141439.png" id="2_rh5fn"]
+[ext_resource type="Script" uid="uid://cdroi2bgij3yx" path="res://scripts/weapon_stats_btn.gd" id="3_thq0x"]
 
 [node name="PauseButton" type="CanvasLayer" unique_id=892316168]
 
@@ -22,4 +23,21 @@ action = "ui_cancel"
 position = Vector2(846.15356, 5307.6904)
 scale = Vector2(75, 75)
 texture_normal = ExtResource("2_rh5fn")
-action = "interact"
+action = "quest_menu"
+
+[node name="Button" type="Button" parent="Control" unique_id=1379404988]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 28959.74
+offset_top = 538.46124
+offset_right = 29737.74
+offset_bottom = 983.46124
+grow_horizontal = 0
+scale = Vector2(5.862, 5.862)
+theme_override_font_sizes/font_size = 320
+text = "Stats"
+script = ExtResource("3_thq0x")
+
+[connection signal="pressed" from="Control/Button" to="Control/Button" method="_on_pressed"]

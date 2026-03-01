@@ -28,6 +28,7 @@ script = ExtResource("1_is61r")
 metadata/_edit_vertical_guides_ = [-1969.0]
 
 [node name="Control" type="Control" parent="." unique_id=1673038871]
+z_index = -1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,6 +42,7 @@ grow_vertical = 2
 scale = Vector2(0.9069322, 0.912622)
 
 [node name="Control" type="Control" parent="Control" unique_id=1299244564]
+z_index = 1
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0

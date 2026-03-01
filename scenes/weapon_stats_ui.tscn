@@ -1,0 +1,272 @@
+[gd_scene format=3 uid="uid://dt6aafg4vagsb"]
+
+[ext_resource type="Script" uid="uid://7s4w5ps0akrl" path="res://scripts/weapon_stats_ui.gd" id="1_2ql47"]
+[ext_resource type="Texture2D" uid="uid://cgpmc7g7sl34j" path="res://assets/UI/StatsMenu/heart-red.png" id="2_22mwu"]
+[ext_resource type="Texture2D" uid="uid://c6x03rm2yfhu2" path="res://assets/UI/StatsMenu/TinySwords.png" id="3_i6mlj"]
+[ext_resource type="Texture2D" uid="uid://bixq4mwjuwlwt" path="res://assets/UI/StatsMenu/Untitled62_20260217150518.png" id="4_h3yk5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22mwu"]
+atlas = ExtResource("3_i6mlj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3phmi"]
+atlas = ExtResource("3_i6mlj")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i6mlj"]
+bg_color = Color(0.104109384, 0.1041094, 0.10410934, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="CanvasStats" type="CanvasLayer" unique_id=900416537]
+layer = 9
+script = ExtResource("1_2ql47")
+metadata/_edit_vertical_guides_ = [24.0, -47.0]
+
+[node name="StatsMenu" type="Control" parent="." unique_id=778813203]
+z_index = 10
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="StatsMenu" unique_id=79835928]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatsMenu" unique_id=1588557368]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -359.0
+offset_top = -60.0
+offset_right = -169.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+theme_override_constants/separation = 52
+
+[node name="Control" type="Control" parent="StatsMenu/HBoxContainer" unique_id=1744399190]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="StatsMenu/HBoxContainer/Control" unique_id=565884828]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 0
+offset_left = 12.75
+offset_top = 1.0
+offset_right = 28.75
+offset_bottom = 17.0
+scale = Vector2(2.177, 2.177)
+texture_normal = SubResource("AtlasTexture_22mwu")
+
+[node name="Control2" type="Control" parent="StatsMenu/HBoxContainer" unique_id=1861385425]
+layout_mode = 2
+
+[node name="TextureButton2" type="TextureButton" parent="StatsMenu/HBoxContainer/Control2" unique_id=1215777542]
+layout_mode = 0
+offset_left = 24.338366
+offset_top = -0.90634453
+offset_right = 40.338364
+offset_bottom = 15.093656
+scale = Vector2(2.176, 2.176)
+texture_normal = SubResource("AtlasTexture_3phmi")
+
+[node name="Control3" type="Control" parent="StatsMenu/HBoxContainer" unique_id=1865230130]
+layout_mode = 2
+
+[node name="TextureButton3" type="TextureButton" parent="StatsMenu/HBoxContainer/Control3" unique_id=410904087]
+layout_mode = 0
+offset_left = 40.750008
+offset_right = 72.75001
+offset_bottom = 40.0
+texture_normal = ExtResource("2_22mwu")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="StatsMenu" unique_id=1470632653]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -344.0
+offset_top = -152.0
+offset_right = 352.0
+offset_bottom = -107.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 25
+
+[node name="HpText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=439863616]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Atk:          100"
+
+[node name="AtkText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=1172039906]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Durability:          10"
+
+[node name="AspdText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=989157060]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Ergonomics:          10"
+
+[node name="Title" type="Label" parent="StatsMenu" unique_id=1295249041]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 56.0
+offset_right = 35.0
+offset_bottom = 79.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 38
+text = "Weapon"
+
+[node name="Subtitle" type="Label" parent="StatsMenu" unique_id=2055613004]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -144.0
+offset_top = 128.0
+offset_right = 142.0
+offset_bottom = 177.0
+grow_horizontal = 2
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 35
+text = "Pick a bonus stat"
+
+[node name="Points" type="Label" parent="StatsMenu" unique_id=83730169]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -344.0
+offset_top = -72.0
+offset_right = -58.0
+offset_bottom = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 35
+text = "Points: 0"
+
+[node name="CloseButton" type="TextureButton" parent="StatsMenu" unique_id=508153494]
+layout_mode = 0
+offset_left = 80.0
+offset_top = 64.0
+offset_right = 144.0
+offset_bottom = 128.0
+scale = Vector2(1.527, 1.527)
+texture_normal = ExtResource("4_h3yk5")
+
+[node name="Panel" type="Panel" parent="StatsMenu" unique_id=644755359]
+custom_minimum_size = Vector2(600, 250)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -296.0
+offset_top = 176.0
+offset_right = 304.0
+offset_bottom = 426.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(300, 125)
+theme_override_styles/panel = SubResource("StyleBoxFlat_i6mlj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatsMenu/Panel" unique_id=881760035]
+custom_minimum_size = Vector2(550, 200)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -279.0
+offset_top = -234.0
+offset_right = 271.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="StatsMenu/Panel/VBoxContainer" unique_id=18196108]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Atk :"
+
+[node name="Label2" type="Label" parent="StatsMenu/Panel/VBoxContainer" unique_id=1071993753]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Durability :"
+
+[node name="Label3" type="Label" parent="StatsMenu/Panel/VBoxContainer" unique_id=565919980]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Ergonomics :"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="StatsMenu/Panel" unique_id=684022052]
+custom_minimum_size = Vector2(550, 200)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -279.0
+offset_top = -234.0
+offset_right = 271.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="StatsMenu/Panel/VBoxContainer2" unique_id=1006119535]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "100.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="StatsMenu/Panel/VBoxContainer2" unique_id=1575579959]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "50.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="StatsMenu/Panel/VBoxContainer2" unique_id=1883957213]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "30.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[connection signal="pressed" from="StatsMenu/HBoxContainer/Control/TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="pressed" from="StatsMenu/HBoxContainer/Control2/TextureButton2" to="." method="_on_texture_button_2_pressed"]
+[connection signal="pressed" from="StatsMenu/HBoxContainer/Control3/TextureButton3" to="." method="_on_texture_button_3_pressed"]
+[connection signal="pressed" from="StatsMenu/CloseButton" to="." method="_on_close_button_pressed"]

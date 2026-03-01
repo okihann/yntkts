@@ -11,13 +11,31 @@ var current_exp: int = 0
 var player
 var exp_required: int = 100 
 #tambahan
-var attribute_point: int = 0
-var attack_speed: float = 0
-var basic_attack: int = 10
+var attribute_point: int = 10
+var basic_attack: int = 50
 var crit_rate: float = 0.2
 var crit_damage: float = 1.5
 var bolt_skill_damage: int = 40
 var bolt_skill_cd : float = 5.0
+var move_speed : float = 200.0
+var atk_speed : float = 1.0
+var weapon_atk : int = 0
+var weapon_durability : float = 100.0
+var weapon_max_durability : float = 100.0
+var weapon_ergonomics : float = 3.0
+
+var final_atk:
+	get:
+		var base = weapon_atk + basic_attack
+		return int(base * get_durability_multiplier())
+		
+var final_move_speed:
+	get:
+		return move_speed + (0.1 * weapon_ergonomics)
+
+var final_atk_speed:
+	get:
+		return (atk_speed + (0.1 * weapon_ergonomics)) * 0.5
 # checkpoint
 var respawn_delay: float = 1.5 
 var checkpoint_position: Vector2 = Vector2.ZERO
@@ -100,6 +118,21 @@ func is_paused() -> bool:
 func change_state(new_state: State):
 	current_state = new_state
 
+func get_durability_multiplier() -> float:
+	var ratio = weapon_durability / weapon_max_durability
+	
+	if ratio > 0.5:
+		return 1.0
+	elif ratio > 0.2:
+		return 0.85
+	elif ratio > 0:
+		return 0.6
+	else:
+		return 0.0
+		
+func reduce_durability(amount: float):
+	weapon_durability = max(weapon_durability - amount, 0)
+	
 func roll_damage(base):
 	var variance = randf_range(0.9, 1.1)
 	var dmg = base * variance

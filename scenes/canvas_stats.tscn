@@ -33,19 +33,21 @@ grow_vertical = 2
 color = Color(0.07058824, 0.078431375, 0.08627451, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="StatsMenu" unique_id=1588557368]
+custom_minimum_size = Vector2(235, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -336.0
-offset_top = -60.0
-offset_right = -192.0
-offset_bottom = -20.0
+offset_left = -175.99997
+offset_top = -20.0
+offset_right = 59.0
+offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(4, 4)
+scale = Vector2(3.289, 3.289)
+pivot_offset = Vector2(117.5, 20)
 theme_override_constants/separation = 52
 
 [node name="Control" type="Control" parent="StatsMenu/HBoxContainer" unique_id=1744399190]
@@ -79,6 +81,16 @@ offset_right = 80.00001
 offset_bottom = 40.0
 texture_normal = ExtResource("1_7uiu1")
 
+[node name="Control4" type="Control" parent="StatsMenu/HBoxContainer" unique_id=2069487688]
+layout_mode = 2
+
+[node name="TextureButton3" type="TextureButton" parent="StatsMenu/HBoxContainer/Control4" unique_id=253217083]
+layout_mode = 0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 40.0
+texture_normal = ExtResource("1_7uiu1")
+
 [node name="HBoxContainer2" type="HBoxContainer" parent="StatsMenu" unique_id=1470632653]
 layout_mode = 1
 anchors_preset = 7
@@ -86,28 +98,35 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -344.0
+offset_left = -566.0
 offset_top = -152.0
-offset_right = 352.0
+offset_right = 574.0
 offset_bottom = -107.0
 grow_horizontal = 2
 grow_vertical = 0
+scale = Vector2(0.74, 0.74)
+pivot_offset = Vector2(570, 22.5)
 theme_override_constants/separation = 25
 
 [node name="HpText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=439863616]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "Hp:          100"
+text = "Atk:          100"
 
 [node name="AtkText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=1172039906]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "Atk:          10"
+text = "Durability:          10"
 
 [node name="AspdText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=989157060]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "Atk Speed:          10"
+text = "Ergonomics:          10"
+
+[node name="MoveSpdText" type="Label" parent="StatsMenu/HBoxContainer2" unique_id=1337235191]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Mov Speed:         10"
 
 [node name="Title" type="Label" parent="StatsMenu" unique_id=1295249041]
 layout_mode = 1

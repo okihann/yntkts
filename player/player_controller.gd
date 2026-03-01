@@ -3,7 +3,8 @@ extends CharacterBody2D
 signal hp_changed(current_hp)
 signal skill_cd_updated(is_ready)
 
-const SPEED = 150.0
+var SPEED = 100
+var attack_cooldown = 0.0
 const SPRINT_MULTIPLIER = 1.6
 const JUMP_VELOCITY = -400.0
 const SLIDE_SPEED = 400.0
@@ -32,6 +33,8 @@ var spawn_position: Vector2 = Vector2.ZERO
 @export var head_detection_offset: Vector2 = Vector2(0, -45)
 @export var head_detection_size: Vector2 = Vector2(10, 10)
 @export var lightning_scene: PackedScene
+@export var slide_multiplier := 3
+@export var slide_friction := 900.0
 
 @export var fall_damage_threshold: float = 600.0
 @export var fall_damage_multiplier: float = 0.05
@@ -48,9 +51,10 @@ var skip_next_fall_anim := false
 @onready var hitbox = $Hitbox
 @onready var aimBtn : TouchScreenButton
 @onready var castBtn : TouchScreenButton = $"../Button/Control/Control/Skill_cast"
+@onready var anim_tree = $AnimTreeHero
+@onready var hitbox_node = $Hitbox
 
 var slide_timer := Timer.new()
-var attack_timer := Timer.new()
 var respawn_timer := Timer.new()
 var touch_damage_cooldown := Timer.new()
 var knockback_timer := Timer.new()
@@ -161,7 +165,7 @@ func cast_skill(target_pos):
 	can_cast_bolt_skill = false
 	emit_signal("skill_cd_updated", false)
 	
-	var cd_duration = GameState.bolt_skill_cd if has_node("/root/GameState") else 3.0
+	var cd_duration = GameState.bolt_skill_cd
 	bolt_skill_cd_timer.start(cd_duration)
 
 	var skill = lightning_scene.instantiate()
@@ -179,14 +183,16 @@ func _unhandled_input(event):
 		if not attacking and not is_knocked_back and not is_sliding:
 			attack()
 
-
-func _process(_delta):
+func _process(delta: float) -> void:
+	attack_cooldown -= delta
+	if attack_cooldown <= 0 and attacking:
+		attacking = false
 	if is_dead or get_tree().paused: return
 	if has_node("/root/GameState") and not GameState.is_playing(): return
 	_update_enemy_detection()
 	if Input.is_action_pressed("skill_aim"):
 		enter_skill_aim()
-
+	
 	if Input.is_action_just_released("skill_aim"):
 		cancel_skill_aim()
 
@@ -240,17 +246,19 @@ func _physics_process(delta):
 		coyote_timer = 0
 
 	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding and not attacking:
-		if abs(velocity.x) > 100:
+		if abs(velocity.x) > GameState.final_move_speed * 0.8:
 			start_slide()
 
 	if is_sliding:
-		velocity.x = move_toward(velocity.x, 0, 10)
-		#if abs(velocity.x) < 5:
-			#_on_slide_finished()
+		velocity.x = move_toward(velocity.x, 0, slide_friction * delta)
+		if abs(velocity.x) < 10:
+			_on_slide_finished()
+			
 	elif not attacking:
-		var final_speed = SPEED * (SPRINT_MULTIPLIER if is_sprinting else 1.0)
+		var final_speed = GameState.final_move_speed * (SPRINT_MULTIPLIER if is_sprinting else 1.0)
 		if direction != 0:
 			velocity.x = direction * final_speed
+			anim_tree.set("parameters/walk_tree/TimeScale/scale", (final_speed * 0.01))
 			visualHero.flip_h = (direction > 0)
 			hitbox.scale.x = -1 if direction > 0 else 1
 		else:
@@ -366,13 +374,17 @@ func play_hit_flash():
 	tween.tween_property(visualHero, "modulate", Color(5, 5, 5, 1), 0.05)
 	tween.tween_property(visualHero, "modulate", Color.WHITE, 0.1)
 
-
 func attack():
 	if aiming_skill:
 		return
-	attacking = true
-	stateMachineHero.travel("attack")
-	attack_timer.start(0.5)
+		
+	if attack_cooldown <= 0 and not attacking:
+		attacking = true
+		hitbox_node.reset_list_serangan()
+		var atk_speed = GameState.final_atk_speed
+		anim_tree.set("parameters/attack_tree/TimeScale/scale", atk_speed)
+		attack_cooldown = 1.0 / atk_speed
+		stateMachineHero.travel("attack_tree")
 
 
 func finish_attack():
@@ -395,11 +407,6 @@ func setup_timers():
 	slide_timer.wait_time = 0.6
 	slide_timer.one_shot = true
 	slide_timer.timeout.connect(_on_slide_finished)
-
-	add_child(attack_timer)
-	attack_timer.wait_time = 0.5
-	attack_timer.one_shot = true
-	attack_timer.timeout.connect(finish_attack)
 
 	add_child(respawn_timer)
 	respawn_timer.wait_time = 1.5
@@ -439,9 +446,10 @@ func start_slide():
 	if head_detection_area:
 		head_detection_area.set_deferred("monitoring", false)
 	
-	velocity.x = (1 if visualHero.flip_h else -1) * SLIDE_SPEED
+	var base_slide_speed = GameState.final_move_speed * slide_multiplier
+	velocity.x = (1 if visualHero.flip_h else -1) * base_slide_speed
 	slide_timer.start()
-
+	
 func _on_slide_finished():
 	is_sliding = false
 	if head_detection_area:
@@ -506,4 +514,4 @@ func update_animation(direction, is_sprinting):
 	
 	if is_sliding: stateMachineHero.travel("sliding")
 	elif direction == 0: stateMachineHero.travel("idle")
-	else: stateMachineHero.travel("running" if is_sprinting else "walking")
+	else: stateMachineHero.travel("running" if is_sprinting else "walk_tree")

@@ -168,7 +168,7 @@ func _refresh_stats_label() -> void:
 		"Lv: %d"      % gs.player_level                                + sep +
 		"EXP: %d / %d" % [gs.current_exp, gs.exp_required]            + "\n" +
 		"ATK: %d"     % gs.basic_attack                                + sep +
-		"ASPD: %.0f"  % gs.attack_speed                                + sep +
+		"ASPD: %.0f"  % gs.atk_speed                                + sep +
 		"Pts: %d"     % gs.attribute_point                             + "\n" +
 		"Crit: %.0f%%" % (gs.crit_rate * 100)                         + sep +
 		"CritDmg: %.1fx" % gs.crit_damage                             + "\n" +
