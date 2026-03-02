@@ -105,7 +105,7 @@ var echo_buffer:          Array   = []
 var _last_echo_on_floor:  bool    = true
 var _echo_pending_jvel:   float   = 0.0   # velocity Y lompatan yang perlu ditiru
 var _echo_pending_jx:     float   = INF   # posisi X tempat harus lompat
-var _cached_side:         int     = 1     # sisi AI relatif player
+var _cached_side:         int     = 1     # sisi AI relatif player (diupdate tiap frame)
 
 
 # ─── LAYER 2: Smart Breadcrumbs ───────────────────────────────────────────────
@@ -222,14 +222,20 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO; return
 
 	_space_state = get_world_2d().direct_space_state
+
+	# Update sisi relatif terhadap player (untuk offset mengikuti)
+	_cached_side = sign(player.global_position.x - global_position.x)
+	if _cached_side == 0:
+		_cached_side = 1   # pertahankan arah terakhir jika tepat di tengah
+
 	if _edge_wait_timer > 0:
 		_edge_wait_timer -= delta
-		
+
 	if _fail_jump_timer > 0:
 		_fail_jump_timer -= delta
 		if _fail_jump_timer <= 0:
 			_rx_jump_armed = false
-			
+
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 		_avoid_landing_on_enemy()
@@ -363,8 +369,8 @@ func _advance_crumbs():
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# LAYER 3 — REACTIVE ENVIRONMENT SCAN (proaktif setiap fram
-
+# LAYER 3 — REACTIVE ENVIRONMENT SCAN (proaktif setiap frame)
+# ═══════════════════════════════════════════════════════════════════════════════
 func _scan_environment():
 	var dir = _current_move_dir()
 	_rx_move_dir = dir
@@ -430,10 +436,14 @@ func _brain(delta: float):
 
 	_check_should_dodge()
 	if _should_heal_player() and heal_timer.is_stopped(): _heal_target(player); return
+
+	# AGRESIVITAS: serang musuh jika ada dan cooldown attack habis
 	var enemy = _find_nearest_enemy()
-	if enemy and player_aggro_timer > 0:
+	if enemy and attack_timer.is_stopped():
 		current_state = State.COMBAT
-		_combat_behavior(delta, enemy); return
+		_combat_behavior(delta, enemy)
+		return
+
 	if _should_heal_self() and heal_timer.is_stopped(): _heal_target(self); return
 	_navigate(delta)
 
@@ -442,15 +452,17 @@ func _brain(delta: float):
 # NAVIGATE — Orkestrasi 3 layer
 # ═══════════════════════════════════════════════════════════════════════════════
 func _navigate(delta: float):
+	# Majukan crumb jika sudah dekat
+	_advance_crumbs()
 
 	var player_future_x = player.global_position.x + player.velocity.x * 0.25
 	var diff_x = player_future_x - global_position.x
 	var dir = sign(diff_x)
 	var dist = abs(diff_x)
 
-	# Arrival
+	# Jika sudah sangat dekat, berhenti total
 	if dist < arrival_threshold:
-		velocity.x = move_toward(velocity.x, 0, 100 * delta)
+		velocity.x = move_toward(velocity.x, 0, horizontal_accel * delta * 2)
 		return
 
 	var target_speed = movement_speed
@@ -465,23 +477,35 @@ func _navigate(delta: float):
 	
 	
 func _apply_super_reactive(dir:int, delta:float):
-
 	if not is_on_floor():
 		return
-		
+
+	# Cek void di depan + pastikan tidak ada landasan di seberang
+	var void_ahead = _rx_void_ahead
+	var gap_land   = _rx_gap_land
+
+	if void_ahead and not gap_land:
+		# Tidak ada pijakan di seberang → berhenti di tepi
+		velocity.x = 0
+		# Opsional: mundur sedikit jika terlalu dekat player
+		if abs(global_position.x - player.global_position.x) < 100:
+			velocity.x = -dir * movement_speed * 0.3
+		return
+
+	# Lompat jika ada tembok dan platform di atas
 	if _rx_wall_ahead and _rx_platform_up and not _rx_jump_armed:
 		_do_smart_jump()
 		return
-	
+
+	# Lompat jika ada tembok dan sudah mencoba beberapa kali
 	if _rx_wall_ahead and not _rx_jump_armed:
 		_jump_attempt_memory += 1
 		if _jump_attempt_memory > 1:
 			_do_smart_jump()
 		return
 
-	
-	if _rx_void_ahead and _rx_gap_land and not _rx_jump_armed:
-
+	# Lompat jika ada jurang tapi ada pijakan di seberang (setelah jeda)
+	if void_ahead and gap_land and not _rx_jump_armed:
 		if _edge_wait_timer <= 0:
 			_edge_wait_timer = 0.12
 			velocity.x = 0
@@ -491,26 +515,25 @@ func _apply_super_reactive(dir:int, delta:float):
 			_edge_wait_timer = 0
 			return
 
-	if _rx_void_ahead and not _rx_gap_land:
-		var confirm = not _rc(
-			global_position + Vector2(dir * 20, 0),
-			global_position + Vector2(dir * 20, 140)
-		)
-		if confirm:
-			velocity.x = 0
-			return
-
-	if player.global_position.y < global_position.y - 50 \
-	and not _rx_jump_armed:
+	# Lompat jika player jauh di atas
+	if player.global_position.y < global_position.y - 50 and not _rx_jump_armed:
 		_do_smart_jump()
 
-func _do_smart_jump():
 
+func _do_smart_jump():
 	if not is_on_floor():
 		return
 
-	var height_diff = player.global_position.y - global_position.y
+	# Cek keamanan: pastikan setelah lompat tidak jatuh ke jurang
+	var dir = _rx_move_dir
+	var land_pos = global_position + Vector2(dir * 60, -150)  # perkiraan titik mendarat
+	var ray = PhysicsRayQueryParameters2D.create(land_pos, land_pos + Vector2(0, 200), 1)
+	ray.exclude = [_ai_rid]
+	if _space_state.intersect_ray(ray).is_empty():
+		# Tidak ada tanah di perkiraan tempat mendarat → jangan lompat
+		return
 
+	var height_diff = player.global_position.y - global_position.y
 	var dynamic_jump = jump_velocity
 
 	if height_diff < -80:
@@ -523,8 +546,8 @@ func _do_smart_jump():
 	_last_jump_time = Time.get_ticks_msec() / 1000.0
 	_fail_jump_timer = 0.6
 
-func _detect_stuck(delta:float):
 
+func _detect_stuck(delta:float):
 	if global_position.distance_to(_last_pos) < 2:
 		_stuck_timer += delta
 		if _stuck_timer > 0.7:
@@ -534,6 +557,8 @@ func _detect_stuck(delta:float):
 		_stuck_timer = 0
 
 	_last_pos = global_position
+
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # COMBAT
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -546,10 +571,21 @@ func _update_aggro(delta: float):
 func _combat_behavior(delta: float, enemy: Node2D):
 	var dx = enemy.global_position.x - global_position.x
 	var ad = abs(dx)
-	if attack_timer.is_stopped(): _perform_attack(enemy)
+
+	# Jika musuh masih hidup dan dalam jangkauan serang, lakukan attack
+	if attack_timer.is_stopped() and ad <= combat_distance * 1.2:
+		_perform_attack(enemy)
+
+	# Gerak taktis: mendekat jika terlalu jauh, menjauh jika terlalu dekat
 	var tvx := 0.0
-	if ad < min_combat_distance: tvx = -sign(dx) * movement_speed * 1.2
-	elif ad > combat_distance:   tvx = sign(dx) * movement_speed
+	if ad < min_combat_distance:
+		tvx = -sign(dx) * movement_speed * 1.2
+	elif ad > combat_distance:
+		tvx = sign(dx) * movement_speed
+	else:
+		# dalam jarang optimal, diam atau sedikit bergerak
+		tvx = 0.0
+
 	velocity.x = move_toward(velocity.x, tvx, movement_speed * 8.0 * delta)
 	_face_direction(dx)
 
@@ -643,7 +679,7 @@ func _find_incoming_arrow() -> Node2D:
 func _find_dangerous_enemy() -> Node2D:
 	for e in nearest_enemy:
 		if is_instance_valid(e) and \
-		   global_position.distance_to(e.global_position) < dodge_detect_range * 0.5:
+		   global_position.distance_to(e.global_position) < dodge_detect_range:
 			return e
 	return null
 
@@ -652,20 +688,33 @@ func _start_dodge():
 	pending_dodge = false
 	current_state = State.DODGE
 	dodge_timer   = dodge_duration
+	var danger_dir = 0.0
 	var arrow = _find_incoming_arrow()
 	if arrow:
 		var av = arrow.get("velocity")
 		if av == null: av = arrow.get("direction")
-		dodge_direction = -sign(av.x) if (av is Vector2 and av.x != 0) \
-						  else -sign(arrow.global_position.x - global_position.x)
-		if dodge_direction == 0: dodge_direction = 1.0; return
-	var danger = _find_dangerous_enemy()
-	if danger:
-		dodge_direction = sign(global_position.x - danger.global_position.x)
-		if dodge_direction == 0: dodge_direction = 1.0
-		if randf() < 0.15: dodge_direction = -dodge_direction; return
-	dodge_direction = -sign(player.global_position.x - global_position.x)
-	if dodge_direction == 0: dodge_direction = 1.0
+		if av is Vector2 and av.x != 0:
+			danger_dir = sign(av.x)   # arah datang proyektil
+		else:
+			danger_dir = sign(arrow.global_position.x - global_position.x)
+		# lari menjauhi arah datang
+		dodge_direction = -danger_dir
+	else:
+		var danger = _find_dangerous_enemy()
+		if danger:
+			danger_dir = sign(danger.global_position.x - global_position.x)
+			# lari menjauhi musuh
+			dodge_direction = -danger_dir
+		else:
+			# tidak ada ancaman jelas → lari ke arah player (aman)
+			dodge_direction = sign(player.global_position.x - global_position.x)
+
+	if dodge_direction == 0:
+		dodge_direction = 1.0
+
+	# sedikit variasi agar tidak terlalu mudah ditebak
+	if randf() < 0.2:
+		dodge_direction *= -1
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

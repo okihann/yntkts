@@ -520,16 +520,13 @@ sources/0 = SubResource("TileSetAtlasSource_haa73")
 [node name="testing_level" type="Node2D" unique_id=813801286]
 script = ExtResource("1_bx410")
 metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
-metadata/_edit_vertical_guides_ = [24.0, -370.0, -172.0]
+metadata/_edit_vertical_guides_ = [24.0, -370.0, -172.0, -705.0]
 
 [node name="Player" parent="." unique_id=912361228 instance=ExtResource("2_b55i6")]
 position = Vector2(-182, -47)
 
 [node name="AiCompanion" parent="." unique_id=1681515207 groups=["companion"] instance=ExtResource("3_jr0o4")]
-position = Vector2(54, 699)
-max_hp = 50.0
-current_hp = 50.0
-attack_cooldown = 5.0
+position = Vector2(60, -3)
 
 [node name="Enemy" parent="." unique_id=869998696 instance=ExtResource("9_pdwrp")]
 position = Vector2(400, -4)
@@ -559,6 +556,7 @@ position = Vector2(331, -84)
 enemyScene = ExtResource("10_7w4r7")
 
 [node name="PauseMenu2" parent="." unique_id=759882947 instance=ExtResource("18_si45p")]
+visible = false
 
 [node name="PauseButton" parent="." unique_id=1445842719 groups=["ui_all"] instance=ExtResource("19_vxu0i")]
 
@@ -589,6 +587,7 @@ visible = false
 script = ExtResource("21_pg4sr")
 
 [node name="QuestPage" parent="." unique_id=222831098 instance=ExtResource("22_p3axr")]
+visible = false
 
 [node name="QuestStart" parent="." unique_id=241976210 instance=ExtResource("23_p3axr")]
 
