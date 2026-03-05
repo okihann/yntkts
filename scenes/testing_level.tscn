@@ -564,6 +564,7 @@ position = Vector2(331, -84)
 enemyScene = ExtResource("10_7w4r7")
 
 [node name="PauseMenu2" parent="." unique_id=759882947 instance=ExtResource("18_si45p")]
+visible = false
 
 [node name="PauseButton" parent="." unique_id=1445842719 groups=["ui_all"] instance=ExtResource("19_vxu0i")]
 
@@ -594,6 +595,7 @@ visible = false
 script = ExtResource("21_pg4sr")
 
 [node name="QuestPage" parent="." unique_id=222831098 instance=ExtResource("22_p3axr")]
+visible = false
 
 [node name="QuestStart" parent="." unique_id=241976210 instance=ExtResource("23_p3axr")]
 
