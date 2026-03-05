@@ -60,7 +60,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Hitbox:monitoring")
+tracks/4/path = NodePath("Pivot/Hitbox:monitoring")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -72,7 +72,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Hitbox/CollisionShape2D:scale")
+tracks/5/path = NodePath("Pivot/Hitbox/CollisionShape2D:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -84,7 +84,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Hitbox/CollisionShape2D:rotation")
+tracks/6/path = NodePath("Pivot/Hitbox/CollisionShape2D:rotation")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -96,7 +96,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Hitbox/CollisionShape2D:position")
+tracks/7/path = NodePath("Pivot/Hitbox/CollisionShape2D:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -147,7 +147,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Hitbox:monitoring")
+tracks/2/path = NodePath("Pivot/Hitbox:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -159,7 +159,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Hitbox/CollisionShape2D:scale")
+tracks/3/path = NodePath("Pivot/Hitbox/CollisionShape2D:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -171,7 +171,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Hitbox/CollisionShape2D:rotation")
+tracks/4/path = NodePath("Pivot/Hitbox/CollisionShape2D:rotation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -183,14 +183,14 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Hitbox/CollisionShape2D:position")
+tracks/5/path = NodePath("Pivot/Hitbox/CollisionShape2D:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(-3.907, -11.482), Vector2(17.954, -48), Vector2(22.723, -45.948), Vector2(26.103, -45.352), Vector2(-20, -48), Vector2(-20.13, -29.764), Vector2(-4.051, -11.277)]
+"values": [Vector2(-3.907, -11.482), Vector2(-17.954, -48), Vector2(-22.723, -45.948), Vector2(-26.103, -45.352), Vector2(21, -48), Vector2(21.842, -29.764), Vector2(-4.051, -11.277)]
 }
 tracks/6/type = "method"
 tracks/6/imported = false
@@ -204,6 +204,23 @@ tracks/6/keys = {
 "values": [{
 "args": [],
 "method": &"finish_attack"
+}]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Pivot/Hitbox")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.16666667, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"enable_hitbox"
+}, {
+"args": [],
+"method": &"disable_hitbox"
 }]
 }
 
@@ -384,6 +401,7 @@ collision_layer = 2
 collision_mask = 21
 script = ExtResource("1_rkbax")
 lightning_scene = ExtResource("2_qjkh3")
+metadata/_edit_vertical_guides_ = [47.0, -165.0]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1485415825]
 zoom = Vector2(2.763, 2.763)
@@ -415,13 +433,15 @@ region_rect = Rect2(0, 0, 80, 64)
 position = Vector2(0, -22)
 shape = SubResource("CapsuleShape2D_rgyib")
 
-[node name="Hitbox" type="Area2D" parent="." unique_id=783703417]
+[node name="Pivot" type="Node2D" parent="." unique_id=1131305197]
+
+[node name="Hitbox" type="Area2D" parent="Pivot" unique_id=783703417]
 collision_layer = 8
 collision_mask = 4
 monitoring = false
 script = ExtResource("3_g1dw6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=278121464]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pivot/Hitbox" unique_id=278121464]
 position = Vector2(-3.907, -11.482)
 rotation = 1.1554079
 scale = Vector2(0.828, 0.828)
@@ -432,5 +452,5 @@ wait_time = 0.5
 
 [node name="AimIndicator" parent="." unique_id=66715933 instance=ExtResource("5_g6k8r")]
 
-[connection signal="body_entered" from="Hitbox" to="Hitbox" method="_on_body_entered"]
+[connection signal="body_entered" from="Pivot/Hitbox" to="Pivot/Hitbox" method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

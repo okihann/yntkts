@@ -1,7 +1,6 @@
 [gd_scene format=4 uid="uid://bbuwmuu17lq50"]
 
 [ext_resource type="Script" uid="uid://byqyeuli6dtni" path="res://scripts/testing_level.gd" id="1_bx410"]
-[ext_resource type="Texture2D" uid="uid://mu7hft013qr4" path="res://tileset/Tiles.png" id="1_haa73"]
 [ext_resource type="PackedScene" uid="uid://cnn0q8wrcnhd0" path="res://player/player.tscn" id="2_b55i6"]
 [ext_resource type="PackedScene" uid="uid://vbe8i7w40jto" path="res://AICompanion/AiCompanion.tscn" id="3_jr0o4"]
 [ext_resource type="PackedScene" uid="uid://c7q2ambqrwy1w" path="res://scenes/joystick.tscn" id="4_8trvs"]
@@ -26,13 +25,21 @@
 [ext_resource type="PackedScene" uid="uid://dt6aafg4vagsb" path="res://scenes/weapon_stats_ui.tscn" id="25_fd47j"]
 [ext_resource type="PackedScene" uid="uid://d06wy65qnbxjv" path="res://money/shop.tscn" id="26_iwfb5"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7uy5g"]
+load_path = "res://.godot/imported/Tiles.png-f25929c49865adc2e0b7b6be17caf2e1.ctex"
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_haa73"]
-texture = ExtResource("1_haa73")
+texture = SubResource("CompressedTexture2D_7uy5g")
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 8, 0.18289948, 8, 8, 8, 8, 8, 8, 3.4900532, 0.932909, 3.6045933)
 1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 8, 8, 8, 8, 8, 8, 3.905901, -8, 3.5421352)
 2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.646145, 8, 4.823246, 8, 8, -8, 8)
 3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.552458, 8, 4.2503376, 8, 8, -8, 8, -8, 8)
 4:0/0 = 0
+4:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, 4.015992, -0.820137, 4.915599, 8, 8, -8, 8)
 6:0/0 = 0
 7:0/0 = 0
 9:0/0 = 0
@@ -520,16 +527,14 @@ sources/0 = SubResource("TileSetAtlasSource_haa73")
 [node name="testing_level" type="Node2D" unique_id=813801286]
 script = ExtResource("1_bx410")
 metadata/_edit_horizontal_guides_ = [-203.0, -984.0]
-metadata/_edit_vertical_guides_ = [24.0, -370.0, -172.0]
+metadata/_edit_vertical_guides_ = [24.0, -370.0, -172.0, -705.0]
 
 [node name="Player" parent="." unique_id=912361228 instance=ExtResource("2_b55i6")]
-position = Vector2(-182, -47)
+position = Vector2(-179, -52)
 
 [node name="AiCompanion" parent="." unique_id=1681515207 groups=["companion"] instance=ExtResource("3_jr0o4")]
-position = Vector2(54, 699)
-max_hp = 50.0
-current_hp = 50.0
-attack_cooldown = 5.0
+position = Vector2(-192, -52)
+attack_cooldown = 3.0
 
 [node name="Enemy" parent="." unique_id=869998696 instance=ExtResource("9_pdwrp")]
 position = Vector2(400, -4)

@@ -14,7 +14,6 @@ func _on_animated_sprite_2d_animation_finished() -> void:
 
 
 func _on_area_2d_body_entered(body) -> void:
-	var is_crit = randf() < GameState.crit_rate
 	var totalDamage = GameState.roll_damage(GameState.bolt_skill_damage)
 	if body.has_method("take_damage"):
 		body.take_damage(totalDamage.value, get_tree().get_first_node_in_group("player"))

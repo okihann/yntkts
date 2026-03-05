@@ -13,8 +13,6 @@ extends CanvasLayer
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	if close_btn:
-		close_btn.pressed.connect(_on_close_button_pressed)
 
 	if has_node("/root/GameState"):
 		if not GameState.stats_changed.is_connected(update_all):
@@ -57,20 +55,16 @@ func _on_close_button_pressed() -> void:
 func _on_texture_button_pressed() -> void:
 	if GameState.attribute_point > 0:
 		GameState.attribute_point -= 1
-		GameState.weapon_atk += 10
-		GameState.stats_changed.emit()
+		GameState.add_weapon_atk(10.0)
 
 
 func _on_texture_button_2_pressed() -> void:
 	if GameState.attribute_point > 0:
 		GameState.attribute_point -= 1
-		GameState.weapon_max_durability += 20
-		GameState.weapon_durability = GameState.weapon_max_durability
-		GameState.stats_changed.emit()
+		GameState.add_max_durability(2.0)
 
 
 func _on_texture_button_3_pressed() -> void:
 	if GameState.attribute_point > 0:
 		GameState.attribute_point -= 1
-		GameState.weapon_ergonomics += 10
-		GameState.stats_changed.emit()
+		GameState.add_ergonomics(10.0)

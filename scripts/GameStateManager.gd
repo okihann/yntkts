@@ -19,7 +19,7 @@ var bolt_skill_damage: int = 40
 var bolt_skill_cd : float = 5.0
 var move_speed : float = 200.0
 var atk_speed : float = 1.0
-var weapon_atk : int = 0
+var weapon_atk : float = 0
 var weapon_durability : float = 100.0
 var weapon_max_durability : float = 100.0
 var weapon_ergonomics : float = 3.0
@@ -132,6 +132,20 @@ func get_durability_multiplier() -> float:
 		
 func reduce_durability(amount: float):
 	weapon_durability = max(weapon_durability - amount, 0)
+	stats_changed.emit()
+	
+func add_weapon_atk(amount: float):
+	weapon_atk += amount
+	stats_changed.emit()
+
+func add_max_durability(amount: float):
+	weapon_max_durability += amount
+	weapon_durability = weapon_max_durability
+	stats_changed.emit()
+
+func add_ergonomics(amount: float):
+	weapon_ergonomics += amount
+	stats_changed.emit()
 	
 func roll_damage(base):
 	var variance = randf_range(0.9, 1.1)

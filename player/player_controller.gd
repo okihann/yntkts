@@ -9,6 +9,12 @@ const SPRINT_MULTIPLIER = 1.6
 const JUMP_VELOCITY = -400.0
 const SLIDE_SPEED = 400.0
 const COYOTE_TIME = 0.1
+const jarak_snap_ground := 8.0
+const batas_snap_velo := 120.0
+const foot_offset_x := 10.0
+const grounded_buffer_time := 0.08
+
+var grounded_buffer := 0.0
 
 var first_frame_done := false
 var is_sliding := false
@@ -48,13 +54,15 @@ var skip_next_fall_anim := false
 @onready var fade = get_tree().current_scene.get_node_or_null("DeadCanvas/Fade")
 @onready var visualHero = $Sprite2D
 @onready var stateMachineHero = $AnimTreeHero.get("parameters/playback")
-@onready var hitbox = $Hitbox
+@onready var hitbox = $Pivot/Hitbox/CollisionShape2D
+@onready var pivot = $Pivot
 @onready var aimBtn : TouchScreenButton
 @onready var castBtn : TouchScreenButton = $"../Button/Control/Control/Skill_cast"
 @onready var anim_tree = $AnimTreeHero
-@onready var hitbox_node = $Hitbox
+@onready var hitbox_node = $Pivot/Hitbox
 
 var slide_timer := Timer.new()
+var facing_dir := -1.0
 var respawn_timer := Timer.new()
 var touch_damage_cooldown := Timer.new()
 var knockback_timer := Timer.new()
@@ -185,7 +193,7 @@ func _unhandled_input(event):
 
 func _process(delta: float) -> void:
 	attack_cooldown -= delta
-	if attack_cooldown <= 0 and attacking:
+	if attack_cooldown <= 0:
 		attacking = false
 	if is_dead or get_tree().paused: return
 	if has_node("/root/GameState") and not GameState.is_playing(): return
@@ -215,8 +223,10 @@ func _physics_process(delta):
 		return
 		
 	if not is_on_floor():
+		grounded_buffer -= delta
 		velocity += get_gravity() * delta
 		fall_velocity = velocity.y
+		apply_smart_ground_snap()
 
 	if is_knocked_back:
 		velocity.x = move_toward(velocity.x, 0, 8)
@@ -224,7 +234,7 @@ func _physics_process(delta):
 		return
 
 	if is_on_floor():
-		
+		grounded_buffer = grounded_buffer_time
 		if not was_on_floor: 
 			if fall_velocity > fall_damage_threshold:
 				var f_damage = int((fall_velocity - fall_damage_threshold) * fall_damage_multiplier)
@@ -257,22 +267,73 @@ func _physics_process(delta):
 	elif not attacking:
 		var final_speed = GameState.final_move_speed * (SPRINT_MULTIPLIER if is_sprinting else 1.0)
 		if direction != 0:
+			facing_dir = direction
 			velocity.x = direction * final_speed
 			anim_tree.set("parameters/walk_tree/TimeScale/scale", (final_speed * 0.01))
-			visualHero.flip_h = (direction > 0)
-			hitbox.scale.x = -1 if direction > 0 else 1
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED * 0.5)
-
+	update_facing()
 	move_and_slide()
 	check_enemy_collision()
 	if not is_sliding:
 		check_enemies_on_head()
 	update_animation(direction, is_sprinting)
 
+func update_facing():
+	visualHero.flip_h = (facing_dir > 0)
+	pivot.scale.x = -1 if facing_dir > 0 else 1
+	# print("update_facing dipanggil, facing_dir: ", facing_dir, " pivot.scale.x: ", pivot.scale.x)
 
+func apply_smart_ground_snap():
+	if is_on_floor():
+		return
+	
+	if velocity.y < 0:
+		return
+	
+	if velocity.y > batas_snap_velo:
+		return
+	
+	var space = get_world_2d().direct_space_state
+	
+	var left_from = global_position + Vector2(-foot_offset_x, 0)
+	var left_to = left_from + Vector2(0, jarak_snap_ground)
+	
+	var right_from = global_position + Vector2(foot_offset_x, 0)
+	var right_to = right_from + Vector2(0, jarak_snap_ground)
+	
+	var query_left = PhysicsRayQueryParameters2D.create(left_from, left_to)
+	query_left.collision_mask = collision_mask
+	query_left.exclude = [self]
+	
+	var query_right = PhysicsRayQueryParameters2D.create(right_from, right_to)
+	query_right.collision_mask = collision_mask
+	query_right.exclude = [self]
+	
+	var result_left = space.intersect_ray(query_left)
+	var result_right = space.intersect_ray(query_right)
+	
+	var best_result = {}
+	
+	if not result_left.is_empty() and not result_right.is_empty():
+		if result_left.position.y < result_right.position.y:
+			best_result = result_left
+		else:
+			best_result = result_right
+	elif not result_left.is_empty():
+		best_result = result_left
+	elif not result_right.is_empty():
+		best_result = result_right
+	
+	if not best_result.is_empty():
+		var floor_normal = best_result.normal
+		
+		if floor_normal.dot(Vector2.UP) > 0.7:
+			global_position.y = best_result.position.y
+			velocity.y = 0
+			
 func is_attacking_enemy() -> bool:
 	return enemy_nearby and (attacking or is_sliding)
 
@@ -375,17 +436,19 @@ func play_hit_flash():
 	tween.tween_property(visualHero, "modulate", Color.WHITE, 0.1)
 
 func attack():
-	if aiming_skill:
-		return
-		
 	if attack_cooldown <= 0 and not attacking:
+		update_facing()
 		attacking = true
+		attack_cooldown = 1.0 / GameState.final_atk_speed
 		hitbox_node.reset_list_serangan()
-		var atk_speed = GameState.final_atk_speed
-		anim_tree.set("parameters/attack_tree/TimeScale/scale", atk_speed)
-		attack_cooldown = 1.0 / atk_speed
+		
+		# var atk_speed = GameState.final_atk_speed
+		# if atk_speed >= 7.0:
+			# hitbox_node.enable_hitbox()
+		anim_tree.set("parameters/attack_tree/TimeScale/scale", GameState.final_atk_speed)
 		stateMachineHero.travel("attack_tree")
-
+		await get_tree().physics_frame
+		update_facing()
 
 func finish_attack():
 	attacking = false
@@ -509,7 +572,10 @@ func update_animation(direction, is_sprinting):
 			skip_next_fall_anim = false
 			stateMachineHero.travel("idle")
 			return
-		stateMachineHero.travel("jumping" if velocity.y < 0 else "fall")
+		if velocity.y < 0:
+			stateMachineHero.travel("jumping")
+		elif grounded_buffer <= 0 and velocity.y > 0:
+			stateMachineHero.travel("fall")
 		return
 	
 	if is_sliding: stateMachineHero.travel("sliding")

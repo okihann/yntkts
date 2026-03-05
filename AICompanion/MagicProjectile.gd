@@ -14,6 +14,7 @@ signal projectile_expired
 var direction: Vector2 = Vector2.RIGHT
 var target: Node2D = null
 var velocity: Vector2 = Vector2.ZERO
+var shooter: Node = null
 
 @onready var sprite: Variant = $AnimatedSprite2D if has_node("AnimatedSprite2D") else ($Sprite2D if has_node("Sprite2D") else null)
 @onready var particles: CPUParticles2D = $Particles if has_node("Particles") else null
@@ -87,7 +88,7 @@ func _physics_process(delta: float) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemy"):
 		if body.has_method("take_damage"):
-			body.take_damage(damage)
+			body.take_damage(damage, shooter)
 		
 		projectile_hit.emit(body, damage)
 		_create_hit_effect()

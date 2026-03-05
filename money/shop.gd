@@ -15,8 +15,6 @@ func _ready():
 		if items_to_sell[i] != null:
 			local_stock[items_to_sell[i]] = quantities[i]
 	
-	body_entered.connect(_on_body_entered)
-	body_exited.connect(_on_body_exited)
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
