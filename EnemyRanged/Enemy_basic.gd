@@ -28,21 +28,22 @@ const PLAYER_AGGRO_BONUS = 15.0
 const AGGRO_SWITCH_THRESHOLD = 25.0
 
 var aggro_eval_timer: float = 0.0
-const AGGRO_EVAL_INTERVAL = 0.5
+const AGGRO_EVAL_INTERVAL = 0.2
 
-var hpEnemy = 100.0
+var hpEnemy = 200.0
 var max_hp = 100.0
 var is_angry := false
 const detectRange = 350.0
 const angryRange = 900.0
 
 const speed = 70
+const speed_back = 147
 const jumpVelocity = -420.0
 const jarak_minimum := 150.0
 const jarak_maksimum := 280.0
 const jarak_dodge := 80
 const cooldown_dodge := 2.0
-const STEP_HEIGHT := 1
+const STEP_HEIGHT := 0.5
 const STEP_CHECK_DISTANCE := 0.5
 
 var dodge_timer := 0.0
@@ -135,7 +136,7 @@ func _physics_process(delta: float) -> void:
 
 		elif distance < jarak_minimum:
 			if _can_move_backward(-target_dir):
-				velocity.x = -target_dir * speed
+				velocity.x = -target_dir * speed_back #* 2.2
 				change_state(state.Walk)
 			else:
 				velocity.x = 0
@@ -250,7 +251,7 @@ func _update_aggro(delta: float):
 	if is_instance_valid(player_ref):
 		var pd = global_position.distance_to(player_ref.global_position)
 		if pd < AGGRO_PROXIMITY_RANGE:
-			player_aggro += AGGRO_ON_PROXIMITY * (1.0 - pd / AGGRO_PROXIMITY_RANGE) * delta * 60
+			player_aggro += AGGRO_ON_PROXIMITY * (1.0 - pd / AGGRO_PROXIMITY_RANGE) * delta * 120
 	if is_instance_valid(companion_ref):
 		var cd = global_position.distance_to(companion_ref.global_position)
 		if cd < AGGRO_PROXIMITY_RANGE:
