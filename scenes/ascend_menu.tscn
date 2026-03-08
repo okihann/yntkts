@@ -1,0 +1,414 @@
+[gd_scene format=3 uid="uid://bjvvpf6k54k3v"]
+
+[ext_resource type="Script" uid="uid://bnm50fi4rfj7o" path="res://scripts/char_menu.gd" id="1_b2o2a"]
+[ext_resource type="Script" uid="uid://bqy6fy37omd85" path="res://scripts/ascend_menu.gd" id="1_xd4sj"]
+[ext_resource type="Texture2D" uid="uid://dbw6agflejoe5" path="res://assets/UI/AscendMenu/Untitled76_20260308153756.png" id="2_of1ok"]
+[ext_resource type="Script" uid="uid://dfnniiqxscjgk" path="res://scripts/stats.gd" id="3_o4uq3"]
+[ext_resource type="Texture2D" uid="uid://cgpmc7g7sl34j" path="res://assets/UI/StatsMenu/heart-red.png" id="4_b2o2a"]
+[ext_resource type="Texture2D" uid="uid://c6x03rm2yfhu2" path="res://assets/UI/StatsMenu/TinySwords.png" id="5_f2ro5"]
+[ext_resource type="Texture2D" uid="uid://bixq4mwjuwlwt" path="res://assets/UI/StatsMenu/Untitled62_20260217150518.png" id="7_f2ro5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_of1ok"]
+bg_color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jq8j5"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9690439, 0.958244, 0.9651734, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 24.0
+expand_margin_top = 24.0
+expand_margin_right = 24.0
+expand_margin_bottom = 24.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gcpr8"]
+bg_color = Color(0.24913591, 0.24913594, 0.24913579, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xd4sj"]
+bg_color = Color(0.9862643, 0.98626417, 0.98626417, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3phmi"]
+atlas = ExtResource("5_f2ro5")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb5b4"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 35
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+corner_radius_bottom_left = 35
+
+[node name="CharMenu" type="CanvasLayer" unique_id=1842831273]
+process_mode = 3
+script = ExtResource("1_b2o2a")
+
+[node name="Panel" type="Panel" parent="." unique_id=307572311]
+process_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_of1ok")
+
+[node name="AscendPanel" type="PanelContainer" parent="Panel" unique_id=1012188728]
+custom_minimum_size = Vector2(800, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -306.5
+offset_right = 300.0
+offset_bottom = 306.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.107, 1.107)
+pivot_offset = Vector2(300, 306.5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jq8j5")
+script = ExtResource("1_xd4sj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/AscendPanel" unique_id=1598413512]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LevelLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=1246323190]
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Panel/AscendPanel/VBoxContainer" unique_id=2056171160]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=2039022898]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Experience"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExpBar" type="ProgressBar" parent="Panel/AscendPanel/VBoxContainer" unique_id=1711662658]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_gcpr8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_xd4sj")
+show_percentage = false
+
+[node name="ExpLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer/ExpBar" unique_id=2014107677]
+layout_mode = 0
+offset_left = 1.7037053
+offset_top = 1.1919694
+offset_right = 797.70374
+offset_bottom = 24.191969
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/AscendPanel/VBoxContainer" unique_id=263104249]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=602778463]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Fragments"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FragmentDisplay" type="HBoxContainer" parent="Panel/AscendPanel/VBoxContainer" unique_id=1203867303]
+layout_mode = 2
+alignment = 1
+
+[node name="FragmentIcon" type="TextureRect" parent="Panel/AscendPanel/VBoxContainer/FragmentDisplay" unique_id=2121323050]
+layout_mode = 2
+texture = ExtResource("2_of1ok")
+
+[node name="FragmentLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer/FragmentDisplay" unique_id=1621031099]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="Panel/AscendPanel/VBoxContainer" unique_id=550298463]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=1225246420]
+layout_mode = 2
+text = "On Ascend"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatPreviewLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=2134727491]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="Panel/AscendPanel/VBoxContainer" unique_id=1138142786]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=1548946586]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AscendButton" type="Button" parent="Panel/AscendPanel/VBoxContainer" unique_id=783660943]
+layout_mode = 2
+text = "Ascend"
+
+[node name="StatsMenu" type="Control" parent="Panel" unique_id=778813203]
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.99998
+offset_top = 13.999991
+offset_right = 35.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 324)
+mouse_filter = 2
+script = ExtResource("3_o4uq3")
+
+[node name="ColorRect" type="ColorRect" parent="Panel/StatsMenu" unique_id=79835928]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.595, 1.595)
+pivot_offset = Vector2(576, 324)
+color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/StatsMenu" unique_id=1588557368]
+custom_minimum_size = Vector2(262, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -146.99994
+offset_top = -17.99997
+offset_right = 115.00006
+offset_bottom = 22.00003
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.353, 2.353)
+pivot_offset = Vector2(117.5, 20)
+theme_override_constants/separation = 52
+
+[node name="Control" type="Control" parent="Panel/StatsMenu/HBoxContainer" unique_id=1744399190]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="Panel/StatsMenu/HBoxContainer/Control" unique_id=565884828]
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 40.0
+texture_normal = ExtResource("4_b2o2a")
+
+[node name="Control2" type="Control" parent="Panel/StatsMenu/HBoxContainer" unique_id=1861385425]
+layout_mode = 2
+
+[node name="TextureButton2" type="TextureButton" parent="Panel/StatsMenu/HBoxContainer/Control2" unique_id=1215777542]
+layout_mode = 0
+offset_left = 24.338366
+offset_top = -0.90634453
+offset_right = 40.338364
+offset_bottom = 15.093656
+scale = Vector2(2.176, 2.176)
+texture_normal = SubResource("AtlasTexture_3phmi")
+
+[node name="Control3" type="Control" parent="Panel/StatsMenu/HBoxContainer" unique_id=1865230130]
+layout_mode = 2
+
+[node name="TextureButton3" type="TextureButton" parent="Panel/StatsMenu/HBoxContainer/Control3" unique_id=410904087]
+layout_mode = 0
+offset_left = 48.000008
+offset_right = 80.00001
+offset_bottom = 40.0
+texture_normal = ExtResource("4_b2o2a")
+
+[node name="Control4" type="Control" parent="Panel/StatsMenu/HBoxContainer" unique_id=2069487688]
+layout_mode = 2
+
+[node name="TextureButton3" type="TextureButton" parent="Panel/StatsMenu/HBoxContainer/Control4" unique_id=253217083]
+layout_mode = 0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 40.0
+texture_normal = ExtResource("4_b2o2a")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/StatsMenu" unique_id=1470632653]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -566.0
+offset_top = -152.0
+offset_right = 574.0
+offset_bottom = -107.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.521, 0.521)
+pivot_offset = Vector2(570, 22.5)
+theme_override_constants/separation = 25
+
+[node name="HpText" type="Label" parent="Panel/StatsMenu/HBoxContainer2" unique_id=439863616]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Atk:          100"
+
+[node name="AtkText" type="Label" parent="Panel/StatsMenu/HBoxContainer2" unique_id=1172039906]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Durability:          10"
+
+[node name="AspdText" type="Label" parent="Panel/StatsMenu/HBoxContainer2" unique_id=989157060]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Ergonomics:          10"
+
+[node name="MoveSpdText" type="Label" parent="Panel/StatsMenu/HBoxContainer2" unique_id=1337235191]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Mov Speed:         10"
+
+[node name="Title" type="Label" parent="Panel/StatsMenu" unique_id=1295249041]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 56.0
+offset_right = 35.0
+offset_bottom = 79.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 30
+text = "Level Up"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Panel/StatsMenu" unique_id=2055613004]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -144.0
+offset_top = 128.0
+offset_right = 142.0
+offset_bottom = 177.0
+grow_horizontal = 2
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 27
+text = "Pick a bonus stat"
+horizontal_alignment = 1
+
+[node name="Points" type="Label" parent="Panel/StatsMenu" unique_id=83730169]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -389.0
+offset_top = -139.0
+offset_right = -103.0
+offset_bottom = -90.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 27
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/StatsMenu" unique_id=773975083]
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 85.0
+offset_top = -109.0
+offset_right = 149.0
+offset_bottom = 83.0
+grow_vertical = 2
+scale = Vector2(0.95, 0.95)
+pivot_offset = Vector2(32, 96)
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="AscendMenuBtn" type="Button" parent="Panel/StatsMenu/VBoxContainer" unique_id=1428400788]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_pb5b4")
+text = "1"
+
+[node name="CurrentBtn" type="Button" parent="Panel/StatsMenu/VBoxContainer" unique_id=508514911]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_pb5b4")
+text = "2"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=1004950248]
+z_index = 17
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 232.0
+offset_top = -31.0
+offset_right = 351.0
+offset_bottom = 161.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="Ascend" type="Button" parent="Panel/VBoxContainer" unique_id=1790991196]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0390989, 1.0390989, 1.0390989, 1)
+theme_override_font_sizes/font_size = 48
+text = "Ascend"
+
+[node name="CharStats" type="Button" parent="Panel/VBoxContainer" unique_id=1676038190]
+custom_minimum_size = Vector2(70, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 48
+text = "Char Stats"
+
+[node name="CloseBtn" type="TextureButton" parent="Panel" unique_id=1698269143]
+z_index = 17
+layout_mode = 1
+offset_left = 68.0
+offset_top = 80.0
+offset_right = 132.0
+offset_bottom = 144.0
+texture_normal = ExtResource("7_f2ro5")
+
+[connection signal="pressed" from="Panel/VBoxContainer/Ascend" to="." method="_on_ascend_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/CharStats" to="." method="_on_char_stats_pressed"]
+[connection signal="pressed" from="Panel/CloseBtn" to="." method="_on_close_btn_pressed"]

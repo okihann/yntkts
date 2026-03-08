@@ -14,19 +14,18 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
 
-	if has_node("/root/GameState"):
-		if not GameState.stats_changed.is_connected(update_all):
-			GameState.stats_changed.connect(update_all)
+	if has_node("/root/LevelManager"):
+		if not LevelManager.stats_changed.is_connected(update_all):
+			LevelManager.stats_changed.connect(update_all)
 		update_all()
 
 func update_all():
-	if not has_node("/root/GameState"): return
 
-	atk_text.text = str(GameState.weapon_atk)
-	durability_text.text = str(GameState.weapon_durability)
-	ergonomics_text.text = str(GameState.weapon_ergonomics)
+	atk_text.text = str(LevelManager.weapon_atk)
+	durability_text.text = str(LevelManager.weapon_durability)
+	ergonomics_text.text = str(LevelManager.weapon_ergonomics)
 	
-	var points = GameState.attribute_point
+	var points = LevelManager.attribute_point
 	point_label.text = "Points: " + str(points)
 
 	if points > 0:
@@ -53,18 +52,18 @@ func _on_close_button_pressed() -> void:
 	UiManager.close_current_menu()
 
 func _on_texture_button_pressed() -> void:
-	if GameState.attribute_point > 0:
-		GameState.attribute_point -= 1
-		GameState.add_weapon_atk(10.0)
+	if LevelManager.attribute_point > 0:
+		LevelManager.attribute_point -= 1
+		LevelManager.add_weapon_atk(10.0)
 
 
 func _on_texture_button_2_pressed() -> void:
-	if GameState.attribute_point > 0:
-		GameState.attribute_point -= 1
-		GameState.add_max_durability(2.0)
+	if LevelManager.attribute_point > 0:
+		LevelManager.attribute_point -= 1
+		LevelManager.add_max_durability(2.0)
 
 
 func _on_texture_button_3_pressed() -> void:
-	if GameState.attribute_point > 0:
-		GameState.attribute_point -= 1
-		GameState.add_ergonomics(10.0)
+	if LevelManager.attribute_point > 0:
+		LevelManager.attribute_point -= 1
+		LevelManager.add_ergonomics(10.0)

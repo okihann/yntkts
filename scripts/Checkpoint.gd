@@ -52,7 +52,7 @@ func activate(player: Node2D):
 	
 	# Update GameState checkpoint and sync player health
 	if has_node("/root/GameState"):
-		GameState.player_health = player_hp
+		LevelManager.player_health = player_hp
 		GameState.set_checkpoint(global_position, player_hp)
 	
 	if not is_activated:

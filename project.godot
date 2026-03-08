@@ -31,12 +31,12 @@ QuestManager="*uid://cq7k1wvbqm8lu"
 UiManager="*uid://1xqb8yx7g3cd"
 Dialogic="*uid://ds2q0uclmolvu"
 QuestBridge="*uid://dnt4oy3jy7vgw"
-NextTouch="*uid://cn6f2sy1ifj2y"
+LevelManager="*uid://dfb8oj2c7qlqq"
 
 [dialogic]
 
 directories/dch_directory={
-"unit_test_character": "res://dialogic-2.0-alpha-19/Tests/Resources/unit_test_character.dch"
+"unit_test_character": "res://addons/dialogic/Tests/Resources/unit_test_character.dch"
 }
 directories/dtl_directory={
 "dialogue_1_dummy": "res://Dialogues/dialogue_1_dummy.dtl",

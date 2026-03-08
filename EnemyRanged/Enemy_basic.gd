@@ -334,7 +334,7 @@ func take_knockback_damage(amount, dir, force, source = null):
 func _on_enemy_animation_animation_finished(anim_name: StringName) -> void:
 	if anim_name in ["GetHit", "Attack"]: change_state(state.Idle); _evaluate_target()
 	elif anim_name == "Death":
-		if has_node("/root/GameState"): GameState.gain_exp(60); QuestManager.add_progress("Kill", "Enemy")
+		if has_node("/root/LevelManager"): LevelManager.gain_exp(50); QuestManager.add_progress("Kill", "Enemy")
 		queue_free()
 
 func _on_area_detection_body_entered(body: Node2D) -> void:
