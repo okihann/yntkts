@@ -83,19 +83,19 @@ func _ready():
 	add_to_group("player")
 	spawn_position = global_position
 	add_child(bolt_skill_cd_timer)
-	bolt_skill_cd_timer.wait_time = GameState.bolt_skill_cd
+	bolt_skill_cd_timer.wait_time = LevelManager.bolt_skill_cd
 	bolt_skill_cd_timer.one_shot = true
 	bolt_skill_cd_timer.timeout.connect(on_bolt_skill_cd_finished)
 	if has_node("/root/GameState"):
 		sync_stats_from_gamestate()
 
 		if GameState.checkpoint_position == Vector2.ZERO:
-			GameState.set_checkpoint(spawn_position, GameState.player_health)
+			GameState.set_checkpoint(spawn_position, LevelManager.player_health)
 
 		GameState.change_state(GameState.State.PLAYING)
 
-		if not GameState.stats_changed.is_connected(sync_stats_from_gamestate):
-			GameState.stats_changed.connect(sync_stats_from_gamestate)
+		if not LevelManager.stats_changed.is_connected(sync_stats_from_gamestate):
+			LevelManager.stats_changed.connect(sync_stats_from_gamestate)
 		if not GameState.game_paused.is_connected(func(): set_physics_process(false)):
 			GameState.game_paused.connect(func(): set_physics_process(false))
 		if not GameState.game_resumed.is_connected(func(): set_physics_process(true)):
@@ -104,8 +104,8 @@ func _ready():
 			GameState.state_changed.connect(_on_game_state_changed)
 		if not GameState.player_respawned.is_connected(_on_player_respawned):
 			GameState.player_respawned.connect(_on_player_respawned)
-		if not GameState.level_up.is_connected(_on_level_up):
-			GameState.level_up.connect(_on_level_up)
+		if not LevelManager.ascend_completed.is_connected(_on_level_up):
+			LevelManager.ascend_completed.connect(_on_level_up)
 
 	emit_signal("hp_changed", current_hp)
 
@@ -122,8 +122,8 @@ func on_bolt_skill_cd_finished():
 	emit_signal("skill_cd_updated", true)
 	
 func sync_stats_from_gamestate():
-	max_hp = GameState.player_max_health
-	current_hp = GameState.player_health
+	max_hp = LevelManager.player_max_health
+	current_hp = LevelManager.player_health
 	emit_signal("hp_changed", current_hp)
 
 func enter_skill_aim():
@@ -137,23 +137,19 @@ func enter_skill_aim():
 	$AimIndicator.show()
 
 func update_aim():
-
 	aim_pos = get_global_mouse_position()
 	$AimIndicator.global_position = aim_pos
-	
 	
 func check_cast_input():
 	if aim_from_ui:
 		return
-	
 	if Input.is_action_just_pressed("skill_cast"):
 		cast_skill(aim_pos)
 		cancel_skill_aim()
-func cancel_skill_aim():
 
+func cancel_skill_aim():
 	if not aiming_skill:
 		return
-
 	aiming_skill = false
 	$AimIndicator.hide()
 	castBtn.hide()
@@ -173,8 +169,7 @@ func cast_skill(target_pos):
 	can_cast_bolt_skill = false
 	emit_signal("skill_cd_updated", false)
 	
-	var cd_duration = GameState.bolt_skill_cd
-	bolt_skill_cd_timer.start(cd_duration)
+	bolt_skill_cd_timer.start(LevelManager.bolt_skill_cd)
 
 	var skill = lightning_scene.instantiate()
 	get_tree().current_scene.add_child(skill)
@@ -256,7 +251,7 @@ func _physics_process(delta):
 		coyote_timer = 0
 
 	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding and not attacking:
-		if abs(velocity.x) > GameState.final_move_speed * 0.8:
+		if abs(velocity.x) > LevelManager.final_move_speed * 0.8:
 			start_slide()
 
 	if is_sliding:
@@ -265,7 +260,7 @@ func _physics_process(delta):
 			_on_slide_finished()
 			
 	elif not attacking:
-		var final_speed = GameState.final_move_speed * (SPRINT_MULTIPLIER if is_sprinting else 1.0)
+		var final_speed = LevelManager.final_move_speed * (SPRINT_MULTIPLIER if is_sprinting else 1.0)
 		if direction != 0:
 			facing_dir = direction
 			velocity.x = direction * final_speed
@@ -284,15 +279,12 @@ func _physics_process(delta):
 func update_facing():
 	visualHero.flip_h = (facing_dir > 0)
 	pivot.scale.x = -1 if facing_dir > 0 else 1
-	# print("update_facing dipanggil, facing_dir: ", facing_dir, " pivot.scale.x: ", pivot.scale.x)
 
 func apply_smart_ground_snap():
 	if is_on_floor():
 		return
-	
 	if velocity.y < 0:
 		return
-	
 	if velocity.y > batas_snap_velo:
 		return
 	
@@ -300,7 +292,6 @@ func apply_smart_ground_snap():
 	
 	var left_from = global_position + Vector2(-foot_offset_x, 0)
 	var left_to = left_from + Vector2(0, jarak_snap_ground)
-	
 	var right_from = global_position + Vector2(foot_offset_x, 0)
 	var right_to = right_from + Vector2(0, jarak_snap_ground)
 	
@@ -316,7 +307,6 @@ func apply_smart_ground_snap():
 	var result_right = space.intersect_ray(query_right)
 	
 	var best_result = {}
-	
 	if not result_left.is_empty() and not result_right.is_empty():
 		if result_left.position.y < result_right.position.y:
 			best_result = result_left
@@ -328,15 +318,12 @@ func apply_smart_ground_snap():
 		best_result = result_right
 	
 	if not best_result.is_empty():
-		var floor_normal = best_result.normal
-		
-		if floor_normal.dot(Vector2.UP) > 0.7:
+		if best_result.normal.dot(Vector2.UP) > 0.7:
 			global_position.y = best_result.position.y
 			velocity.y = 0
 			
 func is_attacking_enemy() -> bool:
 	return enemy_nearby and (attacking or is_sliding)
-
 
 func _update_enemy_detection():
 	var enemies = get_tree().get_nodes_in_group("enemy")
@@ -352,7 +339,6 @@ func _update_enemy_detection():
 	if not enemy_nearby and (current_time - last_enemy_time) < 2.0:
 		enemy_nearby = true
 
-
 func check_enemy_collision():
 	for i in range(get_slide_collision_count()):
 		var collision = get_slide_collision(i)
@@ -363,11 +349,9 @@ func check_enemy_collision():
 			else:
 				handle_normal_collision(collider)
 
-
 func handle_normal_collision(enemy):
 	if is_dead or is_knocked_back:
 		return
-
 	if not can_take_touch_damage:
 		return
 
@@ -387,7 +371,6 @@ func handle_slide_collision(enemy):
 		var dir = (enemy.global_position - global_position).normalized()
 		enemy.take_knockback_damage(slide_damage, dir, enemy_knockback_force)
 
-
 func check_enemies_on_head():
 	if not head_detection_area: return
 	var stepped_on_enemy = false
@@ -401,26 +384,20 @@ func check_enemies_on_head():
 		velocity.y = 200
 		play_hit_flash()
 
-
 func knock_off_enemy(enemy):
 	if enemy.has_method("take_knockback_damage"):
 		var dir_x = sign(enemy.global_position.x - global_position.x)
 		if dir_x == 0: dir_x = 1
 		enemy.take_knockback_damage(0, Vector2(dir_x, -0.5).normalized(), enemy_knockback_force * 0.5)
 
-
 func take_damage(amount: int, is_touch_damage := false):
 	if is_dead:
 		return
-
 	if is_touch_damage and not can_take_touch_damage:
 		return
 
 	current_hp = clampi(current_hp - amount, 0, max_hp)
-
-	if has_node("/root/GameState"):
-		GameState.player_health = current_hp
-
+	LevelManager.player_health = current_hp
 	emit_signal("hp_changed", current_hp)
 
 	if amount > 0:
@@ -439,20 +416,15 @@ func attack():
 	if attack_cooldown <= 0 and not attacking:
 		update_facing()
 		attacking = true
-		attack_cooldown = 1.0 / GameState.final_atk_speed
+		attack_cooldown = 1.0 / LevelManager.final_atk_speed
 		hitbox_node.reset_list_serangan()
-		
-		# var atk_speed = GameState.final_atk_speed
-		# if atk_speed >= 7.0:
-			# hitbox_node.enable_hitbox()
-		anim_tree.set("parameters/attack_tree/TimeScale/scale", GameState.final_atk_speed)
+		anim_tree.set("parameters/attack_tree/TimeScale/scale", LevelManager.final_atk_speed)
 		stateMachineHero.travel("attack_tree")
 		await get_tree().physics_frame
 		update_facing()
 
 func finish_attack():
 	attacking = false
-
 
 func die():
 	if is_dead: return
@@ -463,7 +435,6 @@ func die():
 		var tween = get_tree().create_tween()
 		tween.tween_property(fade, "modulate:a", 1.0, 0.6)
 	respawn_timer.start(1.5)
-
 
 func setup_timers():
 	add_child(slide_timer)
@@ -486,7 +457,6 @@ func setup_timers():
 	knockback_timer.one_shot = true
 	knockback_timer.timeout.connect(func(): is_knocked_back = false)
 
-
 func setup_head_detection():
 	head_detection_area = Area2D.new()
 	head_detection_area.name = "HeadDetection"
@@ -503,13 +473,12 @@ func setup_head_detection():
 	head_detection_area.add_child(shape)
 	add_child(head_detection_area)
 
-
 func start_slide():
 	is_sliding = true
 	if head_detection_area:
 		head_detection_area.set_deferred("monitoring", false)
 	
-	var base_slide_speed = GameState.final_move_speed * slide_multiplier
+	var base_slide_speed = LevelManager.final_move_speed * slide_multiplier
 	velocity.x = (1 if visualHero.flip_h else -1) * base_slide_speed
 	slide_timer.start()
 	
@@ -519,8 +488,10 @@ func _on_slide_finished():
 		head_detection_area.set_deferred("monitoring", true)
 
 func _on_respawn_timer_timeout():
-	if has_node("/root/GameState"): GameState.respawn_player()
-	else: get_tree().reload_current_scene()
+	if has_node("/root/GameState"):
+		GameState.respawn_player()
+	else:
+		get_tree().reload_current_scene()
 	
 func _on_player_respawned():
 	is_dead = false
@@ -532,10 +503,13 @@ func _on_player_respawned():
 	bolt_skill_cd_timer.stop()
 	can_cast_bolt_skill = true
 	emit_signal("skill_cd_updated", true)
+
 	if has_node("/root/GameState"):
 		global_position = GameState.checkpoint_position
+		# checkpoint_health tetap di GameState, health sync ke LevelManager
 		current_hp = GameState.checkpoint_health
-		max_hp = GameState.player_max_health
+		LevelManager.player_health = current_hp
+		max_hp = LevelManager.player_max_health
 	else:
 		global_position = spawn_position
 		current_hp = max_hp
@@ -548,21 +522,16 @@ func _on_player_respawned():
 		var tween = get_tree().create_tween()
 		tween.tween_property(fade, "modulate:a", 0.0, 0.3)
 
-
-
 func _on_game_state_changed(new_state, _old_state):
 	match new_state:
 		1:
 			if not is_dead:
 				set_physics_process(true)
 
-
 func _on_level_up(_level):
-	if has_node("/root/GameState"):
-		max_hp = GameState.player_max_health
-		current_hp = GameState.player_health
-		emit_signal("hp_changed", current_hp)
-
+	max_hp = LevelManager.player_max_health
+	current_hp = LevelManager.player_health
+	emit_signal("hp_changed", current_hp)
 
 func update_animation(direction, is_sprinting):
 	if attacking: return

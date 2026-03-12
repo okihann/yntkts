@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 		if time_left > 0:
 			cooldown_label.text = "%0.1f" % time_left
 			cooldown_label.show()
-			cooldown_bar.max_value = GameState.bolt_skill_cd
+			cooldown_bar.max_value = LevelManager.bolt_skill_cd
 			cooldown_bar.value = time_left
 			cooldown_bar.show()
 		else:

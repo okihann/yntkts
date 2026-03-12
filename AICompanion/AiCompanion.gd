@@ -1157,7 +1157,7 @@ func _should_heal_player() -> bool:
 	if not player: return false
 	var pct = 1.0
 	if has_node("/root/GameState"):
-		pct = float(GameState.player_health) / float(GameState.player_max_health)
+		pct = float(LevelManager.player_health) / float(LevelManager.player_max_health)
 	elif player.get("current_hp") != null:
 		pct = float(player.current_hp) / float(player.max_hp)
 	return pct < heal_threshold

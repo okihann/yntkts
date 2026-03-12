@@ -21,8 +21,10 @@ var stats_instance: Node = null
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hide()
-	if has_node("/root/GameState"):
-		GameState.stats_changed.connect(update_pause_stats_display)
+	if has_node("/root/LevelManager"):
+		LevelManager.stats_changed.connect(update_pause_stats_display)
+		LevelManager.exp_gained.connect(_on_exp_gained)
+		LevelManager.ascend_completed.connect(_on_ascend_completed)
 	
 	update_pause_stats_display()
 	for btn in buttons:
@@ -50,31 +52,24 @@ func _ready():
 		$ArrowDown.pressed.connect(func(): move_selection(1))
 
 func update_pause_stats_display():
-	hp_label.text = "Hp: " + str(GameState.player_health) + "/" + str(GameState.player_max_health)
-	level_label.text = "Level: " + str(GameState.player_level)
+	hp_label.text = "Hp: " + str(LevelManager.player_health) + "/" + str(LevelManager.player_max_health)
+	level_label.text = "Level: " + str(LevelManager.player_level)
 func open_stats():
 	if stats_instance != null and is_instance_valid(stats_instance):
 		return
 
-	var stats_scn = load("res://scenes/canvas_stats.tscn")
-	if stats_scn:
-		stats_instance = stats_scn.instantiate()
-		get_parent().add_child(stats_instance)
-		
-		
-		if stats_instance is CanvasLayer:
-			stats_instance.layer = 128
-			
-		stats_instance.tree_exited.connect(_on_stats_closed)
-		set_process_input(false)
-	else:
-		print("Gagal memuat scene stats")
+	UiManager.open_ascend_menu()
 
 
 func _on_stats_closed():
 	set_process_input(true)
 	stats_instance = null
+func _on_exp_gained(_amount, current, required):
+	exp_label.text = "Exp: %d/%d" % [current, required]
 
+func _on_ascend_completed(_new_level):
+	update_pause_stats_display()
+	
 func _on_game_paused():
 	_update_stats_display()
 	show()
@@ -94,9 +89,9 @@ func _on_game_resumed():
 func _update_stats_display():
 	if not has_node("/root/GameState"): return
 	
-	hp_label.text = "Hp: %d/%d" % [GameState.player_health, GameState.player_max_health]
-	level_label.text = "Level: %d" % GameState.player_level
-	exp_label.text = "Exp: %d/%d" % [GameState.current_exp, GameState.exp_required]
+	hp_label.text = "Hp: %d/%d" % [LevelManager.player_health, LevelManager.player_max_health]
+	level_label.text = "Level: %d" % LevelManager.player_level
+	exp_label.text = "Exp: %d/%d" % [LevelManager.current_exp, LevelManager.exp_required]
 
 func _input(event):
 	if not visible: return

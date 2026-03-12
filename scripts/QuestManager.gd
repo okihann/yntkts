@@ -64,5 +64,5 @@ func _is_complete(q):
 func _finish(q):
 	q.completed = true
 	active_quests.erase(q.id)
-	GameState.gain_exp(q.rewards_exp)
+	LevelManager.gain_exp(q.rewards_exp)
 	quest_completed.emit(q.id)

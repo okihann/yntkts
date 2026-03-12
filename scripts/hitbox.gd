@@ -19,10 +19,10 @@ func _on_body_entered(body):
 	var player = get_tree().get_first_node_in_group("player")
 	if player and player.has_method("update_facing"):
 		player.update_facing()
-	var totalDamage = GameState.roll_damage(GameState.final_atk)
+	var totalDamage = LevelManager.roll_damage(LevelManager.final_atk)
 	targets_kena_serang.append(body)
 	body.take_damage(totalDamage.value, get_tree().get_first_node_in_group("player"))
-	GameState.reduce_durability(2.0)
+	LevelManager.reduce_durability(2.0)
 	spawn_damage_text(body.global_position, totalDamage.value, totalDamage.crit)
 
 func enable_hitbox():

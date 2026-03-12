@@ -371,5 +371,5 @@ func _on_animation_finished(anim_name):
 	match anim_name:
 		"hurt": can_attack = true; change_state(state.Idle)
 		"death":
-			if has_node("/root/GameState"): GameState.gain_exp(60); QuestManager.add_progress("Kill", "Enemy")
+			if has_node("/root/LevelManager"): LevelManager.gain_exp(60); QuestManager.add_progress("Kill", "Enemy")
 			queue_free()

@@ -2,12 +2,18 @@
 
 [ext_resource type="Texture2D" uid="uid://cgpmc7g7sl34j" path="res://assets/UI/StatsMenu/heart-red.png" id="1_7uiu1"]
 [ext_resource type="Script" uid="uid://dfnniiqxscjgk" path="res://scripts/stats.gd" id="1_tqvmx"]
-[ext_resource type="Texture2D" uid="uid://bixq4mwjuwlwt" path="res://assets/UI/StatsMenu/Untitled62_20260217150518.png" id="3_11rni"]
 [ext_resource type="Texture2D" uid="uid://c6x03rm2yfhu2" path="res://assets/UI/StatsMenu/TinySwords.png" id="3_pb5b4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3phmi"]
 atlas = ExtResource("3_pb5b4")
 region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pb5b4"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 35
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+corner_radius_bottom_left = 35
 
 [node name="CanvasStats" type="CanvasLayer" unique_id=900416537]
 layer = 9
@@ -20,8 +26,13 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 34.99998
+offset_top = 13.999991
+offset_right = 35.0
+offset_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(576, 324)
 
 [node name="ColorRect" type="ColorRect" parent="StatsMenu" unique_id=79835928]
 layout_mode = 1
@@ -30,23 +41,25 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.595, 1.595)
+pivot_offset = Vector2(576, 324)
 color = Color(0.07058824, 0.078431375, 0.08627451, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="StatsMenu" unique_id=1588557368]
-custom_minimum_size = Vector2(235, 0)
+custom_minimum_size = Vector2(262, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -175.99997
-offset_top = -20.0
-offset_right = 59.0
-offset_bottom = 20.0
+offset_left = -146.99994
+offset_top = -17.99997
+offset_right = 115.00006
+offset_bottom = 22.00003
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(3.289, 3.289)
+scale = Vector2(2.353, 2.353)
 pivot_offset = Vector2(117.5, 20)
 theme_override_constants/separation = 52
 
@@ -104,7 +117,7 @@ offset_right = 574.0
 offset_bottom = -107.0
 grow_horizontal = 2
 grow_vertical = 0
-scale = Vector2(0.74, 0.74)
+scale = Vector2(0.521, 0.521)
 pivot_offset = Vector2(570, 22.5)
 theme_override_constants/separation = 25
 
@@ -138,8 +151,10 @@ offset_top = 56.0
 offset_right = 35.0
 offset_bottom = 79.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 38
+theme_override_font_sizes/font_size = 30
 text = "Level Up"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Subtitle" type="Label" parent="StatsMenu" unique_id=2055613004]
 layout_mode = 1
@@ -152,8 +167,9 @@ offset_right = 142.0
 offset_bottom = 177.0
 grow_horizontal = 2
 pivot_offset = Vector2(293.5, 64)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 27
 text = "Pick a bonus stat"
+horizontal_alignment = 1
 
 [node name="Points" type="Label" parent="StatsMenu" unique_id=83730169]
 layout_mode = 1
@@ -169,16 +185,40 @@ offset_bottom = -23.0
 grow_horizontal = 0
 grow_vertical = 0
 pivot_offset = Vector2(293.5, 64)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 27
 text = "Points: 0"
+horizontal_alignment = 1
 
-[node name="CloseButton" type="TextureButton" parent="StatsMenu" unique_id=508153494]
-layout_mode = 0
-offset_left = 80.0
-offset_top = 64.0
-offset_right = 144.0
-offset_bottom = 128.0
-scale = Vector2(1.527, 1.527)
-texture_normal = ExtResource("3_11rni")
+[node name="VBoxContainer" type="VBoxContainer" parent="StatsMenu" unique_id=773975083]
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 85.0
+offset_top = -109.0
+offset_right = 149.0
+offset_bottom = 83.0
+grow_vertical = 2
+scale = Vector2(0.95, 0.95)
+pivot_offset = Vector2(32, 96)
+theme_override_constants/separation = 64
+alignment = 1
 
-[connection signal="pressed" from="StatsMenu/CloseButton" to="." method="_on_close_button_pressed"]
+[node name="AscendMenuBtn" type="Button" parent="StatsMenu/VBoxContainer" unique_id=1428400788]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_pb5b4")
+text = "1"
+
+[node name="CurrentBtn" type="Button" parent="StatsMenu/VBoxContainer" unique_id=508514911]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_pb5b4")
+text = "2"
+
+[connection signal="pressed" from="StatsMenu/VBoxContainer/AscendMenuBtn" to="." method="_on_ascend_menu_btn_pressed"]
