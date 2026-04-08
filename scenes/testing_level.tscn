@@ -21,8 +21,7 @@
 [ext_resource type="Script" uid="uid://yjcwaf2y3plr" path="res://scripts/testing_saving.gd" id="21_pg4sr"]
 [ext_resource type="PackedScene" uid="uid://di0kiv465tbx7" path="res://scenes/quest_page.tscn" id="22_p3axr"]
 [ext_resource type="PackedScene" uid="uid://dm2jjhgykw0up" path="res://scenes/quest_start.tscn" id="23_p3axr"]
-[ext_resource type="PackedScene" uid="uid://bjvvpf6k54k3v" path="res://scenes/ascend_menu.tscn" id="24_7uy5g"]
-[ext_resource type="PackedScene" uid="uid://dt6aafg4vagsb" path="res://scenes/weapon_stats_ui.tscn" id="25_fd47j"]
+[ext_resource type="PackedScene" uid="uid://8vl1e5hm6o0n" path="res://scenes/stats_menu.tscn" id="24_7uy5g"]
 [ext_resource type="PackedScene" uid="uid://d06wy65qnbxjv" path="res://money/shop.tscn" id="26_iwfb5"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7uy5g"]
@@ -592,17 +591,13 @@ visible = false
 script = ExtResource("21_pg4sr")
 
 [node name="QuestPage" parent="." unique_id=222831098 instance=ExtResource("22_p3axr")]
-visible = false
 
 [node name="QuestStart" parent="." unique_id=241976210 instance=ExtResource("23_p3axr")]
 
 [node name="Shop" parent="." unique_id=839335450 instance=ExtResource("26_iwfb5")]
 position = Vector2(14, -39)
 
-[node name="CanvasStats" parent="." unique_id=900416537 instance=ExtResource("25_fd47j")]
-visible = false
-
-[node name="AscendMenu" parent="." unique_id=1842831273 instance=ExtResource("24_7uy5g")]
+[node name="StatsMenu" parent="." unique_id=1427351167 instance=ExtResource("24_7uy5g")]
 visible = false
 
 [connection signal="body_entered" from="MoneyDrop" to="MoneyDrop" method="_on_body_entered"]

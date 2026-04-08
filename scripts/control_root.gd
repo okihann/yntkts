@@ -58,7 +58,7 @@ func open_stats():
 	if stats_instance != null and is_instance_valid(stats_instance):
 		return
 
-	UiManager.open_ascend_menu()
+	UiManager.open_stats_menu()
 
 
 func _on_stats_closed():

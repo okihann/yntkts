@@ -2,7 +2,7 @@ extends Node
 
 var current_menu: Node = null
 var shop_scene   = preload("res://money/shop_ui.tscn")
-var ascend_scene = preload("res://scenes/ascend_menu.tscn")
+var stats_menu_scene = preload("res://scenes/stats_menu.tscn")
 
 var current_shop   : Node = null
 var current_ascend : Node = null
@@ -18,11 +18,12 @@ func open_shop(stock_data) -> void:
 	current_menu = current_shop
 	GameState.change_state(GameState.State.UI_MENU)
 
-func open_ascend_menu() -> void:
+func open_stats_menu() -> void:
+	print("open_stats dipanggil")
 	if current_ascend:
 		return
 
-	current_ascend = ascend_scene.instantiate()
+	current_ascend = stats_menu_scene.instantiate()
 	current_ascend.layer = 128
 	add_child(current_ascend)
 

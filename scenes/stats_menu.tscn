@@ -1,0 +1,920 @@
+[gd_scene format=3 uid="uid://8vl1e5hm6o0n"]
+
+[ext_resource type="Script" uid="uid://bnm50fi4rfj7o" path="res://scripts/char_menu.gd" id="1_0sfrv"]
+[ext_resource type="Script" uid="uid://bqy6fy37omd85" path="res://scripts/ascend_menu.gd" id="2_04bas"]
+[ext_resource type="Texture2D" uid="uid://dbw6agflejoe5" path="res://assets/UI/AscendMenu/Untitled76_20260308153756.png" id="3_rewml"]
+[ext_resource type="Script" uid="uid://dfnniiqxscjgk" path="res://scripts/stats.gd" id="4_xr0we"]
+[ext_resource type="Texture2D" uid="uid://cgpmc7g7sl34j" path="res://assets/UI/StatsMenu/heart-red.png" id="5_0sfrv"]
+[ext_resource type="Texture2D" uid="uid://c6x03rm2yfhu2" path="res://assets/UI/StatsMenu/TinySwords.png" id="6_01rek"]
+[ext_resource type="Script" uid="uid://c3c41i04e1igo" path="res://scripts/weapon_panel_new.gd" id="7_01rek"]
+[ext_resource type="Texture2D" uid="uid://bixq4mwjuwlwt" path="res://assets/UI/StatsMenu/Untitled62_20260217150518.png" id="7_dbere"]
+[ext_resource type="Script" uid="uid://wo5aiet85yqn" path="res://scenes/enhance_weapon.gd" id="8_rewml"]
+[ext_resource type="Script" uid="uid://bdpbveqcgrk3l" path="res://scripts/ascend_weapon.gd" id="9_0sfrv"]
+[ext_resource type="Script" uid="uid://brtn61ul5ecpc" path="res://scripts/weapon_stats_ui.gd" id="9_xr0we"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_of1ok"]
+bg_color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jq8j5"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9690439, 0.958244, 0.9651734, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 24.0
+expand_margin_top = 24.0
+expand_margin_right = 24.0
+expand_margin_bottom = 24.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gcpr8"]
+bg_color = Color(0.24913591, 0.24913594, 0.24913579, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xd4sj"]
+bg_color = Color(0.9862643, 0.98626417, 0.98626417, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3phmi"]
+atlas = ExtResource("6_01rek")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0sfrv"]
+bg_color = Color(0.12022405, 0.1310994, 0.14197531, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01rek"]
+bg_color = Color(0.12156863, 0.12941177, 0.14117648, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_22mwu"]
+atlas = ExtResource("6_01rek")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0sfrv"]
+atlas = ExtResource("6_01rek")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i6mlj"]
+bg_color = Color(0.104109384, 0.1041094, 0.10410934, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="StatsMenu" type="CanvasLayer" unique_id=1427351167]
+process_mode = 3
+script = ExtResource("1_0sfrv")
+metadata/_edit_vertical_guides_ = [-463.0, -923.0, 173.0, 170.0]
+
+[node name="Panel" type="Panel" parent="." unique_id=687450755]
+process_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_of1ok")
+
+[node name="AscendPanel" type="PanelContainer" parent="Panel" unique_id=480556200]
+visible = false
+custom_minimum_size = Vector2(800, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -306.5
+offset_right = 300.0
+offset_bottom = 306.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.107, 1.107)
+pivot_offset = Vector2(300, 306.5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jq8j5")
+script = ExtResource("2_04bas")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/AscendPanel" unique_id=1929610888]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LevelLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=2043402901]
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Panel/AscendPanel/VBoxContainer" unique_id=2750880]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=363313119]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Experience"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExpBar" type="ProgressBar" parent="Panel/AscendPanel/VBoxContainer" unique_id=99064115]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_gcpr8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_xd4sj")
+show_percentage = false
+
+[node name="ExpLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer/ExpBar" unique_id=349762067]
+layout_mode = 0
+offset_left = 1.7037053
+offset_top = 1.1919694
+offset_right = 797.70374
+offset_bottom = 24.191969
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/AscendPanel/VBoxContainer" unique_id=951857670]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=1224503894]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Fragments"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FragmentDisplay" type="HBoxContainer" parent="Panel/AscendPanel/VBoxContainer" unique_id=690737645]
+layout_mode = 2
+alignment = 1
+
+[node name="FragmentIcon" type="TextureRect" parent="Panel/AscendPanel/VBoxContainer/FragmentDisplay" unique_id=1817014452]
+layout_mode = 2
+texture = ExtResource("3_rewml")
+
+[node name="FragmentLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer/FragmentDisplay" unique_id=1467004756]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="Panel/AscendPanel/VBoxContainer" unique_id=590216292]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=1722913768]
+layout_mode = 2
+text = "On Ascend"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatPreviewLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=675609245]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="Panel/AscendPanel/VBoxContainer" unique_id=818849475]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="Panel/AscendPanel/VBoxContainer" unique_id=87877425]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AscendButton" type="Button" parent="Panel/AscendPanel/VBoxContainer" unique_id=99084454]
+layout_mode = 2
+text = "Ascend"
+
+[node name="StatsMenu" type="Control" parent="Panel" unique_id=628749164]
+visible = false
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.99998
+offset_top = 13.999991
+offset_right = 35.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 324)
+mouse_filter = 2
+script = ExtResource("4_xr0we")
+
+[node name="ColorRect" type="ColorRect" parent="Panel/StatsMenu" unique_id=101758498]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.595, 1.595)
+pivot_offset = Vector2(576, 324)
+color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/StatsMenu" unique_id=527380380]
+custom_minimum_size = Vector2(262, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -146.99994
+offset_top = -17.99997
+offset_right = 115.00006
+offset_bottom = 22.00003
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2.353, 2.353)
+pivot_offset = Vector2(117.5, 20)
+theme_override_constants/separation = 52
+
+[node name="Control" type="Control" parent="Panel/StatsMenu/HBoxContainer" unique_id=1214325707]
+layout_mode = 2
+
+[node name="TextureButton" type="TextureButton" parent="Panel/StatsMenu/HBoxContainer/Control" unique_id=800360995]
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 40.0
+texture_normal = ExtResource("5_0sfrv")
+
+[node name="Control2" type="Control" parent="Panel/StatsMenu/HBoxContainer" unique_id=1539222513]
+layout_mode = 2
+
+[node name="TextureButton2" type="TextureButton" parent="Panel/StatsMenu/HBoxContainer/Control2" unique_id=1809636419]
+layout_mode = 0
+offset_left = 24.338366
+offset_top = -0.90634453
+offset_right = 40.338364
+offset_bottom = 15.093656
+scale = Vector2(2.176, 2.176)
+texture_normal = SubResource("AtlasTexture_3phmi")
+
+[node name="Control3" type="Control" parent="Panel/StatsMenu/HBoxContainer" unique_id=1869703776]
+layout_mode = 2
+
+[node name="TextureButton3" type="TextureButton" parent="Panel/StatsMenu/HBoxContainer/Control3" unique_id=1872594081]
+layout_mode = 0
+offset_left = 48.000008
+offset_right = 80.00001
+offset_bottom = 40.0
+texture_normal = ExtResource("5_0sfrv")
+
+[node name="Control4" type="Control" parent="Panel/StatsMenu/HBoxContainer" unique_id=909994427]
+layout_mode = 2
+
+[node name="TextureButton3" type="TextureButton" parent="Panel/StatsMenu/HBoxContainer/Control4" unique_id=1947040148]
+layout_mode = 0
+offset_left = 72.0
+offset_right = 104.0
+offset_bottom = 40.0
+texture_normal = ExtResource("5_0sfrv")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/StatsMenu" unique_id=1224568236]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -566.0
+offset_top = -152.0
+offset_right = 574.0
+offset_bottom = -107.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.521, 0.521)
+pivot_offset = Vector2(570, 22.5)
+theme_override_constants/separation = 25
+
+[node name="HpText" type="Label" parent="Panel/StatsMenu/HBoxContainer2" unique_id=871757913]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Atk:          100"
+
+[node name="AtkText" type="Label" parent="Panel/StatsMenu/HBoxContainer2" unique_id=300093184]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Durability:          10"
+
+[node name="AspdText" type="Label" parent="Panel/StatsMenu/HBoxContainer2" unique_id=33687054]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Ergonomics:          10"
+
+[node name="MoveSpdText" type="Label" parent="Panel/StatsMenu/HBoxContainer2" unique_id=26340691]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Mov Speed:         10"
+
+[node name="Title" type="Label" parent="Panel/StatsMenu" unique_id=405483791]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 56.0
+offset_right = 35.0
+offset_bottom = 79.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 30
+text = "Level Up"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Panel/StatsMenu" unique_id=1797402799]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -144.0
+offset_top = 128.0
+offset_right = 142.0
+offset_bottom = 177.0
+grow_horizontal = 2
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 27
+text = "Pick a bonus stat"
+horizontal_alignment = 1
+
+[node name="Points" type="Label" parent="Panel/StatsMenu" unique_id=543263185]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -389.0
+offset_top = -139.0
+offset_right = -103.0
+offset_bottom = -90.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 27
+text = "Points: 0"
+horizontal_alignment = 1
+
+[node name="WeaponPanelNew" type="PanelContainer" parent="Panel" unique_id=111198801]
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -368.0
+offset_top = -252.0
+offset_right = 332.0
+offset_bottom = 248.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.107, 1.107)
+pivot_offset = Vector2(300, 306.5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jq8j5")
+script = ExtResource("7_01rek")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/WeaponPanelNew" unique_id=1595782291]
+z_index = 6
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LevelLabel" type="Label" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=2006408869]
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=1993542702]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=2028422188]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Experience"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExpBar" type="ProgressBar" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=988070342]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_gcpr8")
+theme_override_styles/fill = SubResource("StyleBoxFlat_xd4sj")
+show_percentage = false
+
+[node name="ExpLabel" type="Label" parent="Panel/WeaponPanelNew/VBoxContainer/ExpBar" unique_id=1608132496]
+z_index = 1
+layout_mode = 0
+offset_left = 1.7037053
+offset_top = 1.1919694
+offset_right = 695.4707
+offset_bottom = 25.677061
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=1043090472]
+layout_mode = 2
+
+[node name="PassiveSection" type="VBoxContainer" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=90261801]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/WeaponPanelNew/VBoxContainer/PassiveSection" unique_id=873071545]
+layout_mode = 2
+text = "Passive Bonuses"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PassiveList" type="VBoxContainer" parent="Panel/WeaponPanelNew/VBoxContainer/PassiveSection" unique_id=295582626]
+layout_mode = 2
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=1704010552]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=800274968]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Fragments"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FragmentDisplay" type="HBoxContainer" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=372661439]
+layout_mode = 2
+alignment = 1
+
+[node name="FragmentIcon" type="TextureRect" parent="Panel/WeaponPanelNew/VBoxContainer/FragmentDisplay" unique_id=22857854]
+layout_mode = 2
+texture = ExtResource("3_rewml")
+
+[node name="FragmentLabel" type="Label" parent="Panel/WeaponPanelNew/VBoxContainer/FragmentDisplay" unique_id=1191667795]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator4" type="HSeparator" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=830681509]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=433902293]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MainBtn" type="Button" parent="Panel/WeaponPanelNew/VBoxContainer" unique_id=2145762427]
+layout_mode = 2
+text = "Enhance"
+
+[node name="ColorRect2" type="ColorRect" parent="Panel/WeaponPanelNew" unique_id=840272956]
+z_index = 1
+layout_mode = 2
+mouse_filter = 2
+color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[node name="Enhance" type="PanelContainer" parent="Panel/WeaponPanelNew/ColorRect2" unique_id=1182132757]
+visible = false
+z_index = 40
+custom_minimum_size = Vector2(600, 250)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -312.28546
+offset_top = -112.466125
+offset_right = 287.71454
+offset_bottom = 137.53387
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(67.5, 46.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_0sfrv")
+script = ExtResource("8_rewml")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/WeaponPanelNew/ColorRect2/Enhance" unique_id=1492817153]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="MaterialRow" type="HBoxContainer" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer" unique_id=1375771722]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="FragmentIcon" type="TextureRect" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer/MaterialRow" unique_id=1323388514]
+layout_mode = 2
+texture = ExtResource("3_rewml")
+
+[node name="MaterialLabel" type="Label" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer/MaterialRow" unique_id=1105951126]
+layout_mode = 2
+
+[node name="AmountRow" type="HBoxContainer" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer" unique_id=746247734]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="BtnMinus" type="Button" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer/AmountRow" unique_id=1879967858]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "-"
+
+[node name="AmountLabel" type="Label" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer/AmountRow" unique_id=1127277468]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnPlus" type="Button" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer/AmountRow" unique_id=1215585828]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "+"
+
+[node name="ButtonRow" type="HBoxContainer" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer" unique_id=2043282523]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="BtnCancel" type="Button" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer/ButtonRow" unique_id=937615592]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Cancel"
+
+[node name="BtnConfirm" type="Button" parent="Panel/WeaponPanelNew/ColorRect2/Enhance/VBoxContainer/ButtonRow" unique_id=980790042]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Confirm"
+
+[node name="Ascend" type="PanelContainer" parent="Panel/WeaponPanelNew/ColorRect2" unique_id=1141295578]
+z_index = 40
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.27097
+offset_top = -65.90288
+offset_right = 39.729034
+offset_bottom = 52.097107
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.924, 1.924)
+pivot_offset = Vector2(95, 59)
+theme_override_styles/panel = SubResource("StyleBoxFlat_01rek")
+script = ExtResource("9_0sfrv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/WeaponPanelNew/ColorRect2/Ascend" unique_id=521602649]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="MaterialRow" type="HBoxContainer" parent="Panel/WeaponPanelNew/ColorRect2/Ascend/VBoxContainer" unique_id=369520244]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="FragmentIcon" type="TextureRect" parent="Panel/WeaponPanelNew/ColorRect2/Ascend/VBoxContainer/MaterialRow" unique_id=1166463334]
+layout_mode = 2
+texture = ExtResource("3_rewml")
+
+[node name="MaterialLabel" type="Label" parent="Panel/WeaponPanelNew/ColorRect2/Ascend/VBoxContainer/MaterialRow" unique_id=1286125400]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="Panel/WeaponPanelNew/ColorRect2/Ascend/VBoxContainer" unique_id=2111932005]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="BtnCancel" type="Button" parent="Panel/WeaponPanelNew/ColorRect2/Ascend/VBoxContainer/ButtonRow" unique_id=1236311072]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Cancel"
+
+[node name="BtnConfirm" type="Button" parent="Panel/WeaponPanelNew/ColorRect2/Ascend/VBoxContainer/ButtonRow" unique_id=1398960156]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Confirm"
+
+[node name="WeaponStats" type="Control" parent="Panel" unique_id=778813203]
+visible = false
+z_index = 11
+custom_minimum_size = Vector2(400, 800)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("9_xr0we")
+
+[node name="ColorRect" type="ColorRect" parent="Panel/WeaponStats" unique_id=79835928]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.07058824, 0.078431375, 0.08627451, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/WeaponStats" unique_id=1588557368]
+custom_minimum_size = Vector2(190, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -359.0
+offset_top = -60.0
+offset_right = -169.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(4, 4)
+mouse_filter = 2
+theme_override_constants/separation = 52
+
+[node name="Control" type="Control" parent="Panel/WeaponStats/HBoxContainer" unique_id=1744399190]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureButton" type="TextureButton" parent="Panel/WeaponStats/HBoxContainer/Control" unique_id=565884828]
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 0
+offset_left = 12.75
+offset_top = 1.0
+offset_right = 28.75
+offset_bottom = 17.0
+scale = Vector2(2.177, 2.177)
+texture_normal = SubResource("AtlasTexture_22mwu")
+
+[node name="Control2" type="Control" parent="Panel/WeaponStats/HBoxContainer" unique_id=1861385425]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureButton2" type="TextureButton" parent="Panel/WeaponStats/HBoxContainer/Control2" unique_id=1215777542]
+layout_mode = 0
+offset_left = 24.338366
+offset_top = -0.90634453
+offset_right = 40.338364
+offset_bottom = 15.093656
+scale = Vector2(2.176, 2.176)
+texture_normal = SubResource("AtlasTexture_0sfrv")
+
+[node name="Control3" type="Control" parent="Panel/WeaponStats/HBoxContainer" unique_id=1865230130]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureButton3" type="TextureButton" parent="Panel/WeaponStats/HBoxContainer/Control3" unique_id=410904087]
+layout_mode = 0
+offset_left = 40.750008
+offset_right = 72.75001
+offset_bottom = 40.0
+texture_normal = ExtResource("5_0sfrv")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/WeaponStats" unique_id=1470632653]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -344.0
+offset_top = -152.0
+offset_right = 352.0
+offset_bottom = -107.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 25
+
+[node name="HpText" type="Label" parent="Panel/WeaponStats/HBoxContainer2" unique_id=439863616]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Atk:          100"
+
+[node name="AtkText" type="Label" parent="Panel/WeaponStats/HBoxContainer2" unique_id=1172039906]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Durability:          10"
+
+[node name="AspdText" type="Label" parent="Panel/WeaponStats/HBoxContainer2" unique_id=989157060]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Ergonomics:          10"
+
+[node name="Title" type="Label" parent="Panel/WeaponStats" unique_id=1295249041]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_top = 56.0
+offset_right = 35.0
+offset_bottom = 79.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 38
+text = "Weapon"
+
+[node name="Subtitle" type="Label" parent="Panel/WeaponStats" unique_id=2055613004]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -144.0
+offset_top = 128.0
+offset_right = 142.0
+offset_bottom = 177.0
+grow_horizontal = 2
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 35
+text = "Pick a bonus stat"
+
+[node name="Points" type="Label" parent="Panel/WeaponStats" unique_id=83730169]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -344.0
+offset_top = -72.0
+offset_right = -58.0
+offset_bottom = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(293.5, 64)
+theme_override_font_sizes/font_size = 35
+text = "Points: 0"
+
+[node name="Panel" type="Panel" parent="Panel/WeaponStats" unique_id=644755359]
+custom_minimum_size = Vector2(600, 250)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -296.0
+offset_top = 176.0
+offset_right = 304.0
+offset_bottom = 426.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(300, 125)
+theme_override_styles/panel = SubResource("StyleBoxFlat_i6mlj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/WeaponStats/Panel" unique_id=881760035]
+custom_minimum_size = Vector2(550, 200)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -279.0
+offset_top = -234.0
+offset_right = 271.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="Panel/WeaponStats/Panel/VBoxContainer" unique_id=18196108]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Atk :"
+
+[node name="Label2" type="Label" parent="Panel/WeaponStats/Panel/VBoxContainer" unique_id=1071993753]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Durability :"
+
+[node name="Label3" type="Label" parent="Panel/WeaponStats/Panel/VBoxContainer" unique_id=565919980]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Ergonomics :"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/WeaponStats/Panel" unique_id=684022052]
+custom_minimum_size = Vector2(550, 200)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -279.0
+offset_top = -234.0
+offset_right = 271.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Label" type="Label" parent="Panel/WeaponStats/Panel/VBoxContainer2" unique_id=1006119535]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "100.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Panel/WeaponStats/Panel/VBoxContainer2" unique_id=1575579959]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "50.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="Panel/WeaponStats/Panel/VBoxContainer2" unique_id=1883957213]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "30.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=693031174]
+z_index = 17
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 111.0
+offset_top = -179.0
+offset_right = 443.0
+offset_bottom = 313.0
+grow_vertical = 2
+scale = Vector2(0.766, 0.766)
+pivot_offset = Vector2(166, 246)
+mouse_filter = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="Ascend" type="Button" parent="Panel/VBoxContainer" unique_id=318050952]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0390989, 1.0390989, 1.0390989, 1)
+theme_override_font_sizes/font_size = 48
+text = "Ascend"
+
+[node name="CharStats" type="Button" parent="Panel/VBoxContainer" unique_id=2022695581]
+custom_minimum_size = Vector2(70, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 48
+text = "Char Stats"
+
+[node name="WeaponBtn" type="Button" parent="Panel/VBoxContainer" unique_id=981953580]
+custom_minimum_size = Vector2(70, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 48
+text = "Weapon Level"
+
+[node name="WeaponStatsBtn" type="Button" parent="Panel/VBoxContainer" unique_id=1038820430]
+custom_minimum_size = Vector2(70, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 48
+text = "Weapon Stats"
+
+[node name="CloseBtn" type="TextureButton" parent="Panel" unique_id=1539044231]
+z_index = 17
+layout_mode = 1
+offset_left = 68.0
+offset_top = 80.0
+offset_right = 132.0
+offset_bottom = 144.0
+texture_normal = ExtResource("7_dbere")
+
+[connection signal="pressed" from="Panel/WeaponStats/HBoxContainer/Control/TextureButton" to="Panel/WeaponStats" method="_on_texture_button_pressed"]
+[connection signal="pressed" from="Panel/WeaponStats/HBoxContainer/Control2/TextureButton2" to="Panel/WeaponStats" method="_on_texture_button_2_pressed"]
+[connection signal="pressed" from="Panel/WeaponStats/HBoxContainer/Control3/TextureButton3" to="Panel/WeaponStats" method="_on_texture_button_3_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Ascend" to="." method="_on_ascend_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/CharStats" to="." method="_on_char_stats_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/WeaponBtn" to="." method="_on_weapon_level_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/WeaponStatsBtn" to="." method="_on_weapon_stats_pressed"]
+[connection signal="pressed" from="Panel/CloseBtn" to="." method="_on_close_btn_pressed"]
