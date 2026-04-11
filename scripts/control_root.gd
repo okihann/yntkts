@@ -6,6 +6,7 @@ extends Control
 	$ButtonsGroup/BtnResume,
 	$ButtonsGroup/BtnOptions,
 	$ButtonsGroup/BtnExit
+	#$StatsButton
 ]
 
 @onready var stats_btn = $StatsButton
@@ -17,6 +18,11 @@ extends Control
 var selected_index := 0
 var original_xs := [] 
 var stats_instance: Node = null
+
+#ujicoba
+var button_position : float
+var button_scale : Vector2
+var button_modulate : float
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -50,6 +56,15 @@ func _ready():
 		$ArrowUp.pressed.connect(func(): move_selection(-1))
 	if has_node("ArrowDown"):
 		$ArrowDown.pressed.connect(func(): move_selection(1))
+		
+	for i in range(buttons.size()):
+		print(buttons[i].position.x)
+		print(buttons[i].scale)
+		print(buttons[i].modulate.a)
+		button_position = buttons[i].position.x 
+		button_scale = buttons[i].scale
+		button_modulate = buttons[i].modulate.a
+		#button_modulate = 0.5
 
 func update_pause_stats_display():
 	hp_label.text = "Hp: " + str(LevelManager.player_health) + "/" + str(LevelManager.player_max_health)
@@ -74,10 +89,11 @@ func _on_game_paused():
 	_update_stats_display()
 	show()
 	
-	for i in range(buttons.size()):
-		buttons[i].position.x = original_xs[i] - slide_offset
-		buttons[i].scale = Vector2.ONE
-		buttons[i].modulate.a = 0.5
+#	ini yg sebelumnya wir
+	#for i in range(buttons.size()):
+		#buttons[i].position.x = original_xs[i] - slide_offset
+		#buttons[i].scale = Vector2.ONE
+		#buttons[i].modulate.a = 0.5
 	
 	_select_button(0)
 	set_process_input(true)
@@ -128,15 +144,26 @@ func _slide_right(btn, target_x):
 	if not btn: return
 	var t = create_tween().set_parallel(true)
 	t.tween_property(btn, "position:x", target_x, slide_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	t.tween_property(btn, "scale", Vector2(1.1, 1.1), slide_time)
+	t.tween_property(btn, "scale", Vector2(0.9, 0.9), slide_time)
 	t.tween_property(btn, "modulate:a", 1.0, slide_time)
 
+#func _slide_left(btn, target_x):
+	#if not btn: return
+	#var t = create_tween().set_parallel(true)
+	#t.tween_property(btn, "position:x", target_x - slide_offset, slide_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	#t.tween_property(btn, "scale", Vector2.ONE, slide_time)
+	#t.tween_property(btn, "modulate:a", 0.5, slide_time)
+	
 func _slide_left(btn, target_x):
 	if not btn: return
 	var t = create_tween().set_parallel(true)
-	t.tween_property(btn, "position:x", target_x - slide_offset, slide_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	t.tween_property(btn, "scale", Vector2.ONE, slide_time)
-	t.tween_property(btn, "modulate:a", 0.5, slide_time)
+	t.tween_property(btn, "position:x", button_position, slide_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	t.tween_property(btn, "scale", button_scale, slide_time)
+	t.tween_property(btn, "modulate:a", button_modulate, slide_time)
+	print("versi baru")
+	print("button_position", button_position)
+	print("button_scale", button_scale)
+	print("button_modulate", button_modulate)
 
 func _on_button_pressed(index: int):
 	if not has_node("/root/GameState"): return

@@ -1,13 +1,65 @@
 [gd_scene format=3 uid="uid://cxg47quittcgm"]
 
 [ext_resource type="Script" uid="uid://ctorjqv2nv8nb" path="res://scripts/control_root.gd" id="1_cmnsq"]
-[ext_resource type="Texture2D" uid="uid://h3dhowpm6jgr" path="res://assets/UI/PauseMenu/1001265454-removebg-preview.png" id="1_n87rw"]
 [ext_resource type="Texture2D" uid="uid://dqw0wti7t4koy" path="res://assets/UI/PauseMenu/Title.png" id="2_myx47"]
 [ext_resource type="Texture2D" uid="uid://lqwmr6uhh2rj" path="res://assets/UI/PauseMenu/Exp.png" id="4_5d2l8"]
 [ext_resource type="Texture2D" uid="uid://dvdkv6oayrvai" path="res://assets/UI/PauseMenu/Resume.png" id="6_v4r4p"]
 [ext_resource type="Texture2D" uid="uid://dsh5rrp7330o5" path="res://assets/UI/PauseMenu/Options.png" id="7_1s2dm"]
 [ext_resource type="Texture2D" uid="uid://b4p60khaaf3ur" path="res://assets/UI/PauseMenu/Exit.png" id="8_88e76"]
+[ext_resource type="Texture2D" uid="uid://dewnynca6dknf" path="res://player/playersprite.png" id="9_71k7c"]
 [ext_resource type="Texture2D" uid="uid://c2x5roo7g2ybl" path="res://assets/UI/PauseMenu/Untitled59_20260214131354.png" id="9_knqa7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_88e76"]
+atlas = ExtResource("9_71k7c")
+region = Rect2(0, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_knqa7"]
+atlas = ExtResource("9_71k7c")
+region = Rect2(80, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_71k7c"]
+atlas = ExtResource("9_71k7c")
+region = Rect2(160, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cmnsq"]
+atlas = ExtResource("9_71k7c")
+region = Rect2(240, 0, 80, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ofnjo"]
+atlas = ExtResource("9_71k7c")
+region = Rect2(320, 0, 80, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1rgno"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_88e76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_knqa7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_71k7c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cmnsq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ofnjo")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_88e76"]
+font_size = 35
+
+[sub_resource type="LabelSettings" id="LabelSettings_knqa7"]
+font_size = 35
+
+[sub_resource type="LabelSettings" id="LabelSettings_71k7c"]
+font_size = 35
 
 [node name="PauseMenu" type="CanvasLayer" unique_id=2019243940]
 process_mode = 3
@@ -40,23 +92,31 @@ layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 55.0
-offset_top = -261.0
-offset_right = 425.0
-offset_bottom = 413.0
+offset_left = 21.0
+offset_top = -183.0
+offset_right = 639.46155
+offset_bottom = 568.47925
 grow_vertical = 2
-scale = Vector2(0.889, 0.925)
-texture_normal = ExtResource("1_n87rw")
+scale = Vector2(0.65, 0.676)
+ignore_texture_size = true
+
+[node name="PlayerAnimated2D" type="AnimatedSprite2D" parent="ControlRoot/StatsButton" unique_id=741971807]
+position = Vector2(303.07693, 238.1657)
+scale = Vector2(16, 16)
+sprite_frames = SubResource("SpriteFrames_1rgno")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.34921652
 
 [node name="Title" type="TextureRect" parent="ControlRoot" unique_id=147298568]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -277.0
-offset_top = -5.9999995
-offset_right = 2183.0
-offset_bottom = 1074.0
+offset_left = -128.0
+offset_top = -14.0
+offset_right = 2332.0
+offset_bottom = 1066.0
 grow_horizontal = 2
 scale = Vector2(0.226, 0.226)
 texture = ExtResource("2_myx47")
@@ -69,33 +129,39 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -689.99994
-offset_top = -262.0
-offset_right = 1770.0
-offset_bottom = 4106.0
+offset_left = -619.0
+offset_top = -180.0
+offset_right = 2147.9172
+offset_bottom = 2256.09
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.133, 0.133)
 
 [node name="BtnResume" type="TextureButton" parent="ControlRoot/ButtonsGroup" unique_id=526574722]
 layout_mode = 0
-offset_right = 2460.0
-offset_bottom = 1080.0
+offset_left = 526.3158
+offset_top = 67.66919
+offset_right = 2986.316
+offset_bottom = 1147.6692
+scale = Vector2(0.65, 0.6058226)
 texture_normal = ExtResource("6_v4r4p")
 
 [node name="BtnOptions" type="TextureButton" parent="ControlRoot/ButtonsGroup" unique_id=1011789658]
 layout_mode = 0
-offset_top = 1096.0
-offset_right = 2460.0
-offset_bottom = 2176.0
+offset_left = 526.316
+offset_top = 781.955
+offset_right = 2986.316
+offset_bottom = 1861.9551
+scale = Vector2(0.65, 0.65)
 texture_normal = ExtResource("7_1s2dm")
 
 [node name="BtnExit" type="TextureButton" parent="ControlRoot/ButtonsGroup" unique_id=351425944]
 layout_mode = 0
-offset_left = 67.6687
-offset_top = 2195.4888
-offset_right = 2527.6687
-offset_bottom = 3275.4888
+offset_left = 526.316
+offset_top = 1563.91
+offset_right = 2986.316
+offset_bottom = 2643.9102
+scale = Vector2(0.65, 0.65)
 texture_normal = ExtResource("8_88e76")
 
 [node name="TextureRect2" type="TextureRect" parent="ControlRoot" unique_id=950599254]
@@ -105,21 +171,22 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 5.0
-offset_top = -257.00003
-offset_right = 121.0
-offset_bottom = 622.0
+offset_left = 525.0
+offset_top = 159.00003
+offset_right = 641.0
+offset_bottom = 1038.0
 grow_horizontal = 2
 grow_vertical = 2
+rotation = 1.5707964
 scale = Vector2(0.082, 0.754)
 texture = ExtResource("9_knqa7")
 
 [node name="StatsGroup" type="Control" parent="ControlRoot" unique_id=557152394]
 anchors_preset = 0
-offset_left = 102.0
-offset_top = 205.0
-offset_right = 142.0
-offset_bottom = 245.0
+offset_left = 420.0
+offset_top = 443.0
+offset_right = 1131.0
+offset_bottom = 652.0
 
 [node name="Exp" type="TextureRect" parent="ControlRoot/StatsGroup" unique_id=1645274885]
 visible = false
@@ -127,40 +194,43 @@ layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 711.0
-offset_top = 213.00002
-offset_right = 3171.0
-offset_bottom = 1293.0
+offset_left = 405.0
+offset_top = 227.5
+offset_right = 2865.0
+offset_bottom = 1307.5
 grow_vertical = 2
 scale = Vector2(0.081, 0.081)
 texture = ExtResource("4_5d2l8")
 
 [node name="LevelLabel" type="Label" parent="ControlRoot/StatsGroup" unique_id=1337051305]
 layout_mode = 0
-offset_left = 438.0
-offset_top = 143.0
-offset_right = 478.0
-offset_bottom = 210.0
+offset_left = 58.0
+offset_top = 62.0
+offset_right = 98.0
+offset_bottom = 129.0
 theme_override_font_sizes/font_size = 48
 text = "1"
+label_settings = SubResource("LabelSettings_88e76")
 
 [node name="ExpLabel" type="Label" parent="ControlRoot/StatsGroup" unique_id=1408134746]
 layout_mode = 0
-offset_left = 440.0
-offset_top = 224.0
-offset_right = 550.0
-offset_bottom = 291.0
+offset_left = 59.0
+offset_top = 126.0
+offset_right = 169.0
+offset_bottom = 193.0
 theme_override_font_sizes/font_size = 48
 text = "1000"
+label_settings = SubResource("LabelSettings_knqa7")
 
 [node name="HpLabel" type="Label" parent="ControlRoot/StatsGroup" unique_id=90102340]
 layout_mode = 0
-offset_left = 439.0
-offset_top = 302.0
-offset_right = 647.0
-offset_bottom = 369.0
+offset_left = 412.0
+offset_top = 70.0
+offset_right = 620.0
+offset_bottom = 137.0
 theme_override_font_sizes/font_size = 48
 text = "100 / 100"
+label_settings = SubResource("LabelSettings_71k7c")
 
 [connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnOptions" to="ControlRoot" method="_on_btn_options_pressed"]
 [connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnExit" to="ControlRoot" method="_on_btn_exit_pressed"]
