@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dsh5rrp7330o5" path="res://assets/UI/PauseMenu/Options.png" id="7_1s2dm"]
 [ext_resource type="Texture2D" uid="uid://b4p60khaaf3ur" path="res://assets/UI/PauseMenu/Exit.png" id="8_88e76"]
 [ext_resource type="Texture2D" uid="uid://dewnynca6dknf" path="res://player/playersprite.png" id="9_71k7c"]
+[ext_resource type="Texture2D" uid="uid://bq44kdyk5w6qq" path="res://assets/UI/PauseMenu/bingkaiemas_2-removebg-preview.png" id="9_cmnsq"]
 [ext_resource type="Texture2D" uid="uid://c2x5roo7g2ybl" path="res://assets/UI/PauseMenu/Untitled59_20260214131354.png" id="9_knqa7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_88e76"]
@@ -231,6 +232,17 @@ offset_bottom = 137.0
 theme_override_font_sizes/font_size = 48
 text = "100 / 100"
 label_settings = SubResource("LabelSettings_71k7c")
+
+[node name="Bingkaiemas2RemovebgPreview" type="Sprite2D" parent="ControlRoot" unique_id=1982314941]
+position = Vector2(122, 115)
+rotation = 1.5707964
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("9_cmnsq")
+
+[node name="Bingkaiemas2RemovebgPreview" type="Sprite2D" parent="ControlRoot/Bingkaiemas2RemovebgPreview" unique_id=1090104126]
+position = Vector2(11.666599, -1503.3333)
+rotation = 1.5707964
+texture = ExtResource("9_cmnsq")
 
 [connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnOptions" to="ControlRoot" method="_on_btn_options_pressed"]
 [connection signal="pressed" from="ControlRoot/ButtonsGroup/BtnExit" to="ControlRoot" method="_on_btn_exit_pressed"]
